@@ -1,0 +1,226 @@
+/* Bridge Trainer — Card Rendering (CSS-only, no images) */
+
+/* Hand display: cards grouped by suit */
+.hand-display {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.suit-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.suit-symbol {
+  font-size: 20px;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.suit-symbol.spades { color: var(--suit-spades); }
+.suit-symbol.hearts { color: var(--suit-hearts); }
+.suit-symbol.diamonds { color: var(--suit-diamonds); }
+.suit-symbol.clubs { color: var(--suit-clubs); }
+
+.suit-cards {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+/* Individual card in suit row */
+.card-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 36px;
+  padding: 0 6px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  background: var(--bg-card);
+  border: 2px solid transparent;
+  cursor: default;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.card-chip.spades { color: var(--suit-spades); }
+.card-chip.hearts { color: var(--suit-hearts); }
+.card-chip.diamonds { color: var(--suit-diamonds); }
+.card-chip.clubs { color: var(--suit-clubs); }
+
+.card-chip.face { font-weight: 800; }
+
+/* Clickable card */
+.card-chip.clickable {
+  cursor: pointer;
+  border-color: var(--border);
+}
+
+.card-chip.clickable:active {
+  transform: scale(0.92);
+}
+
+.card-chip.clickable:hover {
+  border-color: var(--accent);
+  background: rgba(29, 155, 240, 0.1);
+}
+
+.card-chip.selected {
+  border-color: var(--accent);
+  background: rgba(29, 155, 240, 0.2);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.card-chip.correct {
+  border-color: var(--success);
+  background: rgba(0, 200, 83, 0.2);
+}
+
+.card-chip.wrong {
+  border-color: var(--error);
+  background: rgba(255, 82, 82, 0.2);
+}
+
+/* Empty suit marker */
+.suit-empty {
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+/* Full card (for scenarios, larger display) */
+.card-full {
+  width: 56px;
+  height: 80px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.card-full .card-rank {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.card-full .card-suit {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.card-full.spades { color: var(--suit-spades); }
+.card-full.hearts { color: var(--suit-hearts); }
+.card-full.diamonds { color: var(--suit-diamonds); }
+.card-full.clubs { color: var(--suit-clubs); }
+
+.card-full:active { transform: scale(0.95); }
+.card-full.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+  transform: translateY(-4px);
+}
+
+/* Bidding table (compass rose layout) */
+.bidding-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2px;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  font-size: 14px;
+}
+
+.bidding-table .bid-header {
+  text-align: center;
+  font-weight: 700;
+  padding: 8px 4px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.bidding-table .bid-cell {
+  text-align: center;
+  padding: 6px 4px;
+  font-weight: 600;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bid-cell.pass { color: var(--text-muted); }
+.bid-cell.suit-bid { color: var(--text-primary); }
+.bid-cell.double { color: var(--error); }
+.bid-cell.redouble { color: var(--accent); }
+.bid-cell.highlight { background: rgba(29, 155, 240, 0.1); border-radius: 4px; }
+
+/* Compass rose for deal display */
+.compass {
+  display: grid;
+  grid-template-areas:
+    ".     north ."
+    "west  center east"
+    ".     south .";
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto auto auto;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0;
+}
+
+.compass-north { grid-area: north; text-align: center; }
+.compass-south { grid-area: south; text-align: center; }
+.compass-east { grid-area: east; text-align: left; }
+.compass-west { grid-area: west; text-align: right; }
+.compass-center {
+  grid-area: center;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.compass-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+/* Responsive card sizing */
+@media (max-width: 360px) {
+  .card-chip {
+    min-width: 28px;
+    height: 32px;
+    font-size: 14px;
+    padding: 0 4px;
+  }
+
+  .suit-symbol {
+    font-size: 18px;
+    width: 24px;
+  }
+}

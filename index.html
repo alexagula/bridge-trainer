@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#1a2733">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Бридж">
+  <meta name="description" content="Тренажёр спортивного бриджа — 10 модулей для отработки навыков">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/modules.css">
+  <title>Тренажёр бриджа</title>
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="app-header">
+      <h1>♠ Бридж</h1>
+      <span class="subtitle" id="module-title">Тренажёр</span>
+    </header>
+
+    <!-- Main content area — modules render here -->
+    <main class="app-content" id="content">
+      <!-- Welcome screen -->
+      <div id="welcome" class="module-container">
+        <div class="card-area text-center" style="padding: 32px 16px;">
+          <div style="font-size: 48px; margin-bottom: 16px;">♠♥♦♣</div>
+          <h2 style="margin-bottom: 8px;">Тренажёр спортивного бриджа</h2>
+          <p class="text-muted" style="margin-bottom: 24px;">10 модулей для отработки навыков.<br>Выбери модуль в панели внизу.</p>
+
+          <div class="flex flex-col gap-sm">
+            <button class="btn btn-primary btn-block btn-lg" onclick="window.bridgeApp.switchModule('hcp')">
+              Начать тренировку
+            </button>
+          </div>
+        </div>
+
+        <div class="card-area">
+          <div class="card-area-title">Модули</div>
+          <div class="flex flex-col gap-sm mt-sm">
+            <div class="flex flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span>🔢 Подсчёт HCP</span><span class="text-muted">Занятие 1-2</span>
+            </div>
+            <div class="flex flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span>🃏 Открытие</span><span class="text-muted">Занятие 1-9</span>
+            </div>
+            <div class="flex flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span>💬 Ответ</span><span class="text-muted">Занятие 1-6</span>
+            </div>
+            <div class="flex flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span>📢 Торговля</span><span class="text-muted">Занятие 5-7</span>
+            </div>
+            <div class="flex flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span>📋 Конвенции</span><span class="text-muted">Занятие 3,7,8</span>
+            </div>
+            <div class="flex flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span>🎯 Розыгрыш</span><span class="text-muted">Занятие 2,5,6</span>
+            </div>
+            <div class="flex flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span>➡️ Первый ход</span><span class="text-muted">Занятие 10</span>
+            </div>
+            <div class="flex flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span>✅ Тесты</span><span class="text-muted">Все занятия</span>
+            </div>
+            <div class="flex flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span>📖 Справочник</span><span class="text-muted">Все правила</span>
+            </div>
+            <div class="flex flex-between" style="padding: 8px 0;">
+              <span>📊 Прогресс</span><span class="text-muted">Статистика</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Bottom Tab Bar -->
+    <nav class="tab-bar" id="tabBar">
+      <div class="tab-item active" data-module="welcome">
+        <span class="tab-icon">🏠</span>
+        <span class="tab-label">Главная</span>
+      </div>
+      <div class="tab-item" data-module="hcp">
+        <span class="tab-icon">🔢</span>
+        <span class="tab-label">HCP</span>
+      </div>
+      <div class="tab-item" data-module="opening">
+        <span class="tab-icon">🃏</span>
+        <span class="tab-label">Открытие</span>
+      </div>
+      <div class="tab-item" data-module="response">
+        <span class="tab-icon">💬</span>
+        <span class="tab-label">Ответ</span>
+      </div>
+      <div class="tab-item" data-module="bidding">
+        <span class="tab-icon">📢</span>
+        <span class="tab-label">Торговля</span>
+      </div>
+      <div class="tab-item" data-module="conventions">
+        <span class="tab-icon">📋</span>
+        <span class="tab-label">Конвенции</span>
+      </div>
+      <div class="tab-item" data-module="play">
+        <span class="tab-icon">🎯</span>
+        <span class="tab-label">Розыгрыш</span>
+      </div>
+      <div class="tab-item" data-module="lead">
+        <span class="tab-icon">➡️</span>
+        <span class="tab-label">Ход</span>
+      </div>
+      <div class="tab-item" data-module="quiz">
+        <span class="tab-icon">✅</span>
+        <span class="tab-label">Тесты</span>
+      </div>
+      <div class="tab-item" data-module="theory">
+        <span class="tab-icon">📖</span>
+        <span class="tab-label">Теория</span>
+      </div>
+      <div class="tab-item" data-module="progress">
+        <span class="tab-icon">📊</span>
+        <span class="tab-label">Прогресс</span>
+      </div>
+    </nav>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+  <script>
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.warn('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
