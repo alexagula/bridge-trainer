@@ -295,11 +295,10 @@ export default class HCPTrainer {
     const ev = this.evaluation;
     const details = [
       `HCP: ${ev.hcp}`,
-      `Расклад: ${ev.shapeStr} (${ev.distType})`,
+      `Расклад: ♠${ev.suitLengths['♠']}-♥${ev.suitLengths['♥']}-♦${ev.suitLengths['♦']}-♣${ev.suitLengths['♣']} (${ev.distType})`,
       ev.distributionPoints > 0 ? `Очки за расклад: +${ev.distributionPoints}` : null,
       ev.singletons.length > 0 ? `Синглеты: ${ev.singletons.join(', ')}` : null,
       ev.voids.length > 0 ? `Ренонсы: ${ev.voids.join(', ')}` : null,
-      `Длины: ♠${ev.suitLengths['♠']} ♥${ev.suitLengths['♥']} ♦${ev.suitLengths['♦']} ♣${ev.suitLengths['♣']}`,
     ].filter(Boolean);
 
     if (correct) {
