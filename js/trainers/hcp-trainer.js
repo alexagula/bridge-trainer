@@ -42,37 +42,36 @@ export default class HCPTrainer {
     const stats = ProgressTracker.getStats(MODULE_ID);
     this.container.innerHTML = `
       ${renderStats(stats)}
-      <div class="card-area">
-        <div class="flex flex-between" style="align-items: center; margin-bottom: 12px;">
-          <div class="card-area-title" style="margin: 0;">Режим</div>
+      <div class="card-area" style="padding: 10px 12px; margin-bottom: 8px;">
+        <div class="flex flex-between" style="align-items: center;">
           <div class="flex gap-sm">
-            <button class="btn btn-sm ${this.difficulty === 'basic' ? 'btn-primary' : 'btn-outline'}" id="mode-basic">Базовый</button>
-            <button class="btn btn-sm ${this.difficulty === 'advanced' ? 'btn-primary' : 'btn-outline'}" id="mode-advanced">Расширенный</button>
+            <button class="btn btn-sm ${this.difficulty === 'basic' ? 'btn-primary' : 'btn-outline'}" id="mode-basic" style="padding: 6px 12px; min-height: 34px; font-size: 13px;">Базовый</button>
+            <button class="btn btn-sm ${this.difficulty === 'advanced' ? 'btn-primary' : 'btn-outline'}" id="mode-advanced" style="padding: 6px 12px; min-height: 34px; font-size: 13px;">Расширенный</button>
+          </div>
+          <div class="flex gap-sm" style="align-items: center;">
+            <label style="font-size: 13px; color: var(--text-secondary);">
+              <input type="checkbox" id="timer-toggle" ${this.timerMode ? 'checked' : ''}> Таймер
+            </label>
+            <select id="timer-seconds" style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px; font-size: 13px;">
+              <option value="5" ${this.timerSeconds === 5 ? 'selected' : ''}>5с</option>
+              <option value="10" ${this.timerSeconds === 10 ? 'selected' : ''}>10с</option>
+              <option value="15" ${this.timerSeconds === 15 ? 'selected' : ''}>15с</option>
+              <option value="30" ${this.timerSeconds === 30 ? 'selected' : ''}>30с</option>
+            </select>
           </div>
         </div>
-        <div class="flex gap-sm" style="align-items: center;">
-          <label style="font-size: 14px; color: var(--text-secondary);">
-            <input type="checkbox" id="timer-toggle" ${this.timerMode ? 'checked' : ''}> Таймер
-          </label>
-          <select id="timer-seconds" style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 14px;">
-            <option value="5" ${this.timerSeconds === 5 ? 'selected' : ''}>5 сек</option>
-            <option value="10" ${this.timerSeconds === 10 ? 'selected' : ''}>10 сек</option>
-            <option value="15" ${this.timerSeconds === 15 ? 'selected' : ''}>15 сек</option>
-            <option value="30" ${this.timerSeconds === 30 ? 'selected' : ''}>30 сек</option>
-          </select>
-        </div>
       </div>
 
-      <div id="timer-display" class="hidden" style="margin-bottom: 16px;">
-        <div class="timer" id="timer-value">10</div>
+      <div id="timer-display" class="hidden" style="margin-bottom: 8px;">
+        <div class="timer" id="timer-value" style="font-size: 36px;">10</div>
       </div>
 
-      <div class="card-area">
-        <div class="card-area-title">Ваша рука</div>
+      <div class="card-area" style="padding: 10px 12px; margin-bottom: 8px;">
+        <div class="card-area-title" style="margin-bottom: 4px;">Ваша рука</div>
         <div id="hand-area"></div>
       </div>
 
-      <div id="question-area" class="card-area">
+      <div id="question-area" class="card-area" style="padding: 10px 12px; margin-bottom: 8px;">
         <!-- Question renders here -->
       </div>
 
@@ -117,6 +116,9 @@ export default class HCPTrainer {
       const types = [Q_HCP, Q_HCP, Q_DIST, Q_TOTAL, Q_BALANCED, Q_SHAPE];
       this.questionType = types[Math.floor(Math.random() * types.length)];
     }
+
+    // Scroll to top on new problem
+    this.container.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     // Render hand
     document.getElementById('hand-area').innerHTML = renderHand(this.hand);
@@ -321,7 +323,11 @@ export default class HCPTrainer {
 
     // Show next button
     document.getElementById('next-btn').classList.remove('hidden');
-    document.getElementById('next-btn').focus();
+
+    // Auto-scroll to feedback so user sees result + next button
+    setTimeout(() => {
+      feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
   }
 
   startTimer() {
