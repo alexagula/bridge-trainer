@@ -6,6 +6,7 @@ import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand, renderStats } from '../app.js';
 
 const MODULE_ID = 'hcp';
+const DISPLAY_SUIT_ORDER = ['SPADES', 'HEARTS', 'DIAMONDS', 'CLUBS'];
 
 // Question types
 const Q_HCP = 'hcp';              // Count HCP only
@@ -304,16 +305,26 @@ export default class HCPTrainer {
     if (correct) {
       feedback.innerHTML = `
         <div class="feedback feedback-success">✓ Правильно! (${(timeTaken / 1000).toFixed(1)}с)</div>
+        <button class="btn btn-outline btn-block btn-sm" id="explain-btn" style="margin-top: 8px;">Объяснить</button>
+        <div id="explain-area" class="hidden"></div>
       `;
     } else {
       feedback.innerHTML = `
         <div class="feedback feedback-error">✗ Неправильно. Ответ: ${correctAnswer}</div>
-        <div class="explanation">
-          <h3>Разбор</h3>
-          ${details.map(d => `<p>${d}</p>`).join('')}
-          <p class="lesson-ref">Занятие 1-2</p>
-        </div>
+        ${this.buildExplanationHtml(ev, details)}
       `;
+    }
+
+    // Explain button for correct answers
+    const explainBtn = document.getElementById('explain-btn');
+    if (explainBtn) {
+      explainBtn.addEventListener('click', () => {
+        const area = document.getElementById('explain-area');
+        area.classList.toggle('hidden');
+        if (!area.innerHTML) {
+          area.innerHTML = this.buildExplanationHtml(ev, details);
+        }
+      });
     }
 
     // Update stats
@@ -327,6 +338,41 @@ export default class HCPTrainer {
     setTimeout(() => {
       feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, 100);
+  }
+
+  buildExplanationHtml(ev, details) {
+    // Build per-suit HCP breakdown
+    const suitLines = DISPLAY_SUIT_ORDER.map(suitId => {
+      const cards = this.hand.getSuitCards(suitId);
+      const suit = SUITS[suitId];
+      const honors = cards.filter(c => c.hcp > 0);
+      const suitHcp = cards.reduce((s, c) => s + c.hcp, 0);
+
+      let honorsStr;
+      if (honors.length === 0) {
+        honorsStr = '—';
+      } else {
+        honorsStr = honors.map(c => `${c.rank.display}=${c.hcp}`).join(' + ');
+      }
+
+      return `<div style="display: flex; justify-content: space-between; padding: 2px 0;">
+        <span>${suit.symbol} ${honorsStr}</span>
+        <strong>${suitHcp}</strong>
+      </div>`;
+    });
+
+    return `
+      <div class="explanation">
+        <h3>Разбор по мастям</h3>
+        ${suitLines.join('')}
+        <div style="border-top: 1px solid var(--border); margin-top: 6px; padding-top: 6px; display: flex; justify-content: space-between;">
+          <span>Итого HCP</span>
+          <strong>${ev.hcp}</strong>
+        </div>
+        ${details.slice(1).map(d => `<p>${d}</p>`).join('')}
+        <p class="lesson-ref">Занятие 1-2</p>
+      </div>
+    `;
   }
 
   startTimer() {
