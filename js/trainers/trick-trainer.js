@@ -162,7 +162,7 @@ export default class TrickTrainer {
         <div class="flex gap-sm" style="align-items:center;">
           <input type="number" class="input-field" id="answer-input"
                  inputmode="numeric" pattern="[0-9]*" min="0" max="13"
-                 placeholder="0–13" autofocus>
+                 placeholder="0–13" autofocus aria-label="Количество взяток">
           <button class="btn btn-primary" id="check-btn">✓</button>
         </div>
       </div>

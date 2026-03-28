@@ -2,6 +2,7 @@
 
 const STORAGE_KEY = 'bridge-trainer-progress';
 const SM2_KEY = 'bridge-trainer-sm2';
+const USER_KEY = 'bridge-analytics-user';
 
 let _cache = null;
 let _sm2Cache = null;
@@ -289,5 +290,44 @@ export const ProgressTracker = {
    */
   setMaxLesson(n) {
     localStorage.setItem('bridge-onboarding', JSON.stringify({ maxLesson: n }));
+  },
+
+  /**
+   * Get stored user name for analytics export.
+   * @returns {string|null}
+   */
+  getUserName() {
+    try {
+      const data = JSON.parse(localStorage.getItem(USER_KEY));
+      return data?.name || null;
+    } catch { return null; }
+  },
+
+  /**
+   * Save user name for analytics export.
+   * @param {string} name
+   */
+  setUserName(name) {
+    let createdAt = Date.now();
+    try {
+      const existing = JSON.parse(localStorage.getItem(USER_KEY));
+      if (existing?.createdAt) createdAt = existing.createdAt;
+    } catch {}
+    localStorage.setItem(USER_KEY, JSON.stringify({ name, createdAt }));
+  },
+
+  /**
+   * Export all data as a single object for analytics.
+   * @returns {object}
+   */
+  exportAll() {
+    return {
+      userName: this.getUserName(),
+      exportDate: new Date().toISOString(),
+      appVersion: '1.0',
+      maxLesson: this.getMaxLesson(),
+      progress: loadData(),
+      sm2: loadSM2Data(),
+    };
   },
 };

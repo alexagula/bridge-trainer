@@ -81,6 +81,20 @@ class App {
     this.setupTabs();
     this.setupWelcomeButtons();
 
+    // Clickable logo — go home
+    document.getElementById('app-logo')?.addEventListener('click', () => this.switchModule('welcome'));
+
+    // Browser history navigation
+    window.addEventListener('popstate', (e) => {
+      const moduleId = e.state?.module || 'welcome';
+      this.switchModule(moduleId, true); // skipHistory=true to avoid duplicate pushState
+    });
+
+    // Escape to close modules popup
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') this._closeModulesPopup();
+    });
+
     // Show onboarding on first visit (no bridge-onboarding in localStorage)
     if (!localStorage.getItem('bridge-onboarding')) {
       this.showOnboarding();
@@ -161,7 +175,7 @@ class App {
     if (overlay) overlay.remove();
   }
 
-  async switchModule(moduleId) {
+  async switchModule(moduleId, skipHistory = false) {
     if (moduleId === currentModuleId) return;
 
     // Destroy current module
@@ -181,12 +195,23 @@ class App {
       }
     });
 
+    // Update aria-selected on tabs
+    this.tabBar.querySelectorAll('[role="tab"]').forEach(tab => {
+      tab.setAttribute('aria-selected', tab.dataset.module === moduleId ? 'true' : 'false');
+    });
+
     // Update title
     this.moduleTitle.textContent = MODULE_TITLES[moduleId] || '';
+    document.title = MODULE_TITLES[moduleId]
+      ? `${MODULE_TITLES[moduleId]} — Бридж`
+      : 'Тренажёр бриджа';
     currentModuleId = moduleId;
 
     // Welcome screen (static)
     if (moduleId === 'welcome') {
+      if (!skipHistory) {
+        history.replaceState({ module: 'welcome' }, '', window.location.pathname);
+      }
       this.showWelcome();
       return;
     }
@@ -225,6 +250,11 @@ class App {
       } else if (TrainerClass && TrainerClass.init) {
         currentModule = TrainerClass;
         currentModule.init('module-root');
+      }
+
+      // Update browser history after successful load
+      if (!skipHistory) {
+        history.pushState({ module: moduleId }, '', '#' + moduleId);
       }
     } catch (err) {
       console.error('Module load error:', err);
@@ -321,6 +351,9 @@ class App {
     screen.innerHTML = `
       <div style="font-size: 48px; margin-bottom: 16px;">🃏</div>
       <h2 style="margin-bottom: 8px;">Добро пожаловать!</h2>
+      <p class="text-muted" style="margin-bottom: 16px;">Как к вам можно обращаться?</p>
+      <input type="text" id="onboarding-name" class="input-field" placeholder="Имя" maxlength="30"
+        style="width: 200px; margin: 0 auto 24px; display: block; text-align: center; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); font-size: 16px;">
       <p class="text-muted">Выбери свой уровень, чтобы мы показали нужные модули</p>
       <div class="onboarding-cards">
         <div class="onboarding-card" id="onboarding-beginner">
@@ -349,6 +382,12 @@ class App {
     this.content.innerHTML = '';
     this.content.appendChild(screen);
 
+    // Pre-fill name if already saved
+    const savedName = ProgressTracker.getUserName();
+    if (savedName) {
+      screen.querySelector('#onboarding-name').value = savedName;
+    }
+
     // Update module title
     this.moduleTitle.textContent = 'Тренажёр';
 
@@ -358,6 +397,9 @@ class App {
     });
 
     const finishOnboarding = (maxLesson) => {
+      const nameInput = screen.querySelector('#onboarding-name');
+      const name = nameInput?.value?.trim();
+      if (name) ProgressTracker.setUserName(name);
       ProgressTracker.setMaxLesson(maxLesson);
       this.switchModule('welcome');
     };
@@ -431,7 +473,8 @@ export function renderHand(hand, options = {}) {
         const click = clickable ? ' clickable' : '';
         const sel = isSelected ? ' selected' : '';
         const dataAttr = clickable ? ` data-suit="${card.suitId}" data-rank="${card.rankValue}"` : '';
-        html += `<span class="card-chip ${suitClass}${face}${click}${sel}"${dataAttr}>${card.displayShort}</span>`;
+        const tag = clickable ? 'button' : 'span';
+        html += `<${tag} class="card-chip ${suitClass}${face}${click}${sel}"${dataAttr}>${card.displayShort}</${tag}>`;
       }
     }
 
@@ -470,8 +513,12 @@ export function renderStats(stats) {
 // Initialize app
 const app = new App();
 
-// Auto-launch daily mix if there are SM-2 due items (only if onboarding already done)
-if (localStorage.getItem('bridge-onboarding')) {
+// Restore module from URL hash on page load
+const initialHash = window.location.hash.slice(1);
+if (initialHash && MODULE_LOADERS[initialHash]) {
+  app.switchModule(initialHash);
+} else if (localStorage.getItem('bridge-onboarding')) {
+  // Auto-launch daily mix if there are SM-2 due items (only if onboarding already done)
   const dueCount = ProgressTracker.getDueCount();
   if (dueCount > 0) {
     app.switchModule('mix');

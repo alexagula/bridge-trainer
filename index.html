@@ -20,7 +20,7 @@
   <div id="app">
     <!-- Header -->
     <header class="app-header">
-      <h1>♠ Бридж</h1>
+      <h1 id="app-logo" style="cursor: pointer;">♠ Бридж</h1>
       <span class="subtitle" id="module-title">Тренажёр</span>
     </header>
 
@@ -93,40 +93,40 @@
     </main>
 
     <!-- Bottom Tab Bar -->
-    <nav class="tab-bar" id="tabBar">
-      <div class="tab-item active" data-module="welcome">
+    <nav class="tab-bar" id="tabBar" role="tablist">
+      <button class="tab-item active" data-module="welcome" role="tab" aria-selected="true">
         <span class="tab-icon">🏠</span>
         <span class="tab-label">Главная</span>
-      </div>
-      <div class="tab-item" data-module="mix">
+      </button>
+      <button class="tab-item" data-module="mix" role="tab" aria-selected="false">
         <span class="tab-icon">🎯</span>
         <span class="tab-label">Микс</span>
-      </div>
-      <div class="tab-item" id="modules-tab">
+      </button>
+      <button class="tab-item" id="modules-tab" role="tab" aria-selected="false">
         <span class="tab-icon">📚</span>
         <span class="tab-label">Модули</span>
-      </div>
-      <div class="tab-item" data-module="theory">
+      </button>
+      <button class="tab-item" data-module="theory" role="tab" aria-selected="false">
         <span class="tab-icon">📖</span>
         <span class="tab-label">Теория</span>
-      </div>
-      <div class="tab-item" data-module="progress">
+      </button>
+      <button class="tab-item" data-module="progress" role="tab" aria-selected="false">
         <span class="tab-icon">📊</span>
         <span class="tab-label">Прогресс</span>
-      </div>
+      </button>
     </nav>
 
-    <div id="modules-popup" class="modules-popup hidden">
-      <div class="popup-item" data-module="hcp">🔢 Подсчёт HCP</div>
-      <div class="popup-item" data-module="opening">🃏 Открытие</div>
-      <div class="popup-item" data-module="response">💬 Ответ</div>
-      <div class="popup-item" data-module="bidding">📢 Торговля</div>
-      <div class="popup-item" data-module="conventions">📋 Конвенции</div>
-      <div class="popup-item" data-module="play">🎯 Розыгрыш</div>
-      <div class="popup-item" data-module="lead">➡️ Первый ход</div>
-      <div class="popup-item" data-module="quiz">✅ Тесты</div>
-      <div class="popup-item" data-module="tricks">🎯 Подсчёт взяток</div>
-      <div class="popup-item" data-module="defense">🛡️ Защита</div>
+    <div id="modules-popup" class="modules-popup hidden" role="menu">
+      <button class="popup-item" data-module="hcp" role="menuitem">🔢 Подсчёт HCP</button>
+      <button class="popup-item" data-module="opening" role="menuitem">🃏 Открытие</button>
+      <button class="popup-item" data-module="response" role="menuitem">💬 Ответ</button>
+      <button class="popup-item" data-module="bidding" role="menuitem">📢 Торговля</button>
+      <button class="popup-item" data-module="conventions" role="menuitem">📋 Конвенции</button>
+      <button class="popup-item" data-module="play" role="menuitem">🎯 Розыгрыш</button>
+      <button class="popup-item" data-module="lead" role="menuitem">➡️ Первый ход</button>
+      <button class="popup-item" data-module="quiz" role="menuitem">✅ Тесты</button>
+      <button class="popup-item" data-module="tricks" role="menuitem">🎯 Подсчёт взяток</button>
+      <button class="popup-item" data-module="defense" role="menuitem">🛡️ Защита</button>
     </div>
   </div>
 

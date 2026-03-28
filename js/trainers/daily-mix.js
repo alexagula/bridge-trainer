@@ -499,7 +499,7 @@ export default class DailyMix {
             style="width: 80px; font-size: 20px; padding: 10px; border-radius: 8px;
                    border: 2px solid var(--border); background: var(--bg-secondary);
                    color: var(--text-primary); text-align: center;"
-            placeholder="0" />
+            placeholder="0" aria-label="Ваш ответ" />
           <button class="btn btn-primary" id="hcp-submit-btn" style="min-height: 44px; padding: 10px 20px;">
             Ответить
           </button>
@@ -557,7 +557,7 @@ export default class DailyMix {
             style="width:80px; font-size:20px; padding:10px; border-radius:8px;
                    border:2px solid var(--border); background:var(--bg-secondary);
                    color:var(--text-primary); text-align:center;"
-            placeholder="0" />
+            placeholder="0" aria-label="Количество взяток" />
           <button class="btn btn-primary" id="tricks-submit-btn" style="min-height:44px; padding:10px 20px;">
             Ответить
           </button>

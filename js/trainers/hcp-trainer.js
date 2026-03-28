@@ -153,7 +153,7 @@ export default class HCPTrainer {
           <div class="flex gap-sm" style="align-items: center;">
             <input type="number" class="input-field" id="answer-input"
                    inputmode="numeric" pattern="[0-9]*" min="0" max="37"
-                   placeholder="?" autofocus>
+                   placeholder="?" autofocus aria-label="Ваш ответ">
             <button class="btn btn-primary" id="check-btn">✓</button>
           </div>
         `;
@@ -165,7 +165,7 @@ export default class HCPTrainer {
           <div class="flex gap-sm" style="align-items: center;">
             <input type="number" class="input-field" id="answer-input"
                    inputmode="numeric" pattern="[0-9]*" min="0" max="12"
-                   placeholder="?" autofocus>
+                   placeholder="?" autofocus aria-label="Ваш ответ">
             <button class="btn btn-primary" id="check-btn">✓</button>
           </div>
         `;
@@ -177,7 +177,7 @@ export default class HCPTrainer {
           <div class="flex gap-sm" style="align-items: center;">
             <input type="number" class="input-field" id="answer-input"
                    inputmode="numeric" pattern="[0-9]*" min="0" max="40"
-                   placeholder="?" autofocus>
+                   placeholder="?" autofocus aria-label="Ваш ответ">
             <button class="btn btn-primary" id="check-btn">✓</button>
           </div>
         `;
@@ -199,7 +199,7 @@ export default class HCPTrainer {
           <div class="flex gap-sm" style="align-items: center;">
             <input type="text" class="input-field" id="answer-input"
                    inputmode="numeric" pattern="[0-9]*" maxlength="4"
-                   placeholder="????" autofocus>
+                   placeholder="????" autofocus aria-label="Форма руки (например 5332)">
             <button class="btn btn-primary" id="check-btn">✓</button>
           </div>
         `;

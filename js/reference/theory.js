@@ -34,7 +34,8 @@ export default {
 
     this.el.innerHTML = `
       <input type="search" class="theory-search" id="theory-search"
-             placeholder="Поиск: HCP, импас, стейман..." value="${this.filter}">
+             placeholder="Поиск: HCP, импас, стейман..." value="${this.filter}"
+             aria-label="Поиск по теории">
 
       <div class="filter-bar" id="lesson-filter">
         ${lessons.map(l =>

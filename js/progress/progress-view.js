@@ -59,13 +59,23 @@ export function createProgressView(tracker) {
 
       const maxLesson = tracker.getMaxLesson ? tracker.getMaxLesson() : 10;
       html += `
-        <button class="btn btn-outline btn-block btn-sm mt-lg" id="change-level-btn">
+        <button class="btn btn-primary btn-block btn-sm mt-lg" id="export-data-btn">
+          📊 Экспорт данных
+        </button>
+        <button class="btn btn-outline btn-block btn-sm mt-md" id="change-level-btn">
           Сменить уровень (сейчас: занятие ${maxLesson})
         </button>
         <button class="btn btn-outline btn-block btn-sm mt-sm" id="reset-progress-btn">Сбросить прогресс</button>
       `;
 
       el.innerHTML = html;
+
+      // Safely append user name to export button (no innerHTML injection)
+      const exportBtn = document.getElementById('export-data-btn');
+      const userName = tracker.getUserName ? tracker.getUserName() : null;
+      if (exportBtn && userName) {
+        exportBtn.append(` (${userName})`);
+      }
 
       document.getElementById('reset-progress-btn')?.addEventListener('click', () => {
         if (confirm('Сбросить весь прогресс?')) {
@@ -75,6 +85,21 @@ export function createProgressView(tracker) {
             document.querySelector('.tab-item[data-module="progress"]')?.click();
           }, 100);
         }
+      });
+
+      document.getElementById('export-data-btn')?.addEventListener('click', () => {
+        const data = tracker.exportAll();
+        const json = JSON.stringify(data, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const name = (data.userName || 'user').replace(/\s+/g, '_');
+        a.href = url;
+        a.download = `bridge-analytics-${name}-${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
       });
 
       document.getElementById('change-level-btn')?.addEventListener('click', () => {

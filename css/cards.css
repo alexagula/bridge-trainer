@@ -57,6 +57,23 @@
 
 .card-chip.face { font-weight: 800; }
 
+/* Button reset for clickable card chips */
+button.card-chip {
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  /* Remaining styles inherited from .card-chip */
+}
+
+button.card-chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-radius: 4px;
+}
+
 /* Clickable card */
 .card-chip.clickable {
   cursor: pointer;
