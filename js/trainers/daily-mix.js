@@ -102,8 +102,15 @@ export default class DailyMix {
       task = this._generateOpeningTask();
     } else if (moduleType === 'response') {
       task = this._generateResponseTask();
+    } else if (moduleType === 'lead') {
+      task = this._generateLeadTask();
+    } else if (moduleType === 'quiz') {
+      task = this._generateQuizTask();
+    } else if (moduleType === 'hcp') {
+      task = this._generateHcpTask();
     } else {
-      task = this._generateOpeningTask(); // fallback
+      console.warn(`SM-2: unknown module type "${moduleType}", falling back to opening`);
+      task = this._generateOpeningTask();
     }
     task.sm2Id = item.id;
     return task;

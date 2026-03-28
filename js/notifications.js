@@ -2,6 +2,8 @@
 import { ProgressTracker } from './progress/tracker.js';
 
 export class NotificationManager {
+  static _reminderInterval = null;
+
   static isSupported() {
     return 'Notification' in window;
   }
@@ -14,9 +16,10 @@ export class NotificationManager {
 
   static scheduleReminder() {
     if (!this.isSupported() || Notification.permission !== 'granted') return;
+    if (this._reminderInterval) clearInterval(this._reminderInterval);
 
     // Check every hour — fire only when tab is hidden and there are due items
-    setInterval(() => {
+    this._reminderInterval = setInterval(() => {
       if (document.hidden) {
         const dueCount = ProgressTracker.getDueCount();
         if (dueCount > 0) {
@@ -28,5 +31,12 @@ export class NotificationManager {
         }
       }
     }, 60 * 60 * 1000);
+  }
+
+  static stopReminder() {
+    if (this._reminderInterval) {
+      clearInterval(this._reminderInterval);
+      this._reminderInterval = null;
+    }
   }
 }

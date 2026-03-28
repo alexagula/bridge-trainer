@@ -99,15 +99,17 @@ function buildSequenceLabel(cards, tricks) {
 
 export default class TrickTrainer {
   constructor(containerId) {
-    this.container = document.getElementById(containerId);
-    this.deal      = null;
-    this.northHand = null;
-    this.southHand = null;
-    this.trump     = 'NT';     // 'NT' | suit id
-    this.mode      = MODE_DECLARER;
-    this.result    = null;     // { total, bySuit }
-    this.answered  = false;
-    this.startTime = 0;
+    this.container    = document.getElementById(containerId);
+    this.deal         = null;
+    this.northHand    = null;
+    this.southHand    = null;
+    this.trump        = 'NT';     // 'NT' | suit id
+    this.mode         = MODE_DECLARER;
+    this.result       = null;     // { total, bySuit }
+    this.answered     = false;
+    this.startTime    = 0;
+    this._focusTimer  = null;
+    this._scrollTimer = null;
   }
 
   init() {
@@ -116,7 +118,8 @@ export default class TrickTrainer {
   }
 
   destroy() {
-    // No timers to clear
+    if (this._focusTimer) clearTimeout(this._focusTimer);
+    if (this._scrollTimer) clearTimeout(this._scrollTimer);
   }
 
   // ---------------------------------------------------------------------------
@@ -243,7 +246,7 @@ export default class TrickTrainer {
     if (input) {
       input.value = '';
       input.classList.remove('correct', 'wrong');
-      setTimeout(() => input.focus(), 100);
+      this._focusTimer = setTimeout(() => input.focus(), 100);
     }
 
     this.container.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -312,6 +315,7 @@ export default class TrickTrainer {
 
     const timeTaken = Date.now() - this.startTime;
     const input = this.container.querySelector('#answer-input');
+    if (!input) return;
     const rawValue = input.value.trim();
     if (rawValue === '') {
       // Nothing entered — restore answered flag and let user try again
@@ -358,13 +362,14 @@ export default class TrickTrainer {
 
     // Update stats bar
     const statsHtml = renderStats(ProgressTracker.getStats(MODULE_ID));
-    this.container.querySelector('.stats-bar').outerHTML = statsHtml;
+    const statsBar = this.container.querySelector('.stats-bar');
+    if (statsBar) statsBar.outerHTML = statsHtml;
 
     // Show next button
     this.container.querySelector('#next-btn').classList.remove('hidden');
 
     // Auto-scroll to feedback
-    setTimeout(() => {
+    this._scrollTimer = setTimeout(() => {
       feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, 100);
   }

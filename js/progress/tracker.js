@@ -115,7 +115,7 @@ export const ProgressTracker = {
    * Get stats for all modules
    */
   getAllStats() {
-    const modules = ['hcp', 'opening', 'response', 'bidding', 'conventions', 'play', 'lead', 'quiz'];
+    const modules = ['hcp', 'opening', 'response', 'bidding', 'conventions', 'play', 'lead', 'quiz', 'tricks', 'defense'];
     const result = {};
     for (const m of modules) {
       result[m] = this.getStats(m);

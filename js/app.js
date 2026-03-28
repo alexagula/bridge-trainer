@@ -208,11 +208,15 @@ class App {
       if (todayCount) todayCount.textContent = String(ProgressTracker.getTodayCount());
 
       // Show notify button if: API supported, permission not yet requested, user has done tasks today
+      // On iOS Safari (not installed as PWA) Notification API exists but doesn't work — hide button
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+        || window.navigator.standalone === true;
       const notifyBtn = document.getElementById('notify-btn');
       if (notifyBtn) {
         const shouldShow = NotificationManager.isSupported()
           && Notification.permission === 'default'
-          && ProgressTracker.getTodayCount() > 0;
+          && ProgressTracker.getTodayCount() > 0
+          && (isStandalone || !/iPhone|iPad/.test(navigator.userAgent));
         notifyBtn.classList.toggle('hidden', !shouldShow);
       }
     } else {

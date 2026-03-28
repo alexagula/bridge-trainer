@@ -3,6 +3,10 @@ import { DEFENSE_SCENARIOS, getDefenseScenariosByCategory, getDefenseCategories 
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderStats } from '../app.js';
 
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 const MODULE_ID = 'defense';
 
 export default class DefenseTrainer {
@@ -60,7 +64,8 @@ export default class DefenseTrainer {
       this.showScenario();
     });
 
-    document.getElementById('defense-next-btn').addEventListener('click', () => {
+    const nextBtn = this.container.querySelector('#defense-next-btn');
+    if (nextBtn) nextBtn.addEventListener('click', () => {
       this.currentIdx = (this.currentIdx + 1) % this.scenarios.length;
       this.showScenario();
     });
@@ -125,9 +130,9 @@ export default class DefenseTrainer {
 
     content.innerHTML = `
       <div class="card-area">
-        <div class="card-area-title">${s.title}</div>
+        <div class="card-area-title">${escapeHtml(s.title)}</div>
         ${contextLine ? `<p class="defense-context">${contextLine}</p>` : ''}
-        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">${s.description}</p>
+        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">${escapeHtml(s.description)}</p>
         <div class="card-area-title mt-md">Ваша рука:</div>
         ${this._renderHand(s.hand)}
       </div>
@@ -180,6 +185,7 @@ export default class DefenseTrainer {
     const statsBar = this.container.querySelector('.stats-bar');
     if (statsBar) statsBar.outerHTML = statsHtml;
 
-    document.getElementById('defense-next-btn').classList.remove('hidden');
+    const nextBtnEl = this.container.querySelector('#defense-next-btn');
+    if (nextBtnEl) nextBtnEl.classList.remove('hidden');
   }
 }
