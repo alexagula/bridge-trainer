@@ -1,181 +1,248 @@
-# Бриф: Улучшение Daily Mix — баги, session framing, error retry
+# Бриф: Онбординг — адаптация под уровень пользователя
 
 ## Что делаем и зачем
-По результатам экспертного анализа (2026-03-28) выявлены 3 приоритетных улучшения для Daily Mix — основного режима тренировки. Цель: сделать тренировку стабильной, мотивирующей и эффективной для обучения.
+Пользователи приходят с разным уровнем: кто-то прошёл 2 занятия, кто-то все 10, кто-то забыл и хочет обновить. Сейчас все 12 модулей доступны сразу — перегрузка для новичка, неудобно для середнячка. Добавляем один экран выбора при первом входе, который адаптирует приложение.
 
 ---
 
-## Таск 1: Баг-фиксы Daily Mix
+## Таск 1: Экран онбординга
 
-### 1a. Добавить tricks/defense в moduleTypes
+### Когда показывать
+- При первом входе (нет `bridge-onboarding` в localStorage)
+- По нажатию кнопки «Сменить уровень» (из прогресса или welcome)
 
-**Файл:** `js/trainers/daily-mix.js`, строка 126
-**Проблема:** `moduleTypes = ['opening', 'response', 'hcp', 'quiz', 'lead']` — не включает модули `tricks` и `defense`. Daily Mix никогда не генерирует задачи из этих модулей.
-**Фикс:** Добавить `'tricks'` и `'defense'` в массив `moduleTypes`.
+### Что показывать
+Экран с 3 карточками — рендерится динамически в `js/app.js` (НЕ в index.html):
 
-Также добавить обработку в `_generateTaskOfType()` (строка 167):
+**Карточка 1: «Начинаю курс» (занятия 1-3)**
+- Иконка: 🌱
+- Подпись: «Прошёл 1-3 занятия»
+- Результат: `maxLesson = 3`
+
+**Карточка 2: «В процессе» (выбрать номер занятия)**
+- Иконка: 📚
+- Подпись: «Укажи последнее занятие»
+- При клике показать слайдер 1-10 с подтверждением
+- Результат: `maxLesson = N` (выбранное число)
+
+**Карточка 3: «Повторяю всё»**
+- Иконка: 🔄
+- Подпись: «Прошёл все занятия, хочу освежить»
+- Результат: `maxLesson = 10`
+
+### Хранение
 ```javascript
-case 'tricks':   return this._generateTricksTask();
-case 'defense':  return this._generateDefenseTask();
+localStorage.setItem('bridge-onboarding', JSON.stringify({ maxLesson: N }));
 ```
 
-Новые методы:
+Хелперы в `js/progress/tracker.js`:
 ```javascript
-_generateTricksTask() {
-  const deal = Deal.random();
-  const hand = deal.getHand('S');
-  return { type: 'tricks', deal, hand, sm2Id: null };
-}
-
-_generateDefenseTask() {
-  const scenarios = getDefenseScenariosByCategory('all');
-  const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
-  return { type: 'defense', scenario, sm2Id: null };
-}
-```
-
-Для tricks задачи — нужно импортировать countTopTricksForHand из trick-trainer.js (или вынести в core).
-Для defense задачи — нужно импортировать getDefenseScenariosByCategory из play/defense-scenarios.js.
-
-Также добавить рендер и проверку ответов для этих типов (showTask, _renderTricksTask, _renderDefenseTask, _checkTricksAnswer, _checkDefenseAnswer). Следовать паттерну существующих задач.
-
-Также добавить в `_attachTaskHandlers`, `typeLabels` (строка 348), и `moduleNames` (строка 794).
-
-### 1b. Добавить tricks/defense в SM-2 fallback
-
-**Файл:** `js/trainers/daily-mix.js`, строка 86-117
-**Проблема:** `_sm2ItemToTask()` не обрабатывает moduleType `tricks` и `defense` — fallback на opening.
-**Фикс:** Добавить:
-```javascript
-} else if (moduleType === 'tricks') {
-  task = this._generateTricksTask();
-} else if (moduleType === 'defense') {
-  task = this._generateDefenseTask();
+getMaxLesson() {
+  try {
+    const data = JSON.parse(localStorage.getItem('bridge-onboarding'));
+    return data?.maxLesson || 10;
+  } catch { return 10; }
+},
+setMaxLesson(n) {
+  localStorage.setItem('bridge-onboarding', JSON.stringify({ maxLesson: n }));
 }
 ```
 
-### 1c. Убрать inline onclick на результатах
+### Логика в app.js
+В конструкторе App — проверить наличие `bridge-onboarding` в localStorage:
+- Если нет → показать экран онбординга вместо welcome
+- Если есть → обычная логика (welcome или auto-launch mix)
 
-**Файл:** `js/trainers/daily-mix.js`, строка 828
-**Проблема:** `onclick="window.bridgeApp.switchModule('welcome')"` — inline onclick, нарушает CSP. `window.bridgeApp` удалён.
-**Фикс:** Убрать onclick, добавить id `mix-home-btn`:
+Метод `showOnboarding()` рендерит экран. После выбора — сохранить в localStorage, показать welcome.
+
+---
+
+## Таск 2: Фильтрация модулей по уровню
+
+### Маппинг занятие → модули
+
+```javascript
+const LESSON_MODULES = {
+  1:  ['hcp'],
+  2:  ['hcp'],
+  3:  ['opening', 'response', 'conventions'],
+  4:  ['response'],
+  5:  ['play', 'tricks', 'bidding'],
+  6:  ['play', 'tricks'],
+  7:  ['conventions', 'bidding'],
+  8:  ['opening', 'response', 'conventions'],
+  9:  ['opening', 'response', 'bidding'],
+  10: ['lead', 'defense'],
+};
+```
+
+Функция `getUnlockedModules(maxLesson)`:
+```javascript
+function getUnlockedModules(maxLesson) {
+  const modules = new Set(['quiz', 'theory']); // всегда доступны
+  for (let i = 1; i <= maxLesson; i++) {
+    for (const m of (LESSON_MODULES[i] || [])) modules.add(m);
+  }
+  return modules;
+}
+```
+
+Определить этот маппинг в `js/core/constants.js` или прямо в `app.js`.
+
+### Где фильтровать
+
+**1. Popup модулей (index.html #modules-popup)**
+В `_toggleModulesPopup()` — скрыть `.popup-item` для модулей, не входящих в `getUnlockedModules()`. Не удалять из DOM — скрывать через `display: none`.
+
+Каждый `.popup-item` уже имеет `data-module`. Фильтрация:
+```javascript
+const unlocked = getUnlockedModules(ProgressTracker.getMaxLesson());
+popup.querySelectorAll('.popup-item').forEach(item => {
+  const isUnlocked = unlocked.has(item.dataset.module);
+  item.style.display = isUnlocked ? '' : 'none';
+});
+```
+
+**2. Список модулей на welcome-экране**
+В `showWelcome()` — скрыть строки модулей, которые не разблокированы.
+Для этого нужно добавить `data-module` атрибуты на строки модулей в index.html:
+
 ```html
-<button class="btn btn-outline btn-block" id="mix-home-btn">На главную</button>
+<div class="flex flex-between module-row" data-module="hcp" style="...">
 ```
-После innerHTML добавить addEventListener. Но! Модуль не имеет доступа к app.switchModule. Вместо этого: использовать навигацию через click на tab-bar:
+
+Затем в `showWelcome()`:
 ```javascript
-document.getElementById('mix-home-btn')?.addEventListener('click', () => {
-  document.querySelector('.tab-item[data-module="welcome"]')?.click();
+const unlocked = getUnlockedModules(ProgressTracker.getMaxLesson());
+welcome.querySelectorAll('.module-row').forEach(row => {
+  row.style.display = unlocked.has(row.dataset.module) ? '' : 'none';
+});
+```
+
+**3. Daily Mix — фильтр типов задач**
+В `js/trainers/daily-mix.js`, метод `_generateFillTasks()` строка 136:
+
+Заменить хардкод на:
+```javascript
+import { ProgressTracker } from '../progress/tracker.js';
+// ... в _generateFillTasks:
+const allModuleTypes = ['opening', 'response', 'hcp', 'quiz', 'lead', 'tricks', 'defense'];
+const maxLesson = ProgressTracker.getMaxLesson();
+const unlocked = getUnlockedModules(maxLesson);
+const moduleTypes = allModuleTypes.filter(m => unlocked.has(m));
+```
+
+Нужно экспортировать `getUnlockedModules` из того файла, где определён маппинг, и импортировать в daily-mix.js.
+
+**4. Кнопка «Начать тренировку»**
+В `setupWelcomeButtons()`: вместо всегда переключать на 'hcp', переключать на первый доступный тренировочный модуль:
+```javascript
+document.getElementById('start-training-btn')?.addEventListener('click', () => {
+  const unlocked = getUnlockedModules(ProgressTracker.getMaxLesson());
+  const first = ['hcp', 'opening', 'response'][Symbol.iterator]();
+  for (const m of first) { if (unlocked.has(m)) { this.switchModule(m); return; } }
+  this.switchModule('hcp');
 });
 ```
 
 ---
 
-## Таск 2: Session Framing — прогресс-бар и финальный экран
+## Таск 3: Кнопка «Сменить уровень»
 
-### 2a. Визуальный прогресс-бар (точки)
-
-**Файл:** `js/trainers/daily-mix.js` (render), `css/modules.css`
-
-Добавить визуальный прогресс-бар из 10 точек вместо текстового "1/10". Каждая точка показывает статус:
-- Серая — ещё не решена
-- Зелёная — правильно
-- Красная — неправильно
-- Пульсирующая — текущая задача
-
-HTML (вставить вместо stats-bar или над ним):
+### В progress-view.js
+Добавить кнопку над «Сбросить прогресс»:
 ```html
-<div class="session-progress" id="session-progress">
-  <!-- 10 dots generated dynamically -->
-</div>
+<button class="btn btn-outline btn-block btn-sm mt-lg" id="change-level-btn">
+  Сменить уровень (сейчас: занятие N)
+</button>
 ```
 
-CSS (в modules.css):
+Обработчик:
+```javascript
+document.getElementById('change-level-btn')?.addEventListener('click', () => {
+  localStorage.removeItem('bridge-onboarding');
+  document.querySelector('.tab-item[data-module="welcome"]')?.click();
+});
+```
+
+При удалении `bridge-onboarding` — app.js покажет экран онбординга.
+
+### На welcome-экране
+Показать текущий уровень маленьким текстом + ссылку «Изменить»:
+```html
+<p class="text-muted" style="font-size: 12px; margin-top: 8px;">
+  Уровень: занятие N из 10 · <a href="#" id="change-level-link">Изменить</a>
+</p>
+```
+
+### Также: progress-view.js — inline onclick fix
+В текущем коде (строка 61-65) кнопка «Сбросить прогресс» использует inline onclick с `window.bridgeApp`. Это нарушение CSP. Заменить на addEventListener + навигация через tab-bar click (как в daily-mix).
+
+---
+
+## CSS для онбординга
+
+Добавить в `css/modules.css`:
+
 ```css
-.session-progress {
+/* Onboarding */
+.onboarding-screen {
+  padding: 32px 16px;
+  text-align: center;
+}
+.onboarding-cards {
   display: flex;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 16px;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
 }
-.progress-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--border);
-  transition: background 0.3s, transform 0.3s;
+.onboarding-card {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.1s;
 }
-.progress-dot.current {
-  background: var(--accent);
-  transform: scale(1.3);
-  animation: pulse 1.5s infinite;
+.onboarding-card:active {
+  transform: scale(0.98);
 }
-.progress-dot.correct { background: var(--success); }
-.progress-dot.wrong { background: var(--error); }
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+.onboarding-card.selected,
+.onboarding-card:hover {
+  border-color: var(--accent);
+}
+.onboarding-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+.onboarding-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.onboarding-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.lesson-slider {
+  margin: 16px 0;
+}
+.lesson-slider input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.lesson-slider-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
 }
 ```
-
-JS: Метод `_renderProgressDots()` генерирует HTML. Массив `this.taskResults = []` (заполняется при ответе: 'correct' | 'wrong'). Вызывается в `render()` и обновляется в `checkAnswer()`.
-
-### 2b. Улучшенный финальный экран
-
-В `showResults()` добавить:
-- Визуальную полоску точек (те же 10, все раскрашены)
-- Среднее время на задачу
-- Кнопку "Тренировать слабые" если accuracy < 70%
 
 ---
 
-## Таск 3: Intra-session Error Retry
-
-**Файл:** `js/trainers/daily-mix.js`
-
-### Механика
-Когда пользователь ошибается, через 2-3 задачи показать **аналогичную** задачу того же типа (не ту же самую — новую сгенерированную).
-
-### Реализация
-1. В `checkAnswer()`, если ответ неправильный — добавить retry-задачу в сессию:
-```javascript
-if (!correct) {
-  this._scheduleRetry(task);
-}
-```
-
-2. Метод `_scheduleRetry(task)`:
-```javascript
-_scheduleRetry(task) {
-  // Insert a new task of same type 2-3 positions ahead
-  const retryTask = this._generateTaskOfType(task.type);
-  retryTask.isRetry = true;
-
-  const insertAt = Math.min(
-    this.taskIndex + 2 + Math.floor(Math.random() * 2), // 2-3 positions ahead
-    this.session.length  // but not beyond session end
-  );
-  this.session.splice(insertAt, 0, retryTask);
-  // SESSION_SIZE stays the same — retry tasks are bonus
-  // Update progress dots to show new total
-}
-```
-
-3. Retry-задачи не увеличивают SESSION_SIZE (сессия может стать 11-13 задач).
-4. В прогресс-баре retry-задачи показываются как дополнительные точки (меньшего размера или другого стиля).
-5. Badge `🔁` на retry-задачах чтобы пользователь понимал почему тема повторяется.
-
-### Ограничения
-- Максимум 3 retry-задачи за сессию (чтобы сессия не растягивалась бесконечно)
-- Retry не генерирует retry (нет рекурсии)
-
----
-
-## Общие ограничения
+## Ограничения
 - Vanilla JS, ES modules, без фреймворков
-- Не ломать PWA (service worker, offline, manifest)
-- Не ломать lazy-loading модулей
-- Не ломать CSP (никаких inline onclick/scripts)
-- Терминология на русском (Т/К/Д/В, ♠♥♦♣)
-- Минимальные изменения в файлах за пределами daily-mix.js и css/modules.css
+- Не ломать PWA, CSP, lazy-loading
+- Никаких inline onclick
+- Минимальный набор файлов: app.js, daily-mix.js, progress-view.js, index.html, modules.css, tracker.js (или constants.js для маппинга)
+- Экран онбординга рендерится из JS — не захардкожен в index.html

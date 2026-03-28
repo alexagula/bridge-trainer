@@ -271,4 +271,23 @@ export const ProgressTracker = {
     }
     return count;
   },
+
+  /**
+   * Get max lesson number from onboarding data.
+   * @returns {number} 1-10, defaults to 10
+   */
+  getMaxLesson() {
+    try {
+      const data = JSON.parse(localStorage.getItem('bridge-onboarding'));
+      return data?.maxLesson || 10;
+    } catch { return 10; }
+  },
+
+  /**
+   * Save max lesson to onboarding data.
+   * @param {number} n - lesson number 1-10
+   */
+  setMaxLesson(n) {
+    localStorage.setItem('bridge-onboarding', JSON.stringify({ maxLesson: n }));
+  },
 };

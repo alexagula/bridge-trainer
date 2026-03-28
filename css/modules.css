@@ -301,6 +301,58 @@
   z-index: 199;
 }
 
+/* Onboarding */
+.onboarding-screen {
+  padding: 32px 16px;
+  text-align: center;
+}
+.onboarding-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+.onboarding-card {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.1s;
+}
+.onboarding-card:active {
+  transform: scale(0.98);
+}
+.onboarding-card.selected,
+.onboarding-card:hover {
+  border-color: var(--accent);
+}
+.onboarding-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+.onboarding-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.onboarding-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.lesson-slider {
+  margin: 16px 0;
+}
+.lesson-slider input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.lesson-slider-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
 /* Variable reward items (daily mix results) */
 .reward-item {
   padding: 12px 16px;

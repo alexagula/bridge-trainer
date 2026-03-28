@@ -10,7 +10,7 @@ import { recommendLead } from '../play/lead.js';
 import { QUIZZES } from '../../data/quizzes.js';
 import { BRIDGE_FACTS } from '../../data/bridge-facts.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderHand } from '../app.js';
+import { renderHand, getUnlockedModules } from '../app.js';
 import {
   pickRelevantBids, pickBinaryBids,
   ALL_OPENING_BIDS, ALL_RESPONSE_BIDS, BID_DISPLAY
@@ -132,8 +132,13 @@ export default class DailyMix {
    */
   _generateFillTasks(count, coveredModules) {
     const allStats = ProgressTracker.getAllStats();
-    // Module types available in the mix
-    const moduleTypes = ['opening', 'response', 'hcp', 'quiz', 'lead', 'tricks', 'defense'];
+    // Module types filtered by current user level
+    const allModuleTypes = ['opening', 'response', 'hcp', 'quiz', 'lead', 'tricks', 'defense'];
+    const maxLesson = ProgressTracker.getMaxLesson();
+    const unlocked = getUnlockedModules(maxLesson);
+    // Fallback to quiz (always unlocked) if nothing else is available
+    const moduleTypes = allModuleTypes.filter(m => unlocked.has(m));
+    if (moduleTypes.length === 0) moduleTypes.push('quiz');
 
     // Sort by accuracy ascending (weakest first)
     const sorted = moduleTypes.slice().sort((a, b) => {

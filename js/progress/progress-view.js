@@ -57,15 +57,30 @@ export function createProgressView(tracker) {
         `;
       }
 
+      const maxLesson = tracker.getMaxLesson ? tracker.getMaxLesson() : 10;
       html += `
-        <button class="btn btn-outline btn-block btn-sm mt-lg" onclick="if(confirm('Сбросить весь прогресс?')){
-          localStorage.removeItem('bridge-trainer-progress');
-          window.bridgeApp.switchModule('welcome');
-          window.bridgeApp.switchModule('progress');
-        }">Сбросить прогресс</button>
+        <button class="btn btn-outline btn-block btn-sm mt-lg" id="change-level-btn">
+          Сменить уровень (сейчас: занятие ${maxLesson})
+        </button>
+        <button class="btn btn-outline btn-block btn-sm mt-sm" id="reset-progress-btn">Сбросить прогресс</button>
       `;
 
       el.innerHTML = html;
+
+      document.getElementById('reset-progress-btn')?.addEventListener('click', () => {
+        if (confirm('Сбросить весь прогресс?')) {
+          tracker.reset();
+          document.querySelector('.tab-item[data-module="welcome"]')?.click();
+          setTimeout(() => {
+            document.querySelector('.tab-item[data-module="progress"]')?.click();
+          }, 100);
+        }
+      });
+
+      document.getElementById('change-level-btn')?.addEventListener('click', () => {
+        localStorage.removeItem('bridge-onboarding');
+        document.querySelector('.tab-item[data-module="welcome"]')?.click();
+      });
     },
     destroy() {},
   };

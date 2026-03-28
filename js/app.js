@@ -4,6 +4,34 @@ import { ProgressTracker } from './progress/tracker.js';
 import { createProgressView } from './progress/progress-view.js';
 import { NotificationManager } from './notifications.js';
 
+// Lesson → modules mapping: which modules become available after each lesson
+const LESSON_MODULES = {
+  1:  ['hcp'],
+  2:  ['hcp'],
+  3:  ['opening', 'response', 'conventions'],
+  4:  ['response'],
+  5:  ['play', 'tricks', 'bidding'],
+  6:  ['play', 'tricks'],
+  7:  ['conventions', 'bidding'],
+  8:  ['opening', 'response', 'conventions'],
+  9:  ['opening', 'response', 'bidding'],
+  10: ['lead', 'defense'],
+};
+
+/**
+ * Get the set of unlocked module IDs for a given max lesson.
+ * quiz and theory are always available.
+ * @param {number} maxLesson
+ * @returns {Set<string>}
+ */
+export function getUnlockedModules(maxLesson) {
+  const modules = new Set(['quiz', 'theory']);
+  for (let i = 1; i <= maxLesson; i++) {
+    for (const m of (LESSON_MODULES[i] || [])) modules.add(m);
+  }
+  return modules;
+}
+
 // Module registry — lazy-loaded
 const MODULE_LOADERS = {
   welcome:     null, // static HTML, no JS module
@@ -52,11 +80,23 @@ class App {
     this.moduleTitle = document.getElementById('module-title');
     this.setupTabs();
     this.setupWelcomeButtons();
+
+    // Show onboarding on first visit (no bridge-onboarding in localStorage)
+    if (!localStorage.getItem('bridge-onboarding')) {
+      this.showOnboarding();
+    }
   }
 
   setupWelcomeButtons() {
     document.getElementById('notify-btn')?.addEventListener('click', () => this.enableNotifications());
-    document.getElementById('start-training-btn')?.addEventListener('click', () => this.switchModule('hcp'));
+    document.getElementById('start-training-btn')?.addEventListener('click', () => {
+      const unlocked = getUnlockedModules(ProgressTracker.getMaxLesson());
+      const candidates = ['hcp', 'opening', 'response'];
+      for (const m of candidates) {
+        if (unlocked.has(m)) { this.switchModule(m); return; }
+      }
+      this.switchModule('hcp');
+    });
     document.getElementById('daily-mix-btn')?.addEventListener('click', () => this.switchModule('mix'));
   }
 
@@ -95,6 +135,13 @@ class App {
     if (!popup) return;
 
     if (popup.classList.contains('hidden')) {
+      // Filter modules by current level before showing
+      const unlocked = getUnlockedModules(ProgressTracker.getMaxLesson());
+      popup.querySelectorAll('.popup-item').forEach(item => {
+        const isUnlocked = unlocked.has(item.dataset.module);
+        item.style.display = isUnlocked ? '' : 'none';
+      });
+
       popup.classList.remove('hidden');
       // Add overlay to close popup on outside click
       const overlay = document.createElement('div');
@@ -230,6 +277,32 @@ class App {
           && (isStandalone || !/iPhone|iPad/.test(navigator.userAgent));
         notifyBtn.classList.toggle('hidden', !shouldShow);
       }
+
+      // Filter module rows by current level
+      const maxLesson = ProgressTracker.getMaxLesson();
+      const unlocked = getUnlockedModules(maxLesson);
+      welcome.querySelectorAll('.module-row').forEach(row => {
+        row.style.display = unlocked.has(row.dataset.module) ? '' : 'none';
+      });
+
+      // Show level info + change link (remove old one if re-rendering)
+      const existingLevelInfo = welcome.querySelector('#welcome-level-info');
+      if (existingLevelInfo) existingLevelInfo.remove();
+
+      const levelInfo = document.createElement('p');
+      levelInfo.id = 'welcome-level-info';
+      levelInfo.className = 'text-muted';
+      levelInfo.style.cssText = 'font-size: 12px; margin-top: 8px; text-align: center;';
+      levelInfo.innerHTML = `Уровень: занятие ${maxLesson} из 10 · <a href="#" id="change-level-link">Изменить</a>`;
+
+      const cardArea = welcome.querySelector('.card-area.text-center');
+      if (cardArea) cardArea.appendChild(levelInfo);
+
+      welcome.querySelector('#change-level-link')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('bridge-onboarding');
+        this.showOnboarding();
+      });
     } else {
       this.content.innerHTML = `
         <div class="module-container text-center" style="padding: 48px 16px;">
@@ -239,6 +312,84 @@ class App {
         </div>
       `;
     }
+  }
+
+  showOnboarding() {
+    // Render onboarding screen into content area
+    const screen = document.createElement('div');
+    screen.className = 'onboarding-screen module-container';
+    screen.innerHTML = `
+      <div style="font-size: 48px; margin-bottom: 16px;">🃏</div>
+      <h2 style="margin-bottom: 8px;">Добро пожаловать!</h2>
+      <p class="text-muted">Выбери свой уровень, чтобы мы показали нужные модули</p>
+      <div class="onboarding-cards">
+        <div class="onboarding-card" id="onboarding-beginner">
+          <div class="onboarding-icon">🌱</div>
+          <div class="onboarding-title">Начинаю курс</div>
+          <div class="onboarding-desc">Прошёл 1-3 занятия</div>
+        </div>
+        <div class="onboarding-card" id="onboarding-inprogress">
+          <div class="onboarding-icon">📚</div>
+          <div class="onboarding-title">В процессе</div>
+          <div class="onboarding-desc">Укажи последнее занятие</div>
+          <div class="lesson-slider" id="lesson-slider-wrap" style="display: none;">
+            <div class="lesson-slider-value" id="lesson-slider-val">5</div>
+            <input type="range" id="lesson-slider" min="1" max="10" value="5">
+            <button class="btn btn-primary btn-sm mt-sm" id="lesson-slider-confirm">Подтвердить</button>
+          </div>
+        </div>
+        <div class="onboarding-card" id="onboarding-all">
+          <div class="onboarding-icon">🔄</div>
+          <div class="onboarding-title">Повторяю всё</div>
+          <div class="onboarding-desc">Прошёл все занятия, хочу освежить</div>
+        </div>
+      </div>
+    `;
+
+    this.content.innerHTML = '';
+    this.content.appendChild(screen);
+
+    // Update module title
+    this.moduleTitle.textContent = 'Тренажёр';
+
+    // Mark welcome tab as active
+    this.tabBar.querySelectorAll('.tab-item').forEach(t => {
+      t.classList.toggle('active', t.dataset.module === 'welcome');
+    });
+
+    const finishOnboarding = (maxLesson) => {
+      ProgressTracker.setMaxLesson(maxLesson);
+      this.switchModule('welcome');
+    };
+
+    screen.querySelector('#onboarding-beginner').addEventListener('click', () => {
+      finishOnboarding(3);
+    });
+
+    const inProgressCard = screen.querySelector('#onboarding-inprogress');
+    const sliderWrap = screen.querySelector('#lesson-slider-wrap');
+    const sliderEl = screen.querySelector('#lesson-slider');
+    const sliderVal = screen.querySelector('#lesson-slider-val');
+
+    inProgressCard.addEventListener('click', (e) => {
+      // Only toggle slider if not clicking confirm button or range input
+      if (e.target.id === 'lesson-slider-confirm' || e.target.id === 'lesson-slider') return;
+      const isVisible = sliderWrap.style.display !== 'none';
+      sliderWrap.style.display = isVisible ? 'none' : '';
+    });
+
+    sliderEl.addEventListener('input', () => {
+      sliderVal.textContent = sliderEl.value;
+    });
+
+    screen.querySelector('#lesson-slider-confirm').addEventListener('click', (e) => {
+      e.stopPropagation();
+      finishOnboarding(parseInt(sliderEl.value, 10));
+    });
+
+    screen.querySelector('#onboarding-all').addEventListener('click', () => {
+      finishOnboarding(10);
+    });
   }
 
   async enableNotifications() {
@@ -319,8 +470,10 @@ export function renderStats(stats) {
 // Initialize app
 const app = new App();
 
-// Auto-launch daily mix if there are SM-2 due items
-const dueCount = ProgressTracker.getDueCount();
-if (dueCount > 0) {
-  app.switchModule('mix');
+// Auto-launch daily mix if there are SM-2 due items (only if onboarding already done)
+if (localStorage.getItem('bridge-onboarding')) {
+  const dueCount = ProgressTracker.getDueCount();
+  if (dueCount > 0) {
+    app.switchModule('mix');
+  }
 }
