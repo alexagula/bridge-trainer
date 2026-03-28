@@ -4,7 +4,7 @@ import { evaluateHand } from '../core/evaluator.js';
 import { dealForOpening } from '../core/dealer.js';
 import { determineOpening } from '../bidding/opening.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderHand, renderStats } from '../app.js';
+import { renderHand, renderStats } from '../ui/render.js';
 import { pickRelevantBids, ALL_OPENING_BIDS, BID_DISPLAY } from '../utils/bid-filter.js';
 import { bidToRuleId } from '../utils/bid-utils.js';
 

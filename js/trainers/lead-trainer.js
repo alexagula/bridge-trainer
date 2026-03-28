@@ -4,29 +4,20 @@ import { SUITS } from '../core/constants.js';
 import { evaluateHand } from '../core/evaluator.js';
 import { recommendLead } from '../play/lead.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderHand, renderStats } from '../app.js';
+import { renderHand, renderStats } from '../ui/render.js';
+import { BaseTrainer } from './base-trainer.js';
 
-const MODULE_ID = 'lead';
-
-export default class LeadTrainer {
+export default class LeadTrainer extends BaseTrainer {
   constructor(containerId) {
-    this.container = document.getElementById(containerId);
+    super(containerId, 'lead');
     this.deal = null;
     this.hand = null;
     this.recommended = null;
-    this.answered = false;
     this.contractSuit = null;
   }
 
-  init() {
-    this.render();
-    this.newProblem();
-  }
-
-  destroy() {}
-
   render() {
-    const stats = ProgressTracker.getStats(MODULE_ID);
+    const stats = ProgressTracker.getStats(this.moduleId);
     this.container.innerHTML = `
       ${renderStats(stats)}
       <div id="context-area" class="card-area"></div>
@@ -88,7 +79,7 @@ export default class LeadTrainer {
     });
 
     document.getElementById('feedback-area').innerHTML = '';
-    document.getElementById('next-btn').classList.add('hidden');
+    this.hideNextBtn();
   }
 
   checkAnswer(suitId, rankValue) {
@@ -101,7 +92,7 @@ export default class LeadTrainer {
     // Partial credit: correct suit
     const correctSuit = rec.card && suitId === rec.card.suitId;
 
-    ProgressTracker.record(MODULE_ID, { correct, time: 0 });
+    this.recordResult(correct, 0);
 
     // SM-2 tracking
     const contractKey = this.contractSuit ? this.contractSuit.toLowerCase() : 'nt';
@@ -137,8 +128,7 @@ export default class LeadTrainer {
       `;
     }
 
-    const statsHtml = renderStats(ProgressTracker.getStats(MODULE_ID));
-    this.container.querySelector('.stats-bar').outerHTML = statsHtml;
-    document.getElementById('next-btn').classList.remove('hidden');
+    this.updateStats();
+    this.showNextBtn();
   }
 }

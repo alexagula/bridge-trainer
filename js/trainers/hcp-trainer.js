@@ -3,7 +3,7 @@ import { Deal } from '../core/card.js';
 import { SUITS, SUIT_ORDER } from '../core/constants.js';
 import { evaluateHand } from '../core/evaluator.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderHand, renderStats } from '../app.js';
+import { renderHand, renderStats } from '../ui/render.js';
 
 const MODULE_ID = 'hcp';
 const DISPLAY_SUIT_ORDER = ['SPADES', 'HEARTS', 'DIAMONDS', 'CLUBS'];

@@ -1,17 +1,15 @@
 // Bridge Trainer — True/False Quiz Trainer (Module 8)
 import { QUIZZES } from '../../data/quizzes.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderStats } from '../app.js';
+import { renderStats } from '../ui/render.js';
+import { BaseTrainer } from './base-trainer.js';
 
-const MODULE_ID = 'quiz';
-
-export default class QuizTrainer {
+export default class QuizTrainer extends BaseTrainer {
   constructor(containerId) {
-    this.container = document.getElementById(containerId);
+    super(containerId, 'quiz');
     this.lessonFilter = 0; // 0 = all
     this.quizzes = [];
     this.currentIdx = 0;
-    this.answered = false;
   }
 
   init() {
@@ -19,8 +17,6 @@ export default class QuizTrainer {
     this.render();
     this.showQuestion();
   }
-
-  destroy() {}
 
   filterQuizzes() {
     if (this.lessonFilter === 0) {
@@ -37,7 +33,7 @@ export default class QuizTrainer {
   }
 
   render() {
-    const stats = ProgressTracker.getStats(MODULE_ID);
+    const stats = ProgressTracker.getStats(this.moduleId);
     const lessons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     this.container.innerHTML = `
@@ -71,7 +67,7 @@ export default class QuizTrainer {
   showQuestion() {
     this.answered = false;
     document.getElementById('feedback-area').innerHTML = '';
-    document.getElementById('next-btn').classList.add('hidden');
+    this.hideNextBtn();
 
     if (this.quizzes.length === 0) {
       document.getElementById('quiz-content').innerHTML =
@@ -101,7 +97,7 @@ export default class QuizTrainer {
     this.answered = true;
     const correct = userAnswer === quiz.answer;
 
-    ProgressTracker.record(MODULE_ID, { correct, time: 0 });
+    this.recordResult(correct, 0);
 
     // SM-2 tracking
     const situationId = 'rule:quiz-L' + quiz.lesson;
@@ -127,8 +123,7 @@ export default class QuizTrainer {
       </div>
     `;
 
-    const statsHtml = renderStats(ProgressTracker.getStats(MODULE_ID));
-    this.container.querySelector('.stats-bar').outerHTML = statsHtml;
-    document.getElementById('next-btn').classList.remove('hidden');
+    this.updateStats();
+    this.showNextBtn();
   }
 }

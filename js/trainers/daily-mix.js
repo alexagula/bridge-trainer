@@ -1,33 +1,15 @@
 // Bridge Trainer — Daily Mix Trainer
 // Interleaved session of 10 tasks from different modules with SM-2 integration
-import { Deal } from '../core/card.js';
-import { SUITS, SUIT_ORDER } from '../core/constants.js';
-import { evaluateHand } from '../core/evaluator.js';
-import { dealForOpening, dealForResponse, dealForLead, dealForHCP } from '../core/dealer.js';
-import { determineOpening } from '../bidding/opening.js';
-import { determineResponse } from '../bidding/response.js';
-import { recommendLead } from '../play/lead.js';
-import { QUIZZES } from '../../data/quizzes.js';
-import { BRIDGE_FACTS } from '../../data/bridge-facts.js';
+import { SUITS } from '../core/constants.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderHand, getUnlockedModules } from '../app.js';
-import {
-  pickRelevantBids, pickBinaryBids,
-  ALL_OPENING_BIDS, ALL_RESPONSE_BIDS, BID_DISPLAY
-} from '../utils/bid-filter.js';
+import { BRIDGE_FACTS } from '../../data/bridge-facts.js';
 import { bidToRuleId } from '../utils/bid-utils.js';
-import { getDefenseScenariosByCategory } from '../play/defense-scenarios.js';
+import { generateSession, _generateTaskOfType } from './mix/session-generator.js';
+import { renderTask } from './mix/task-renderers.js';
 
 const MODULE_ID = 'mix';
 const SESSION_SIZE = 10;
-const MAX_SM2_TASKS = 5;
-const MIN_MODULES = 3;
 const MAX_RETRIES = 3;
-
-// Openings used for response tasks
-const RESPONSE_OPENINGS = ['1♥', '1♠', '1БК', '1♣', '1♦', '2♣', '2БК'];
-
-// bidToRuleId imported from ../utils/bid-utils.js
 
 export default class DailyMix {
   constructor(containerId) {
@@ -44,7 +26,7 @@ export default class DailyMix {
   }
 
   init() {
-    this.session = this.generateSession();
+    this.session = generateSession(ProgressTracker);
     this.taskIndex = 0;
     this.correctCount = 0;
     this.sessionErrors = [];
@@ -56,271 +38,6 @@ export default class DailyMix {
   }
 
   destroy() {}
-
-  // --- Session generation ---
-
-  /**
-   * Build a session of SESSION_SIZE tasks.
-   * Priority: SM-2 due items first (up to MAX_SM2_TASKS),
-   * then fill remaining slots from modules, prioritising weak ones.
-   */
-  generateSession() {
-    const tasks = [];
-
-    // 1. SM-2 due items
-    const dueItems = ProgressTracker.getDueItems();
-    const sm2Tasks = dueItems.slice(0, MAX_SM2_TASKS).map(item => this._sm2ItemToTask(item));
-    tasks.push(...sm2Tasks);
-
-    // 2. Determine which modules are already covered
-    const coveredModules = new Set(sm2Tasks.map(t => t.type));
-
-    // 3. Fill remaining slots with module tasks
-    const remaining = SESSION_SIZE - tasks.length;
-    const fillTasks = this._generateFillTasks(remaining, coveredModules);
-    tasks.push(...fillTasks);
-
-    // 4. Interleave: shuffle so same-type tasks are not consecutive
-    return this._interleave(tasks);
-  }
-
-  /**
-   * Convert an SM-2 item into a regenerated task.
-   * The item describes a situation type (e.g. "opening:12hcp-5332"),
-   * so we regenerate a hand matching roughly that profile.
-   */
-  _sm2ItemToTask(item) {
-    // ruleId format: "rule:opening-*" or "rule:response-*"
-    // Legacy format: "opening:..." or "response:..."
-    let moduleType = '';
-    const id = item.id || '';
-    if (id.startsWith('rule:opening')) {
-      moduleType = 'opening';
-    } else if (id.startsWith('rule:response')) {
-      moduleType = 'response';
-    } else {
-      // Legacy: first segment before ':'
-      [moduleType] = id.split(':');
-    }
-
-    let task;
-    if (moduleType === 'opening') {
-      task = this._generateOpeningTask();
-    } else if (moduleType === 'response') {
-      task = this._generateResponseTask();
-    } else if (moduleType === 'lead') {
-      task = this._generateLeadTask();
-    } else if (moduleType === 'quiz') {
-      task = this._generateQuizTask();
-    } else if (moduleType === 'hcp') {
-      task = this._generateHcpTask();
-    } else if (moduleType === 'tricks') {
-      task = this._generateTricksTask();
-    } else if (moduleType === 'defense') {
-      task = this._generateDefenseTask();
-    } else {
-      console.warn(`SM-2: unknown module type "${moduleType}", falling back to opening`);
-      task = this._generateOpeningTask();
-    }
-    task.sm2Id = item.id;
-    return task;
-  }
-
-  /**
-   * Generate fill tasks from modules, prioritising those with accuracy < 80%.
-   * Ensure at least MIN_MODULES different module types are covered.
-   */
-  _generateFillTasks(count, coveredModules) {
-    const allStats = ProgressTracker.getAllStats();
-    // Module types filtered by current user level
-    const allModuleTypes = ['opening', 'response', 'hcp', 'quiz', 'lead', 'tricks', 'defense'];
-    const maxLesson = ProgressTracker.getMaxLesson();
-    const unlocked = getUnlockedModules(maxLesson);
-    // Fallback to quiz (always unlocked) if nothing else is available
-    const moduleTypes = allModuleTypes.filter(m => unlocked.has(m));
-    if (moduleTypes.length === 0) moduleTypes.push('quiz');
-
-    // Sort by accuracy ascending (weakest first)
-    const sorted = moduleTypes.slice().sort((a, b) => {
-      const accA = allStats[a] ? allStats[a].accuracy : 50;
-      const accB = allStats[b] ? allStats[b].accuracy : 50;
-      return accA - accB;
-    });
-
-    // Ensure MIN_MODULES different modules are represented
-    const mustHave = sorted.filter(m => !coveredModules.has(m)).slice(0, MIN_MODULES);
-    const allCovered = new Set([...coveredModules, ...mustHave]);
-
-    // Build quota: at least 1 task per mustHave module, rest filled by weight
-    const quota = {};
-    for (const m of mustHave) quota[m] = 1;
-
-    const leftover = count - mustHave.length;
-    // Fill remaining slots weighted toward weak modules
-    for (let i = 0; i < leftover; i++) {
-      // Pick a random module from all types, weighted toward weak
-      const pick = sorted[Math.floor(Math.random() * Math.min(3, sorted.length))];
-      quota[pick] = (quota[pick] || 0) + 1;
-    }
-
-    const tasks = [];
-    for (const [type, n] of Object.entries(quota)) {
-      for (let i = 0; i < n; i++) {
-        tasks.push(this._generateTaskOfType(type));
-      }
-    }
-
-    // If we got fewer than count, top up with random tasks
-    while (tasks.length < count) {
-      const pick = moduleTypes[Math.floor(Math.random() * moduleTypes.length)];
-      tasks.push(this._generateTaskOfType(pick));
-    }
-
-    return tasks.slice(0, count);
-  }
-
-  _generateTaskOfType(type) {
-    switch (type) {
-      case 'opening':  return this._generateOpeningTask();
-      case 'response': return this._generateResponseTask();
-      case 'hcp':      return this._generateHcpTask();
-      case 'quiz':     return this._generateQuizTask();
-      case 'lead':     return this._generateLeadTask();
-      case 'tricks':   return this._generateTricksTask();
-      case 'defense':  return this._generateDefenseTask();
-      default:         return this._generateHcpTask();
-    }
-  }
-
-  _generateOpeningTask() {
-    const deal = dealForOpening();
-    const hand = deal.getHand('S');
-    const correctAnswer = determineOpening(hand);
-    const ev = evaluateHand(hand);
-    return {
-      type: 'opening',
-      deal,
-      hand,
-      correctAnswer,
-      handInfo: ev,
-      sm2Id: null,
-    };
-  }
-
-  _generateResponseTask() {
-    const opening = RESPONSE_OPENINGS[Math.floor(Math.random() * RESPONSE_OPENINGS.length)];
-    // Convert display opening to internal key for dealForResponse
-    const openingKey = _openingDisplayToKey(opening);
-    const deal = dealForResponse(openingKey);
-    const hand = deal.getHand('S');
-    const correctAnswer = determineResponse(opening, hand);
-    const ev = evaluateHand(hand);
-    return {
-      type: 'response',
-      deal,
-      hand,
-      opening,
-      correctAnswer,
-      handInfo: ev,
-      sm2Id: null,
-    };
-  }
-
-  _generateHcpTask() {
-    const deal = dealForHCP();
-    const hand = deal.getHand('S');
-    return {
-      type: 'hcp',
-      deal,
-      hand,
-      correctAnswer: { bid: String(hand.hcp), reason: `${hand.hcp} HCP` },
-      sm2Id: null,
-    };
-  }
-
-  _generateQuizTask() {
-    const quiz = QUIZZES[Math.floor(Math.random() * QUIZZES.length)];
-    return {
-      type: 'quiz',
-      quiz,
-      sm2Id: null,
-    };
-  }
-
-  _generateLeadTask() {
-    const deal = dealForLead();
-    const hand = deal.getHand('S');
-    const contracts = [
-      { suit: 'SPADES',   display: '4♠' },
-      { suit: 'HEARTS',   display: '4♥' },
-      { suit: null,       display: '3БК' },
-      { suit: 'DIAMONDS', display: '5♦' },
-      { suit: 'CLUBS',    display: '5♣' },
-    ];
-    const contract = contracts[Math.floor(Math.random() * contracts.length)];
-    const recommended = recommendLead(hand, contract.suit);
-    return {
-      type: 'lead',
-      deal,
-      hand,
-      contract,
-      recommended,
-      sm2Id: null,
-    };
-  }
-
-  _generateTricksTask() {
-    const deal = Deal.random();
-    const hand = deal.getHand('S');
-    // Count top tricks for south hand only (defender perspective, simpler for mix)
-    const bySuit = {};
-    let total = 0;
-    for (const suitId of SUIT_ORDER) {
-      const cards = hand.getSuitCards(suitId);
-      let tricks = 0;
-      let expectedRank = 14;
-      for (const card of cards) {
-        if (card.rankValue === expectedRank) { tricks++; expectedRank--; } else break;
-      }
-      bySuit[suitId] = { tricks, cards };
-      total += tricks;
-    }
-    return { type: 'tricks', deal, hand, correctAnswer: total, tricksBySuit: bySuit, sm2Id: null };
-  }
-
-  _generateDefenseTask() {
-    const scenarios = getDefenseScenariosByCategory('all');
-    const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
-    return { type: 'defense', scenario, sm2Id: null };
-  }
-
-  /**
-   * Interleave tasks so same-type tasks are spread out.
-   * Simple approach: bucket by type, then round-robin pick.
-   */
-  _interleave(tasks) {
-    const buckets = {};
-    for (const t of tasks) {
-      if (!buckets[t.type]) buckets[t.type] = [];
-      buckets[t.type].push(t);
-    }
-    const keys = Object.keys(buckets);
-    const result = [];
-    let round = 0;
-    while (result.length < tasks.length) {
-      let added = false;
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[(i + round) % keys.length];
-        if (buckets[key] && buckets[key].length > 0) {
-          result.push(buckets[key].shift());
-          added = true;
-        }
-      }
-      if (!added) break;
-      round++;
-    }
-    return result;
-  }
 
   // --- Rendering ---
 
@@ -428,238 +145,7 @@ export default class DailyMix {
     const retryBadge = task.isRetry ? ' <span class="retry-badge" title="Повтор ошибки">🔁</span>' : '';
     const badgeHtml = `<div class="task-type-badge task-type-${task.type}">${typeLabels[task.type] || task.type}${retryBadge}</div>`;
 
-    switch (task.type) {
-      case 'opening':  taskArea.innerHTML = badgeHtml + this._renderOpeningTask(task); break;
-      case 'response': taskArea.innerHTML = badgeHtml + this._renderResponseTask(task); break;
-      case 'hcp':      taskArea.innerHTML = badgeHtml + this._renderHcpTask(task); break;
-      case 'quiz':     taskArea.innerHTML = badgeHtml + this._renderQuizTask(task); break;
-      case 'lead':     taskArea.innerHTML = badgeHtml + this._renderLeadTask(task); break;
-      case 'tricks':   taskArea.innerHTML = badgeHtml + this._renderTricksTask(task); break;
-      case 'defense':  taskArea.innerHTML = badgeHtml + this._renderDefenseTask(task); break;
-    }
-
-    this._attachTaskHandlers(task);
-  }
-
-  _renderOpeningTask(task) {
-    const ev = task.handInfo;
-    const openingStats = ProgressTracker.getStats('opening');
-    const useBinary = openingStats.total > 5 && openingStats.accuracy < 50;
-    const bids = useBinary
-      ? pickBinaryBids(ALL_OPENING_BIDS, task.correctAnswer.bid)
-      : pickRelevantBids(ALL_OPENING_BIDS, task.correctAnswer.bid, ev.hcp);
-    return `
-      <div class="card-area">
-        <div class="card-area-title">Вы — сдающий. Ваша рука:</div>
-        ${renderHand(task.hand)}
-        <div class="text-muted mt-sm" style="font-size: 13px;">${ev.hcp} HCP | ${ev.shapeStr} | ${ev.distType}</div>
-      </div>
-      <div class="card-area">
-        <div class="card-area-title">Ваше открытие:</div>
-        <div class="bid-grid" id="task-bid-grid">
-          ${bids.map(b => `<button class="bid-btn" data-bid="${b}">${BID_DISPLAY[b] || b}</button>`).join('')}
-        </div>
-      </div>
-    `;
-  }
-
-  _renderResponseTask(task) {
-    const ev = task.handInfo;
-    const responseStats = ProgressTracker.getStats('response');
-    const useBinary = responseStats.total > 5 && responseStats.accuracy < 50;
-    const bids = useBinary
-      ? pickBinaryBids(ALL_RESPONSE_BIDS, task.correctAnswer.bid)
-      : pickRelevantBids(ALL_RESPONSE_BIDS, task.correctAnswer.bid, ev.hcp);
-    return `
-      <div class="card-area">
-        <div class="card-area-title">Партнёр открылся: <strong>${task.opening}</strong></div>
-        <div class="card-area-title mt-sm">Ваша рука (Юг):</div>
-        ${renderHand(task.hand)}
-        <div class="text-muted mt-sm" style="font-size: 13px;">${ev.hcp} HCP | ${ev.shapeStr} | ${ev.distType}</div>
-      </div>
-      <div class="card-area">
-        <div class="card-area-title">Ваш ответ:</div>
-        <div class="bid-grid" id="task-bid-grid">
-          ${bids.map(b => `<button class="bid-btn" data-bid="${b}">${BID_DISPLAY[b] || b}</button>`).join('')}
-        </div>
-      </div>
-    `;
-  }
-
-  _renderHcpTask(task) {
-    return `
-      <div class="card-area">
-        <div class="card-area-title">Подсчитайте HCP в этой руке:</div>
-        ${renderHand(task.hand)}
-      </div>
-      <div class="card-area">
-        <div class="card-area-title">Сколько HCP?</div>
-        <div class="flex gap-sm" style="align-items: center;">
-          <input id="hcp-input" type="number" min="0" max="37" inputmode="numeric"
-            style="width: 80px; font-size: 20px; padding: 10px; border-radius: 8px;
-                   border: 2px solid var(--border); background: var(--bg-secondary);
-                   color: var(--text-primary); text-align: center;"
-            placeholder="0" aria-label="Ваш ответ" />
-          <button class="btn btn-primary" id="hcp-submit-btn" style="min-height: 44px; padding: 10px 20px;">
-            Ответить
-          </button>
-        </div>
-      </div>
-    `;
-  }
-
-  _renderQuizTask(task) {
-    const q = task.quiz;
-    return `
-      <div class="card-area">
-        <div class="card-area-title">Занятие ${q.lesson} | Верно или нет?</div>
-        <p style="font-size: 16px; line-height: 1.6; margin: 16px 0; font-weight: 500;">${q.statement}</p>
-        <div class="flex gap-sm">
-          <button class="bid-btn" data-answer="true" style="flex: 1; font-size: 18px; min-height: 44px;">Правда</button>
-          <button class="bid-btn" data-answer="false" style="flex: 1; font-size: 18px; min-height: 44px;">Ложь</button>
-        </div>
-      </div>
-    `;
-  }
-
-  _renderLeadTask(task) {
-    const { contract } = task;
-    const contractInfo = contract.suit
-      ? `Оппоненты играют ${contract.display}.`
-      : `Оппоненты играют ${contract.display} (без козыря).`;
-
-    return `
-      <div class="card-area">
-        <div class="card-area-title">${contractInfo}</div>
-        <div class="card-area-title mt-sm">Ваша рука (Юг, на висте):</div>
-        ${renderHand(task.hand)}
-      </div>
-      <div class="card-area">
-        <div class="card-area-title">Выберите карту для первого хода:</div>
-        <div id="lead-hand" class="hand-display">
-          ${renderHand(task.hand, { clickable: true })}
-        </div>
-      </div>
-    `;
-  }
-
-  _renderTricksTask(task) {
-    return `
-      <div class="card-area">
-        <div class="card-area-title">Ваша рука (Юг). Сколько верных взяток?</div>
-        ${renderHand(task.hand)}
-        <p class="text-muted" style="font-size:13px; margin-top:8px;">Верная взятка = непрерывная секвенция сверху (Т, Т-К, Т-К-Д…)</p>
-      </div>
-      <div class="card-area">
-        <div class="card-area-title">Сколько верных взяток в этой руке?</div>
-        <div class="flex gap-sm" style="align-items:center;">
-          <input id="tricks-input" type="number" min="0" max="13" inputmode="numeric"
-            style="width:80px; font-size:20px; padding:10px; border-radius:8px;
-                   border:2px solid var(--border); background:var(--bg-secondary);
-                   color:var(--text-primary); text-align:center;"
-            placeholder="0" aria-label="Количество взяток" />
-          <button class="btn btn-primary" id="tricks-submit-btn" style="min-height:44px; padding:10px 20px;">
-            Ответить
-          </button>
-        </div>
-      </div>
-    `;
-  }
-
-  _renderDefenseTask(task) {
-    const { scenario } = task;
-    const ctxLine = scenario.context
-      ? `Контракт: ${scenario.context.contract || ''}${scenario.context.partnerLead ? ' · Ход партнёра: ' + scenario.context.partnerLead : ''}`
-      : '';
-    return `
-      <div class="card-area">
-        <div class="card-area-title">${scenario.title}</div>
-        <p style="font-size:15px; line-height:1.6; margin:12px 0;">${scenario.description}</p>
-        ${ctxLine ? `<p class="text-muted" style="font-size:13px;">${ctxLine}</p>` : ''}
-      </div>
-      <div class="card-area">
-        <div class="card-area-title">${scenario.question}</div>
-        <div id="defense-options" style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
-          ${scenario.options.map((opt, i) => `
-            <button class="bid-btn" data-defense-idx="${i}" style="text-align:left; padding:10px 14px; font-size:14px; min-height:44px;">${opt}</button>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  }
-
-  // --- Event attachment ---
-
-  _attachTaskHandlers(task) {
-    switch (task.type) {
-      case 'opening':
-      case 'response': {
-        const grid = document.getElementById('task-bid-grid');
-        if (grid) {
-          grid.querySelectorAll('.bid-btn').forEach(btn => {
-            btn.addEventListener('click', () => this.checkAnswer(btn.dataset.bid));
-          });
-        }
-        break;
-      }
-      case 'hcp': {
-        const submitBtn = document.getElementById('hcp-submit-btn');
-        const input = document.getElementById('hcp-input');
-        if (submitBtn && input) {
-          const doCheck = () => {
-            const val = parseInt(input.value, 10);
-            if (!isNaN(val)) this.checkAnswer(String(val));
-          };
-          submitBtn.addEventListener('click', doCheck);
-          input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') doCheck();
-          });
-          // Auto-focus input for quick entry
-          setTimeout(() => input.focus(), 100);
-        }
-        break;
-      }
-      case 'quiz': {
-        document.querySelectorAll('[data-answer]').forEach(btn => {
-          btn.addEventListener('click', () => this.checkAnswer(btn.dataset.answer));
-        });
-        break;
-      }
-      case 'lead': {
-        const leadHand = document.getElementById('lead-hand');
-        if (leadHand) {
-          leadHand.addEventListener('click', (e) => {
-            const chip = e.target.closest('.card-chip');
-            if (!chip) return;
-            this.checkAnswer(`${chip.dataset.suit}:${chip.dataset.rank}`);
-          });
-        }
-        break;
-      }
-      case 'tricks': {
-        const submitBtn = document.getElementById('tricks-submit-btn');
-        const input = document.getElementById('tricks-input');
-        if (submitBtn && input) {
-          const doCheck = () => {
-            const val = parseInt(input.value, 10);
-            if (!isNaN(val)) this.checkAnswer(String(val));
-          };
-          submitBtn.addEventListener('click', doCheck);
-          input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doCheck(); });
-          setTimeout(() => input.focus(), 100);
-        }
-        break;
-      }
-      case 'defense': {
-        const optionsEl = document.getElementById('defense-options');
-        if (optionsEl) {
-          optionsEl.querySelectorAll('[data-defense-idx]').forEach(btn => {
-            btn.addEventListener('click', () => this.checkAnswer(btn.dataset.defenseIdx));
-          });
-        }
-        break;
-      }
-    }
+    renderTask(task, taskArea, badgeHtml, (answer) => this.checkAnswer(answer));
   }
 
   // --- Answer checking ---
@@ -702,7 +188,7 @@ export default class DailyMix {
   }
 
   _scheduleRetry(task) {
-    const retryTask = this._generateTaskOfType(task.type);
+    const retryTask = _generateTaskOfType(task.type);
     retryTask.isRetry = true;
 
     const insertAt = Math.min(
@@ -890,8 +376,6 @@ export default class DailyMix {
         <div class="feedback feedback-success">✓ Правильно! ${task.correctAnswer} верных взяток (${(timeTaken / 1000).toFixed(1)}с)</div>
       `;
     } else {
-      // Build suit breakdown for explanation
-      const { SUITS: SUITS_MAP } = { SUITS: { SPADES: { symbol: '♠' }, HEARTS: { symbol: '♥' }, DIAMONDS: { symbol: '♦' }, CLUBS: { symbol: '♣' } } };
       const suitOrder = ['SPADES', 'HEARTS', 'DIAMONDS', 'CLUBS'];
       const rows = suitOrder.map(suitId => {
         const data = task.tricksBySuit[suitId];
@@ -1037,7 +521,6 @@ export default class DailyMix {
 
     // Build per-module breakdown from session
     const moduleCounts = {};
-    const moduleCorrect = {};
     for (const task of this.session) {
       const mod = task.type;
       moduleCounts[mod] = (moduleCounts[mod] || 0) + 1;
@@ -1200,25 +683,4 @@ export default class DailyMix {
 
     return `<div style="margin-bottom: 16px; text-align: left;">${rewards.join('')}</div>`;
   }
-}
-
-// --- Helper ---
-
-/**
- * Convert opening display string (e.g. '1♥') to dealer key (e.g. '1H')
- * used by dealForResponse().
- */
-function _openingDisplayToKey(opening) {
-  const map = {
-    '1♥':  '1H',
-    '1♠':  '1S',
-    '1БК': '1NT',
-    '1♣':  '1C',
-    '1♦':  '1D',
-    '2♣':  '2C',
-    '2БК': '2NT',
-    '2♥':  '2H',
-    '2♠':  '2S',
-  };
-  return map[opening] || opening;
 }

@@ -5,7 +5,7 @@ import { evaluateHand } from '../core/evaluator.js';
 import { dealWithConstraints, combineConstraints, hcpRange, balanced, no5CardMajor, has4CardMajor } from '../core/dealer.js';
 import { staymanResponse, blackwoodResponse, respondToTakeoutDouble } from '../bidding/conventions.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderHand, renderStats } from '../app.js';
+import { renderHand, renderStats } from '../ui/render.js';
 
 const MODULE_ID = 'conventions';
 

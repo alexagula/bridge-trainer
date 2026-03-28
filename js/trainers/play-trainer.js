@@ -1,17 +1,15 @@
 // Bridge Trainer — Play Technique Trainer (Module 6)
 import { PLAY_SCENARIOS, getScenariosByCategory, getScenarioCategories } from '../play/techniques.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderStats } from '../app.js';
+import { renderStats } from '../ui/render.js';
+import { BaseTrainer } from './base-trainer.js';
 
-const MODULE_ID = 'play';
-
-export default class PlayTrainer {
+export default class PlayTrainer extends BaseTrainer {
   constructor(containerId) {
-    this.container = document.getElementById(containerId);
+    super(containerId, 'play');
     this.category = 'all';
     this.scenarios = [];
     this.currentIdx = 0;
-    this.answered = false;
   }
 
   init() {
@@ -22,8 +20,6 @@ export default class PlayTrainer {
     this.showScenario();
   }
 
-  destroy() {}
-
   shuffleScenarios() {
     for (let i = this.scenarios.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -32,7 +28,7 @@ export default class PlayTrainer {
   }
 
   render() {
-    const stats = ProgressTracker.getStats(MODULE_ID);
+    const stats = ProgressTracker.getStats(this.moduleId);
     const categories = getScenarioCategories();
     this.container.innerHTML = `
       ${renderStats(stats)}
@@ -67,7 +63,7 @@ export default class PlayTrainer {
   showScenario() {
     this.answered = false;
     document.getElementById('feedback-area').innerHTML = '';
-    document.getElementById('next-btn').classList.add('hidden');
+    this.hideNextBtn();
 
     if (this.scenarios.length === 0) {
       document.getElementById('scenario-content').innerHTML =
@@ -132,7 +128,7 @@ export default class PlayTrainer {
     this.answered = true;
     const correct = idx === scenario.correct;
 
-    ProgressTracker.record(MODULE_ID, { correct, time: 0 });
+    this.recordResult(correct, 0);
 
     const options = document.querySelectorAll('#play-options .quiz-option');
     options.forEach((btn, i) => {
@@ -152,8 +148,7 @@ export default class PlayTrainer {
       </div>
     `;
 
-    const statsHtml = renderStats(ProgressTracker.getStats(MODULE_ID));
-    this.container.querySelector('.stats-bar').outerHTML = statsHtml;
-    document.getElementById('next-btn').classList.remove('hidden');
+    this.updateStats();
+    this.showNextBtn();
   }
 }

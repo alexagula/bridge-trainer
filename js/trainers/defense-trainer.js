@@ -1,22 +1,19 @@
 // Bridge Trainer — Defense Trainer (Module)
 import { DEFENSE_SCENARIOS, getDefenseScenariosByCategory, getDefenseCategories } from '../play/defense-scenarios.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderStats } from '../app.js';
+import { renderStats } from '../ui/render.js';
+import { BaseTrainer } from './base-trainer.js';
 
 function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-const MODULE_ID = 'defense';
-
-export default class DefenseTrainer {
+export default class DefenseTrainer extends BaseTrainer {
   constructor(containerId) {
-    this.container = document.getElementById(containerId);
+    super(containerId, 'defense');
     this.category = 'all';
     this.scenarios = [];
     this.currentIdx = 0;
-    this.answered = false;
-    this._startTime = 0;
   }
 
   init() {
@@ -27,8 +24,6 @@ export default class DefenseTrainer {
     this.showScenario();
   }
 
-  destroy() {}
-
   _shuffleScenarios() {
     for (let i = this.scenarios.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -37,7 +32,7 @@ export default class DefenseTrainer {
   }
 
   render() {
-    const stats = ProgressTracker.getStats(MODULE_ID);
+    const stats = ProgressTracker.getStats(this.moduleId);
     const categories = getDefenseCategories();
 
     this.container.innerHTML = `
@@ -103,12 +98,11 @@ export default class DefenseTrainer {
 
   showScenario() {
     this.answered = false;
-    this._startTime = Date.now();
+    this.startTimer();
 
     const feedbackArea = document.getElementById('defense-feedback-area');
-    const nextBtn = document.getElementById('defense-next-btn');
     if (feedbackArea) feedbackArea.innerHTML = '';
-    if (nextBtn) nextBtn.classList.add('hidden');
+    this.hideNextBtn();
 
     const content = document.getElementById('defense-scenario-content');
 
@@ -155,10 +149,10 @@ export default class DefenseTrainer {
     if (this.answered) return;
     this.answered = true;
 
-    const elapsed = Math.round((Date.now() - this._startTime) / 1000);
+    const elapsed = Math.round(this.getTimeTaken() / 1000);
     const correct = idx === scenario.correct;
 
-    ProgressTracker.record(MODULE_ID, { correct, time: elapsed });
+    this.recordResult(correct, elapsed);
 
     // Highlight options
     const options = document.querySelectorAll('#defense-options .quiz-option');
@@ -180,12 +174,7 @@ export default class DefenseTrainer {
       </div>
     `;
 
-    // Update stats bar
-    const statsHtml = renderStats(ProgressTracker.getStats(MODULE_ID));
-    const statsBar = this.container.querySelector('.stats-bar');
-    if (statsBar) statsBar.outerHTML = statsHtml;
-
-    const nextBtnEl = this.container.querySelector('#defense-next-btn');
-    if (nextBtnEl) nextBtnEl.classList.remove('hidden');
+    this.updateStats();
+    this.showNextBtn();
   }
 }

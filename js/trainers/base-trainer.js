@@ -1,6 +1,6 @@
 // Bridge Trainer — Base Trainer class with shared methods
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderStats } from '../app.js';
+import { renderStats } from '../ui/render.js';
 
 export class BaseTrainer {
   constructor(containerId, moduleId) {
@@ -10,28 +10,42 @@ export class BaseTrainer {
     this.startTime = 0;
   }
 
+  init() {
+    this.render();
+    this.newProblem();
+  }
+
+  destroy() {
+    // Subclasses can override to clean up timers etc.
+  }
+
+  startTimer() {
+    this.startTime = Date.now();
+  }
+
+  getTimeTaken() {
+    return Date.now() - this.startTime;
+  }
+
   updateStats() {
     const stats = ProgressTracker.getStats(this.moduleId);
-    const statsEl = this.container.querySelector('.stats-bar');
-    if (statsEl) statsEl.outerHTML = renderStats(stats);
+    const statsBar = this.container.querySelector('.stats-bar');
+    if (statsBar) statsBar.outerHTML = renderStats(stats);
   }
 
   showNextBtn() {
-    const btn = document.getElementById('next-btn');
+    const btn = this.container.querySelector('.next-btn, #next-btn, [id$="-next-btn"]');
     if (btn) { btn.classList.remove('hidden'); btn.focus(); }
   }
 
   hideNextBtn() {
-    const btn = document.getElementById('next-btn');
+    const btn = this.container.querySelector('.next-btn, #next-btn, [id$="-next-btn"]');
     if (btn) btn.classList.add('hidden');
   }
-
-  startTiming() { this.startTime = Date.now(); }
-  getTimeTaken() { return Date.now() - this.startTime; }
 
   recordResult(correct, timeTaken) {
     ProgressTracker.record(this.moduleId, { correct, time: timeTaken });
   }
 
-  destroy() {}
+  // render() and newProblem() are abstract — implemented in subclasses
 }

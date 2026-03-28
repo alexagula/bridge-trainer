@@ -4,7 +4,7 @@ import { SEATS, SEAT_NAMES, NEXT_SEAT, VULNERABILITY } from '../core/constants.j
 import { evaluateHand } from '../core/evaluator.js';
 import { BiddingSequence } from '../bidding/sequence.js';
 import { ProgressTracker } from '../progress/tracker.js';
-import { renderHand, renderStats } from '../app.js';
+import { renderHand, renderStats } from '../ui/render.js';
 
 const MODULE_ID = 'bidding';
 
