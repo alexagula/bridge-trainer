@@ -150,6 +150,32 @@ export const BLACKWOOD_RESPONSES = {
   4: { bid: '5БК', display: '5БК — 4 из 5' },
 };
 
+// Opening key mappings — ASCII for logic, Unicode/Russian for display
+export const OPENING_KEYS = {
+  '1H':  { display: '1♥',  suit: 'HEARTS' },
+  '1S':  { display: '1♠',  suit: 'SPADES' },
+  '1NT': { display: '1БК', suit: null },
+  '1C':  { display: '1♣',  suit: 'CLUBS' },
+  '1D':  { display: '1♦',  suit: 'DIAMONDS' },
+  '2C':  { display: '2♣',  suit: 'CLUBS' },
+  '2NT': { display: '2БК', suit: null },
+  '2H':  { display: '2♥',  suit: 'HEARTS' },
+  '2S':  { display: '2♠',  suit: 'SPADES' },
+};
+
+/** Convert ASCII opening key to display string. Returns key unchanged if not found. */
+export function openingKeyToDisplay(key) {
+  return OPENING_KEYS[key]?.display || key;
+}
+
+/** Convert display string to ASCII opening key. Returns display unchanged if not found. */
+export function openingDisplayToKey(display) {
+  for (const [key, val] of Object.entries(OPENING_KEYS)) {
+    if (val.display === display) return key;
+  }
+  return display;
+}
+
 // Lesson topics mapping
 export const LESSONS = {
   1:  { name: 'Занятие 1',  topic: 'Основы: HCP, открытие 1М, фит, подъём' },

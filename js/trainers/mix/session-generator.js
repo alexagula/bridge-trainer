@@ -1,7 +1,7 @@
 // Bridge Trainer — Daily Mix Session Generator
 // Standalone functions for building a Daily Mix session of tasks.
 import { Deal } from '../../core/card.js';
-import { SUIT_ORDER } from '../../core/constants.js';
+import { SUIT_ORDER, openingDisplayToKey } from '../../core/constants.js';
 import { evaluateHand } from '../../core/evaluator.js';
 import { dealForOpening, dealForResponse, dealForLead, dealForHCP } from '../../core/dealer.js';
 import { determineOpening } from '../../bidding/opening.js';
@@ -170,9 +170,7 @@ function _generateOpeningTask() {
 
 function _generateResponseTask() {
   const opening = RESPONSE_OPENINGS[Math.floor(Math.random() * RESPONSE_OPENINGS.length)];
-  // Convert display opening to internal key for dealForResponse
-  const openingKey = _openingDisplayToKey(opening);
-  const deal = dealForResponse(openingKey);
+  const deal = dealForResponse(openingDisplayToKey(opening));
   const hand = deal.getHand('S');
   const correctAnswer = determineResponse(opening, hand);
   const ev = evaluateHand(hand);
@@ -281,25 +279,6 @@ function _interleave(tasks) {
     round++;
   }
   return result;
-}
-
-/**
- * Convert opening display string (e.g. '1♥') to dealer key (e.g. '1H')
- * used by dealForResponse().
- */
-function _openingDisplayToKey(opening) {
-  const map = {
-    '1♥':  '1H',
-    '1♠':  '1S',
-    '1БК': '1NT',
-    '1♣':  '1C',
-    '1♦':  '1D',
-    '2♣':  '2C',
-    '2БК': '2NT',
-    '2♥':  '2H',
-    '2♠':  '2S',
-  };
-  return map[opening] || opening;
 }
 
 export { generateSession, _generateTaskOfType };

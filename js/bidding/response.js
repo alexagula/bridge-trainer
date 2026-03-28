@@ -1,6 +1,6 @@
 // Bridge Trainer — Response Decision Trees
 // Covers Lessons 1-6: responses to all opening types
-import { SUITS, SUIT_ORDER, MAJOR_SUITS, MINOR_SUITS } from '../core/constants.js';
+import { SUITS, SUIT_ORDER, MAJOR_SUITS, MINOR_SUITS, openingKeyToDisplay } from '../core/constants.js';
 
 /**
  * Determine response to partner's opening.
@@ -9,7 +9,9 @@ import { SUITS, SUIT_ORDER, MAJOR_SUITS, MINOR_SUITS } from '../core/constants.j
  * @returns {{ bid, bidDisplay, reason, lessonRef, steps }}
  */
 export function determineResponse(opening, hand) {
-  switch (opening) {
+  // Normalize ASCII key to display string (e.g. '1H' → '1♥'), pass-through if already display
+  const normalizedOpening = openingKeyToDisplay(opening);
+  switch (normalizedOpening) {
     case '1♥': return respondToOneMajor(hand, 'HEARTS');
     case '1♠': return respondToOneMajor(hand, 'SPADES');
     case '1БК': return respondTo1NT(hand);

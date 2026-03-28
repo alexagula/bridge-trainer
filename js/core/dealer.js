@@ -3,6 +3,7 @@ import { Deck, Deal, Hand } from './card.js';
 import { SUIT_ORDER, MAJOR_SUITS, MINOR_SUITS, VULNERABILITY } from './constants.js';
 
 const MAX_ATTEMPTS = 10000;
+const BOUNDARY_CHANCE = 0.3; // 30% probability of generating a boundary-case hand
 
 /**
  * Generate a deal where specific seats meet constraints.
@@ -76,7 +77,7 @@ export function dealForHCP() {
  */
 export function dealForOpening() {
   // 30% chance: boundary cases for deliberate difficulty
-  if (Math.random() < 0.3) {
+  if (Math.random() < BOUNDARY_CHANCE) {
     const boundary = Math.random();
     if (boundary < 0.25) {
       // 11-12 HCP: border of opening (open or pass?)
@@ -172,7 +173,7 @@ export function dealForResponse(openingType) {
   }
 
   // 30% chance: boundary case for responder (South)
-  if (Math.random() < 0.3) {
+  if (Math.random() < BOUNDARY_CHANCE) {
     const boundary = Math.random();
     if (boundary < 0.25) {
       // 5-6 HCP: pass or simple raise?

@@ -7,6 +7,8 @@ import { bidToRuleId } from '../utils/bid-utils.js';
 import { generateSession, _generateTaskOfType } from './mix/session-generator.js';
 import { renderTask } from './mix/task-renderers.js';
 
+const FOCUS_DELAY = 100; // ms delay before focusing next button (allows DOM to settle)
+
 const MODULE_ID = 'mix';
 const SESSION_SIZE = 10;
 const MAX_RETRIES = 3;
@@ -184,7 +186,7 @@ export default class DailyMix {
     this._updateProgressDots();
 
     document.getElementById('mix-next-btn').classList.remove('hidden');
-    document.getElementById('mix-next-btn').focus();
+    setTimeout(() => document.getElementById('mix-next-btn').focus(), FOCUS_DELAY);
   }
 
   _scheduleRetry(task) {

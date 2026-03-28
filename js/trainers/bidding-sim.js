@@ -6,6 +6,8 @@ import { BiddingSequence } from '../bidding/sequence.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand, renderStats } from '../ui/render.js';
 
+const AI_BID_DELAY = 300; // ms delay before AI makes a bid (simulates thinking)
+
 const MODULE_ID = 'bidding';
 
 export default class BiddingSim {
@@ -82,7 +84,7 @@ export default class BiddingSim {
         this.sequence.makeBid(seat, bid);
         this.updateBiddingDisplay();
         this.runBidding();
-      }, 300);
+      }, AI_BID_DELAY);
     }
   }
 

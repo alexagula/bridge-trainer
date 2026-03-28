@@ -1,5 +1,5 @@
 // Bridge Trainer — Response Trainer (Module 3)
-import { SUITS } from '../core/constants.js';
+import { SUITS, openingDisplayToKey } from '../core/constants.js';
 import { evaluateHand } from '../core/evaluator.js';
 import { dealForResponse } from '../core/dealer.js';
 import { determineResponse } from '../bidding/response.js';
@@ -83,16 +83,7 @@ export default class ResponseTrainer {
     this.answered = false;
     this.startTime = Date.now();
 
-    // Simple mapping for dealForResponse
-    let dealKey = this.opening;
-    if (dealKey === '1♥') dealKey = '1H';
-    else if (dealKey === '1♠') dealKey = '1S';
-    else if (dealKey === '1БК') dealKey = '1NT';
-    else if (dealKey === '1♣') dealKey = '1C';
-    else if (dealKey === '1♦') dealKey = '1D';
-    else if (dealKey === '2♣') dealKey = '2C';
-    else if (dealKey === '2БК') dealKey = '2NT';
-    this.deal = dealForResponse(dealKey);
+    this.deal = dealForResponse(openingDisplayToKey(this.opening));
 
     this.hand = this.deal.getHand('S');
     this.correctBid = determineResponse(this.opening, this.hand);
