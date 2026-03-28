@@ -10,6 +10,7 @@ export function createProgressView(tracker) {
   return {
     init(containerId) {
       const el = document.getElementById(containerId);
+      if (!el) return;
       const allStats = tracker.getAllStats();
       const moduleNames = {
         hcp: '🔢 Подсчёт HCP',
@@ -90,16 +91,26 @@ export function createProgressView(tracker) {
 
       document.getElementById('export-data-btn')?.addEventListener('click', () => {
         const data = tracker.exportAll();
-        const json = JSON.stringify(data, null, 2);
+        let json;
+        try {
+          json = JSON.stringify(data, null, 2);
+        } catch (err) {
+          console.error('Export serialization error:', err);
+          return;
+        }
         const blob = new Blob([json], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         const name = (data.userName || 'user').replace(/\s+/g, '_');
         a.href = url;
         a.download = `bridge-analytics-${name}-${new Date().toISOString().slice(0, 10)}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        try {
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } catch (err) {
+          console.error('Export DOM error:', err);
+        }
         setTimeout(() => URL.revokeObjectURL(url), 10000);
       });
 

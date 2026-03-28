@@ -20,15 +20,19 @@ export class NotificationManager {
 
     // Check every hour — fire only when tab is hidden and there are due items
     this._reminderInterval = setInterval(() => {
-      if (document.hidden) {
-        const dueCount = ProgressTracker.getDueCount();
-        if (dueCount > 0) {
-          new Notification('🃏 Бридж-тренажёр', {
-            body: `${dueCount} правил ждут повторения`,
-            icon: './icons/icon-192.png',
-            tag: 'bridge-reminder' // prevents duplicate notifications
-          });
+      try {
+        if (document.hidden) {
+          const dueCount = ProgressTracker.getDueCount();
+          if (dueCount > 0) {
+            new Notification('🃏 Бридж-тренажёр', {
+              body: `${dueCount} правил ждут повторения`,
+              icon: './icons/icon-192.png',
+              tag: 'bridge-reminder' // prevents duplicate notifications
+            });
+          }
         }
+      } catch (err) {
+        console.warn('Ошибка напоминания:', err);
       }
     }, 60 * 60 * 1000);
   }

@@ -31,6 +31,7 @@ export default class HCPTrainer {
   }
 
   init() {
+    if (!this.container) return;
     this.render();
     this.newProblem();
   }
@@ -122,14 +123,17 @@ export default class HCPTrainer {
     this.container.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     // Render hand
-    document.getElementById('hand-area').innerHTML = renderHand(this.hand);
+    const handArea = document.getElementById('hand-area');
+    if (handArea) handArea.innerHTML = renderHand(this.hand);
 
     // Render question
     this.renderQuestion();
 
     // Hide feedback and next button
-    document.getElementById('feedback-area').innerHTML = '';
-    document.getElementById('next-btn').classList.add('hidden');
+    const feedbackArea = document.getElementById('feedback-area');
+    if (feedbackArea) feedbackArea.innerHTML = '';
+    const nextBtn = document.getElementById('next-btn');
+    if (nextBtn) nextBtn.classList.add('hidden');
 
     // Timer
     if (this.timerInterval) clearInterval(this.timerInterval);
@@ -385,27 +389,36 @@ export default class HCPTrainer {
     display.className = 'timer';
 
     this.timerInterval = setInterval(() => {
-      remaining--;
-      display.textContent = remaining;
-      if (remaining <= 3) display.className = 'timer danger';
-      else if (remaining <= 5) display.className = 'timer warning';
+      try {
+        remaining--;
+        display.textContent = remaining;
+        if (remaining <= 3) display.className = 'timer danger';
+        else if (remaining <= 5) display.className = 'timer warning';
 
-      if (remaining <= 0) {
-        clearInterval(this.timerInterval);
-        if (!this.answered) {
-          // Time's up — auto-fail
-          this.answered = true;
-          ProgressTracker.record(MODULE_ID, { correct: false, time: this.timerSeconds * 1000 });
+        if (remaining <= 0) {
+          clearInterval(this.timerInterval);
+          if (!this.answered) {
+            // Time's up — auto-fail
+            this.answered = true;
+            ProgressTracker.record(MODULE_ID, { correct: false, time: this.timerSeconds * 1000 });
 
-          const ev = this.evaluation;
-          document.getElementById('feedback-area').innerHTML = `
-            <div class="feedback feedback-error">⏰ Время вышло! Ответ: ${ev.hcp} HCP</div>
-          `;
-          document.getElementById('next-btn').classList.remove('hidden');
+            const ev = this.evaluation;
+            const feedbackArea = document.getElementById('feedback-area');
+            if (feedbackArea) {
+              feedbackArea.innerHTML = `
+                <div class="feedback feedback-error">⏰ Время вышло! Ответ: ${ev.hcp} HCP</div>
+              `;
+            }
+            const nextBtn = document.getElementById('next-btn');
+            if (nextBtn) nextBtn.classList.remove('hidden');
 
-          const statsHtml = renderStats(ProgressTracker.getStats(MODULE_ID));
-          this.container.querySelector('.stats-bar').outerHTML = statsHtml;
+            const statsHtml = renderStats(ProgressTracker.getStats(MODULE_ID));
+            this.container.querySelector('.stats-bar').outerHTML = statsHtml;
+          }
         }
+      } catch (err) {
+        clearInterval(this.timerInterval);
+        console.error('Ошибка таймера:', err);
       }
     }, 1000);
   }

@@ -7,6 +7,65 @@ import { NotificationManager } from './notifications.js';
 // Re-export for backwards compatibility (modules that still import from app.js)
 export { renderHand, renderStats };
 
+// Toast notification
+export function showErrorToast(message, duration = 5000) {
+  let toast = document.getElementById('error-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'error-toast';
+    toast.className = 'error-toast';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = message;
+  toast.classList.remove('success');
+  toast.classList.add('visible');
+
+  clearTimeout(toast._hideTimer);
+  if (duration > 0) {
+    toast._hideTimer = setTimeout(() => {
+      toast.classList.remove('visible');
+    }, duration);
+  }
+}
+window.showErrorToast = showErrorToast;
+
+// Global error handlers
+window.addEventListener('error', (e) => {
+  console.error('Global error:', e.error || e.message);
+  showErrorToast('Произошла ошибка. Попробуйте обновить страницу.');
+});
+
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('Unhandled rejection:', e.reason);
+  showErrorToast('Произошла ошибка. Попробуйте обновить страницу.');
+});
+
+// Online/offline status
+window.addEventListener('offline', () => {
+  showErrorToast('Офлайн-режим', 0); // 0 = не скрывать до восстановления соединения
+});
+
+window.addEventListener('online', () => {
+  const toast = document.getElementById('error-toast');
+  if (toast) {
+    clearTimeout(toast._hideTimer);
+    toast.classList.add('success');
+    toast.textContent = 'Подключение восстановлено';
+    toast.classList.add('visible');
+    toast._hideTimer = setTimeout(() => {
+      toast.classList.remove('visible');
+    }, 3000);
+  }
+});
+
+// Storage quota error
+window.addEventListener('storage-error', () => {
+  showErrorToast('Хранилище заполнено. Очистите прогресс в разделе «Прогресс»');
+});
+
 // Lesson → modules mapping: which modules become available after each lesson
 const LESSON_MODULES = {
   1:  ['hcp'],
@@ -270,7 +329,7 @@ class App {
         </div>
       `;
       const errEl = this.content.querySelector('.error-detail');
-      if (errEl) errEl.textContent = err.message;
+      if (errEl) errEl.textContent = 'Попробуйте обновить страницу';
       this.content.querySelector('.go-home-btn')?.addEventListener('click', () => this.switchModule('welcome'));
     }
   }

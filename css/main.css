@@ -464,6 +464,27 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
+/* Error toast notification */
+.error-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a2e;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border-left: 4px solid var(--error, #ff5252);
+  font-size: 14px;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s;
+  max-width: 90vw;
+  pointer-events: none;
+}
+.error-toast.visible { opacity: 1; }
+.error-toast.success { border-left-color: var(--success, #4caf50); }
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

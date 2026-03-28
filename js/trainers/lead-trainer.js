@@ -55,19 +55,24 @@ export default class LeadTrainer extends BaseTrainer {
     this.recommended = recommendLead(this.hand, this.contractSuit, {});
 
     // Context
-    document.getElementById('context-area').innerHTML = `
-      <div class="card-area-title">Контракт</div>
-      <div style="font-size: 24px; font-weight: 700; text-align: center; padding: 8px;">
-        ${contract.display} (Запад разыгрывает)
-      </div>
-      <p class="text-muted text-center" style="font-size: 13px;">Вы (Юг) делаете первый ход</p>
-    `;
+    const contextArea = document.getElementById('context-area');
+    if (contextArea) {
+      contextArea.innerHTML = `
+        <div class="card-area-title">Контракт</div>
+        <div style="font-size: 24px; font-weight: 700; text-align: center; padding: 8px;">
+          ${contract.display} (Запад разыгрывает)
+        </div>
+        <p class="text-muted text-center" style="font-size: 13px;">Вы (Юг) делаете первый ход</p>
+      `;
+    }
 
     // Show hand
-    document.getElementById('hand-area').innerHTML = renderHand(this.hand);
+    const handArea = document.getElementById('hand-area');
+    if (handArea) handArea.innerHTML = renderHand(this.hand);
 
     // Clickable hand for lead selection
     const leadHand = document.getElementById('lead-hand');
+    if (!leadHand) return;
     leadHand.innerHTML = renderHand(this.hand, { clickable: true });
 
     leadHand.addEventListener('click', (e) => {

@@ -1,5 +1,7 @@
 // Bridge Trainer — Progress Tracker (localStorage)
 
+import { safeGetJSON, safeSetJSON } from '../utils/safe-storage.js';
+
 const STORAGE_KEY = 'bridge-trainer-progress';
 const SM2_KEY = 'bridge-trainer-sm2';
 const USER_KEY = 'bridge-analytics-user';
@@ -19,10 +21,7 @@ let _sm2SaveTimer = null;
 
 function loadData() {
   if (_cache !== null) return _cache;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    _cache = raw ? JSON.parse(raw) : {};
-  } catch { _cache = {}; }
+  _cache = safeGetJSON(STORAGE_KEY, {});
   return _cache;
 }
 
@@ -30,7 +29,7 @@ function saveData(data) {
   _cache = data;
   if (!_saveTimer) {
     _saveTimer = setTimeout(() => {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(_cache));
+      safeSetJSON(STORAGE_KEY, _cache);
       _saveTimer = null;
     }, DEBOUNCE_MS);
   }
@@ -38,10 +37,7 @@ function saveData(data) {
 
 function loadSM2Data() {
   if (_sm2Cache !== null) return _sm2Cache;
-  try {
-    const raw = localStorage.getItem(SM2_KEY);
-    _sm2Cache = raw ? JSON.parse(raw) : { items: [] };
-  } catch { _sm2Cache = { items: [] }; }
+  _sm2Cache = safeGetJSON(SM2_KEY, { items: [] });
   return _sm2Cache;
 }
 
@@ -54,7 +50,7 @@ function saveSM2Data(data) {
   _sm2Cache = data;
   if (!_sm2SaveTimer) {
     _sm2SaveTimer = setTimeout(() => {
-      localStorage.setItem(SM2_KEY, JSON.stringify(_sm2Cache));
+      safeSetJSON(SM2_KEY, _sm2Cache);
       _sm2SaveTimer = null;
     }, DEBOUNCE_MS);
   }
@@ -149,9 +145,9 @@ export const ProgressTracker = {
    */
   flush() {
     if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
-    if (_cache !== null) localStorage.setItem(STORAGE_KEY, JSON.stringify(_cache));
+    if (_cache !== null) safeSetJSON(STORAGE_KEY, _cache);
     if (_sm2SaveTimer) { clearTimeout(_sm2SaveTimer); _sm2SaveTimer = null; }
-    if (_sm2Cache !== null) localStorage.setItem(SM2_KEY, JSON.stringify(_sm2Cache));
+    if (_sm2Cache !== null) safeSetJSON(SM2_KEY, _sm2Cache);
   },
 
   /**
@@ -292,10 +288,8 @@ export const ProgressTracker = {
    * @returns {number} 1-10, defaults to 10
    */
   getMaxLesson() {
-    try {
-      const data = JSON.parse(localStorage.getItem(ONBOARDING_KEY));
-      return data?.maxLesson || 10;
-    } catch { return 10; }
+    const data = safeGetJSON(ONBOARDING_KEY, null);
+    return data?.maxLesson || 10;
   },
 
   /**
@@ -303,7 +297,7 @@ export const ProgressTracker = {
    * @param {number} n - lesson number 1-10
    */
   setMaxLesson(n) {
-    localStorage.setItem(ONBOARDING_KEY, JSON.stringify({ maxLesson: n }));
+    safeSetJSON(ONBOARDING_KEY, { maxLesson: n });
   },
 
   /**
@@ -311,10 +305,8 @@ export const ProgressTracker = {
    * @returns {string|null}
    */
   getUserName() {
-    try {
-      const data = JSON.parse(localStorage.getItem(USER_KEY));
-      return data?.name || null;
-    } catch { return null; }
+    const data = safeGetJSON(USER_KEY, null);
+    return data?.name || null;
   },
 
   /**
@@ -323,11 +315,9 @@ export const ProgressTracker = {
    */
   setUserName(name) {
     let createdAt = Date.now();
-    try {
-      const existing = JSON.parse(localStorage.getItem(USER_KEY));
-      if (existing?.createdAt) createdAt = existing.createdAt;
-    } catch {}
-    localStorage.setItem(USER_KEY, JSON.stringify({ name, createdAt }));
+    const existing = safeGetJSON(USER_KEY, null);
+    if (existing?.createdAt) createdAt = existing.createdAt;
+    safeSetJSON(USER_KEY, { name, createdAt });
   },
 
   /**

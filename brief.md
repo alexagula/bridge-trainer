@@ -1,146 +1,156 @@
-# Бриф: Фаза 3 — Качество кода (Code Quality Review)
+# Brief: Error Handling & Resilience — Bridge Trainer
 
 ## Что делаем и зачем
-Три задачи для улучшения качества и единообразия кода:
-1. Унифицировать формат opening key ('1H' vs '1♥') — убрать ручную конвертацию
-2. Извлечь оставшиеся magic numbers в именованные константы
-3. Добавить ESLint + Prettier конфигурацию
 
----
+Повышаем отказоустойчивость PWA-тренажёра спортивного бриджа. Аудит выявил: нет глобального error handler, 6 незащищённых localStorage.setItem(), 5 пустых catch-блоков, незащищённые timer callbacks, отсутствие online/offline индикатора.
 
-## Таск 1: Унифицировать формат opening key
+**Цель:** приложение не должно молча ломаться. Пользователь всегда получает обратную связь.
 
-**Проблема:** Два формата для одного и того же:
-- dealer.js использует `'1H'`, `'1S'`, `'1NT'`, `'1C'`, `'1D'` (ASCII)
-- response.js, response-trainer.js используют `'1♥'`, `'1♠'`, `'1БК'` (Unicode/русский)
-- response-trainer.js вручную конвертирует между ними (строки ~88-95)
+## Стек
 
-**Решение:** Стандартизировать на ASCII ('1H', '1S', '1NT', '1C', '1D', '2C', '2NT') для внутренней логики. Unicode/русский — только для отображения в UI.
+- Vanilla HTML + CSS + JS (ES modules), PWA
+- Нет бэкенда, нет npm, нет фреймворков
+- Данные в localStorage
+- Деплой: GitHub Pages (статика)
+- Русская локализация UI
 
-**Что сделать:**
+## Таски
 
-1. В `js/bidding/response.js`:
-   - Функция `determineResponse(hand, openingType)` уже принимает и ASCII и Unicode. Проверить что она корректно обрабатывает ASCII keys ('1H', '1S' и т.д.)
-   - Если нет — добавить маппинг в начале функции
+### Таск 1: Глобальный error handler + safe storage utility + toast
 
-2. В `js/trainers/response-trainer.js`:
-   - Удалить ручную конвертацию (строки ~88-95 где символы ♥→H, ♠→S и т.д.)
-   - Использовать единый формат при вызове dealForResponse()
-   - Добавить маппинг для отображения: `OPENING_DISPLAY = { '1H': '1♥', '1S': '1♠', '1NT': '1БК', ... }`
+**Файлы:** создать `js/utils/safe-storage.js`, изменить `js/app.js`, `css/main.css`
 
-3. В `js/trainers/mix/session-generator.js`:
-   - Проверить RESPONSE_OPENINGS массив — привести к единому формату
-   - Проверить _openingDisplayToKey() — возможно она станет не нужна
+1. В `js/app.js` (в начале init или как отдельный early-загружаемый код) добавить:
+   - `window.addEventListener('error', ...)` — логировать + показать toast
+   - `window.addEventListener('unhandledrejection', ...)` — логировать + показать toast
+   - Функцию `showErrorToast(message, duration = 5000)` — показывает временное уведомление внизу экрана. Стиль: тёмный фон, красная левая граница, текст белый. Экспортировать для использования в других модулях.
+   - Online/offline listeners:
+     - `window.addEventListener('offline', ...)` → показать toast "Офлайн-режим"
+     - `window.addEventListener('online', ...)` → показать toast "Подключение восстановлено" (зелёная левая граница)
+   - Слушатель `window.addEventListener('storage-error', ...)` → показать toast "Хранилище заполнено. Очистите прогресс в разделе «Прогресс»"
 
-4. Создать маппинг в `js/core/constants.js`:
-   ```javascript
-   export const OPENING_KEYS = {
-     '1H': { display: '1♥', suit: 'HEARTS' },
-     '1S': { display: '1♠', suit: 'SPADES' },
-     '1NT': { display: '1БК', suit: null },
-     '1C': { display: '1♣', suit: 'CLUBS' },
-     '1D': { display: '1♦', suit: 'DIAMONDS' },
-     '2C': { display: '2♣', suit: 'CLUBS' },
-     '2NT': { display: '2БК', suit: null },
-     '2H': { display: '2♥', suit: 'HEARTS' },
-     '2S': { display: '2♠', suit: 'SPADES' },
-   };
+2. CSS для toast в `css/main.css`:
+   ```css
+   .error-toast {
+     position: fixed;
+     bottom: 80px;
+     left: 50%;
+     transform: translateX(-50%);
+     background: #1a1a2e;
+     color: #fff;
+     padding: 12px 20px;
+     border-radius: 8px;
+     border-left: 4px solid var(--error, #ff5252);
+     font-size: 14px;
+     z-index: 10000;
+     opacity: 0;
+     transition: opacity 0.3s;
+     max-width: 90vw;
+     pointer-events: none;
+   }
+   .error-toast.visible { opacity: 1; }
+   .error-toast.success { border-left-color: var(--success, #4caf50); }
+   ```
 
-   export function openingKeyToDisplay(key) {
-     return OPENING_KEYS[key]?.display || key;
+3. Создать `js/utils/safe-storage.js`:
+   ```js
+   export function safeGetJSON(key, fallback) {
+     try {
+       const raw = localStorage.getItem(key);
+       return raw ? JSON.parse(raw) : fallback;
+     } catch (err) {
+       console.warn(`Failed to read ${key}:`, err);
+       return fallback;
+     }
    }
 
-   export function openingDisplayToKey(display) {
-     for (const [key, val] of Object.entries(OPENING_KEYS)) {
-       if (val.display === display) return key;
+   export function safeSetJSON(key, value) {
+     try {
+       localStorage.setItem(key, JSON.stringify(value));
+       return true;
+     } catch (err) {
+       console.warn(`Failed to write ${key}:`, err);
+       if (err.name === 'QuotaExceededError') {
+         window.dispatchEvent(new CustomEvent('storage-error', {
+           detail: { type: 'quota', key }
+         }));
+       }
+       return false;
      }
-     return display;
    }
    ```
 
-**Файлы:** js/core/constants.js, js/bidding/response.js, js/trainers/response-trainer.js, js/trainers/mix/session-generator.js
+### Таск 2: Защита tracker.js
 
----
+**Файл:** `js/progress/tracker.js`
 
-## Таск 2: Magic numbers → именованные константы
+1. Импортировать `safeGetJSON`, `safeSetJSON` из `../utils/safe-storage.js`
+2. Заменить все `localStorage.setItem(key, JSON.stringify(...))` на `safeSetJSON(key, data)` — строки 33, 57, 152, 154, 306, 330
+3. Заменить все ручные try { JSON.parse(localStorage.getItem(key)) } catch блоки на `safeGetJSON(key, fallback)` — строки 22-25, 41-44, 295-298, 314-317, 326-329
+4. Убрать пустые catch-блоки — safeGetJSON уже обрабатывает ошибки внутри
+5. НЕ менять публичный API модуля — только внутреннюю реализацию
 
-**Файлы с оставшимися magic numbers:**
+### Таск 3: Защита timer callbacks + DOM null-checks
 
-**js/trainers/daily-mix.js:**
-- `100` (ms timeout для focus/scroll) в нескольких местах → `const FOCUS_DELAY = 100;`
+**Файлы:** `js/trainers/bidding-sim.js`, `js/trainers/hcp-trainer.js`, `js/notifications.js`, `js/trainers/lead-trainer.js`, `js/reference/theory.js`, `js/progress/progress-view.js`
 
-**js/trainers/bidding-sim.js:**
-- `300` (ms AI bid delay) → `const AI_BID_DELAY = 300;`
+1. **bidding-sim.js** (~строка 82) — обернуть callback setTimeout в try/catch. При ошибке: console.error + показать пользователю что произошла ошибка (текст в bidding area)
 
-**js/core/dealer.js:**
-- `10000` уже именован как MAX_ATTEMPTS ✓
-- `0.3` (30% boundary chance) → `const BOUNDARY_CHANCE = 0.3;`
+2. **hcp-trainer.js** (~строка 387) — обернуть setInterval callback в try/catch. При ошибке: clearInterval + console.error
 
-**js/trainers/hcp-trainer.js:**
-- Тайминги таймера (5, 10, 15, 20, 30 секунд) — это UI-конфиг, оставить как есть
+3. **notifications.js** (~строка 22-33) — обернуть setInterval callback в try/catch. При ошибке: console.warn (не критично)
 
-**js/trainers/mix/session-generator.js:**
-- SESSION_SIZE, MAX_SM2_TASKS, MIN_MODULES — проверить что уже именованы
+4. **DOM null-checks** — добавить проверки:
+   - `hcp-trainer.js` constructor: `if (!this.container) return;`
+   - `hcp-trainer.js` newProblem: null-check перед getElementById('hand-area'), getElementById('feedback-area')
+   - `lead-trainer.js` newProblem: null-check перед getElementById('context-area'), getElementById('hand-area'), getElementById('lead-hand')
+   - `theory.js` constructor: `if (!this.el) return;`
+   - `theory.js` init: null-check перед getElementById('theory-search'), getElementById('lesson-filter')
+   - `progress-view.js` constructor: null-check на контейнер
 
-**Принцип:** именовать только числа, смысл которых неочевиден. `0`, `1`, `100%` — не трогать.
+### Таск 4: Service Worker hardening
 
----
+**Файл:** `service-worker.js`
 
-## Таск 3: Добавить ESLint + Prettier
+1. Activate event — добавить `.catch()` на `caches.delete()`:
+   ```js
+   keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k).catch(() => {}))
+   ```
 
-**Что сделать:**
+2. Fetch event — добавить логирование в offline .catch():
+   ```js
+   .catch(() => {
+     console.warn('Offline fallback for:', event.request.url);
+     return caches.match('./index.html');
+   })
+   ```
 
-1. Создать `.eslintrc.json`:
-```json
-{
-  "env": {
-    "browser": true,
-    "es2022": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 2022,
-    "sourceType": "module"
-  },
-  "rules": {
-    "no-unused-vars": "warn",
-    "no-undef": "error",
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
-    "eqeqeq": "error",
-    "no-var": "error",
-    "prefer-const": "warn"
-  }
-}
-```
+3. Fetch event — обернуть cache.put в catch:
+   ```js
+   caches.open(CACHE_NAME).then(cache =>
+     cache.put(event.request, clone).catch(() => {})
+   );
+   ```
 
-2. Создать `.prettierrc`:
-```json
-{
-  "singleQuote": true,
-  "trailingComma": "all",
-  "printWidth": 120,
-  "tabWidth": 2,
-  "semi": true
-}
-```
+### Таск 5: UX — безопасные сообщения + export hardening
 
-3. Создать `.editorconfig`:
-```ini
-root = true
-[*]
-indent_style = space
-indent_size = 2
-end_of_line = lf
-charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
-```
+**Файлы:** `js/app.js`, `js/progress/progress-view.js`
 
-4. **НЕ запускать ESLint/Prettier на всём проекте** — только создать конфиги. Автоформатирование — отдельный шаг.
+1. **app.js** (~строка 273) — заменить `err.message` на безопасный текст:
+   ```js
+   // Было: errEl.textContent = err.message;
+   errEl.textContent = 'Попробуйте обновить страницу';
+   ```
 
----
+2. **progress-view.js** (~строка 93) — обернуть JSON.stringify в try/catch
+3. **progress-view.js** (~строка 100-102) — обернуть export DOM операции в try/catch
 
 ## Ограничения
-- Не ломать функциональность
-- Не запускать форматтер — только конфиги
-- Opening key унификация: ASCII для логики, Unicode для UI
-- Не менять service-worker.js (конфиги не кэшируются)
+
+- **Не менять публичный API модулей** — только внутреннюю реализацию
+- **Русский язык** для всех сообщений пользователю
+- **Нет npm / нет зависимостей** — только vanilla JS
+- **ES modules** — все импорты через `import/export`
+- **Не добавлять комментарии** к коду который не менялся
+- **Минимализм** — не добавлять лишнего, только то что в таске
+- **Не ломать существующую функциональность**

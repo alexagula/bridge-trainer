@@ -80,10 +80,18 @@ export default class BiddingSim {
     } else {
       // AI bid with small delay
       this._aiTimeout = setTimeout(() => {
-        const bid = this.sequence.getAIBid(seat);
-        this.sequence.makeBid(seat, bid);
-        this.updateBiddingDisplay();
-        this.runBidding();
+        try {
+          const bid = this.sequence.getAIBid(seat);
+          this.sequence.makeBid(seat, bid);
+          this.updateBiddingDisplay();
+          this.runBidding();
+        } catch (err) {
+          console.error('Ошибка AI хода:', err);
+          const biddingArea = document.getElementById('bidding-display');
+          if (biddingArea) {
+            biddingArea.innerHTML = '<p class="text-muted">Произошла ошибка. Начните новую сдачу.</p>';
+          }
+        }
       }, AI_BID_DELAY);
     }
   }

@@ -1,5 +1,5 @@
 // Bridge Trainer — Service Worker for PWA offline support
-const CACHE_NAME = 'bridge-trainer-v11';
+const CACHE_NAME = 'bridge-trainer-v12';
 
 const ASSETS = [
   './',
@@ -69,7 +69,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
-        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k).catch(() => {}))
       );
     })
   );
@@ -84,12 +84,14 @@ self.addEventListener('fetch', (event) => {
         // Cache new requests dynamically
         if (response.ok) {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          caches.open(CACHE_NAME).then(cache =>
+            cache.put(event.request, clone).catch(() => {})
+          );
         }
         return response;
       });
     }).catch(() => {
-      // Offline fallback
+      console.warn('Offline fallback for:', event.request.url);
       return caches.match('./index.html');
     })
   );

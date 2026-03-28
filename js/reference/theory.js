@@ -6,6 +6,7 @@ export default {
   init(containerId) {
     const el = document.getElementById(containerId);
     this.el = el;
+    if (!this.el) return;
     this.entries = THEORY_ENTRIES;
     this.filter = '';
     this.lessonFilter = 0;
@@ -59,17 +60,23 @@ export default {
     `;
 
     // Search
-    document.getElementById('theory-search').addEventListener('input', (e) => {
-      this.filter = e.target.value;
-      this.render();
-    });
+    const searchEl = document.getElementById('theory-search');
+    if (searchEl) {
+      searchEl.addEventListener('input', (e) => {
+        this.filter = e.target.value;
+        this.render();
+      });
+    }
 
     // Lesson filter
-    document.getElementById('lesson-filter').addEventListener('click', (e) => {
-      const chip = e.target.closest('.filter-chip');
-      if (!chip) return;
-      this.lessonFilter = parseInt(chip.dataset.lesson);
-      this.render();
-    });
+    const lessonFilter = document.getElementById('lesson-filter');
+    if (lessonFilter) {
+      lessonFilter.addEventListener('click', (e) => {
+        const chip = e.target.closest('.filter-chip');
+        if (!chip) return;
+        this.lessonFilter = parseInt(chip.dataset.lesson);
+        this.render();
+      });
+    }
   },
 };
