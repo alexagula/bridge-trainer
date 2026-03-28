@@ -19,22 +19,85 @@ const MIN_MODULES = 3;
 // Openings used for response tasks
 const RESPONSE_OPENINGS = ['1♥', '1♠', '1БК', '1♣', '1♦', '2♣', '2БК'];
 
-// Simplified bid list for opening/response tasks
-const BIDS = [
+// All possible bids in order (used as pool for filtering)
+const ALL_OPENING_BIDS = [
+  'пас', '1♣', '1♦', '1♥', '1♠', '1БК',
+  '2♣', '2♦', '2♥', '2♠', '2БК',
+  '3♣', '3♦', '3♥', '3♠',
+  '4♣', '4♦', '4♥', '4♠',
+];
+
+const ALL_RESPONSE_BIDS = [
   'пас', '1♣', '1♦', '1♥', '1♠', '1БК',
   '2♣', '2♦', '2♥', '2♠', '2БК',
   '3♣', '3♦', '3♥', '3♠', '3БК',
-  '4♥', '4♠',
+  '4♥', '4♠', '4БК', '5♣', '5♦',
 ];
 
-// Bid display mapping (bid code → display label)
 const BID_DISPLAY = {
   'пас': 'Пас',
   '1♣': '1♣', '1♦': '1♦', '1♥': '1♥', '1♠': '1♠', '1БК': '1БК',
-  '2♣': '2♣', '2♦': '2♦', '2♥': '2♥', '2♠': '2♠', '2БК': '2БК',
+  '2♣': '2♣ ФГ', '2♦': '2♦', '2♥': '2♥', '2♠': '2♠', '2БК': '2БК',
   '3♣': '3♣', '3♦': '3♦', '3♥': '3♥', '3♠': '3♠', '3БК': '3БК',
-  '4♥': '4♥', '4♠': '4♠',
+  '4♣': '4♣', '4♦': '4♦', '4♥': '4♥', '4♠': '4♠',
+  '4БК': '4БК', '5♣': '5♣', '5♦': '5♦',
 };
+
+/**
+ * Pick ~8-10 relevant bids from the full pool.
+ * Always includes the correct answer + contextual neighbours.
+ */
+function pickRelevantBids(pool, correctBid, hcp) {
+  const selected = new Set();
+
+  // Always include correct answer and pass
+  selected.add(correctBid);
+  selected.add('пас');
+
+  // Add contextual bids based on HCP range
+  if (hcp < 12) {
+    // Weak hand: pass, low-level bids, preempts
+    ['1♣', '1♦', '1♥', '1♠', '2♦', '2♥', '2♠', '3♥', '3♠'].forEach(b => selected.add(b));
+  } else if (hcp <= 14) {
+    // Minimum opening: 1-level + simple raises
+    ['1♣', '1♦', '1♥', '1♠', '1БК', '2♣', '2♦', '2♥', '2♠'].forEach(b => selected.add(b));
+  } else if (hcp <= 18) {
+    // Mid-range: 1-level + 1NT + 2-level
+    ['1♣', '1♦', '1♥', '1♠', '1БК', '2♣', '2БК', '2♥', '2♠'].forEach(b => selected.add(b));
+  } else if (hcp <= 21) {
+    // Strong: NT range, 2♣ FG, game bids
+    ['1БК', '2♣', '2БК', '2♥', '2♠', '3БК', '4♥', '4♠'].forEach(b => selected.add(b));
+  } else {
+    // Very strong: 2♣, game+
+    ['2♣', '2БК', '3БК', '4♥', '4♠', '4БК', '5♣', '5♦'].forEach(b => selected.add(b));
+  }
+
+  // Add neighbours of correct bid in the pool (±2 positions)
+  const idx = pool.indexOf(correctBid);
+  if (idx >= 0) {
+    for (let d = -2; d <= 2; d++) {
+      const ni = idx + d;
+      if (ni >= 0 && ni < pool.length) selected.add(pool[ni]);
+    }
+  }
+
+  // Filter to only bids that exist in the pool, keep order
+  const result = pool.filter(b => selected.has(b));
+
+  // Ensure 8-10 bids: trim or pad
+  if (result.length > 10) return result.slice(0, 10);
+  if (result.length < 8) {
+    // Pad with random bids from pool not yet selected
+    const remaining = pool.filter(b => !selected.has(b));
+    for (const b of remaining) {
+      result.push(b);
+      if (result.length >= 8) break;
+    }
+    // Re-sort by pool order
+    result.sort((a, b) => pool.indexOf(a) - pool.indexOf(b));
+  }
+  return result;
+}
 
 export default class DailyMix {
   constructor(containerId) {
@@ -343,6 +406,7 @@ export default class DailyMix {
 
   _renderOpeningTask(task) {
     const ev = task.handInfo;
+    const bids = pickRelevantBids(ALL_OPENING_BIDS, task.correctAnswer.bid, ev.hcp);
     return `
       <div class="card-area">
         <div class="card-area-title">Вы — сдающий. Ваша рука:</div>
@@ -352,7 +416,7 @@ export default class DailyMix {
       <div class="card-area">
         <div class="card-area-title">Ваше открытие:</div>
         <div class="bid-grid" id="task-bid-grid">
-          ${BIDS.map(b => `<button class="bid-btn" data-bid="${b}">${BID_DISPLAY[b] || b}</button>`).join('')}
+          ${bids.map(b => `<button class="bid-btn" data-bid="${b}">${BID_DISPLAY[b] || b}</button>`).join('')}
         </div>
       </div>
     `;
@@ -360,6 +424,7 @@ export default class DailyMix {
 
   _renderResponseTask(task) {
     const ev = task.handInfo;
+    const bids = pickRelevantBids(ALL_RESPONSE_BIDS, task.correctAnswer.bid, ev.hcp);
     return `
       <div class="card-area">
         <div class="card-area-title">Партнёр открылся: <strong>${task.opening}</strong></div>
@@ -369,8 +434,8 @@ export default class DailyMix {
       </div>
       <div class="card-area">
         <div class="card-area-title">Ваш ответ:</div>
-        <div class="bid-grid" id="task-bid-grid" style="grid-template-columns: repeat(4, 1fr);">
-          ${BIDS.map(b => `<button class="bid-btn" data-bid="${b}">${BID_DISPLAY[b] || b}</button>`).join('')}
+        <div class="bid-grid" id="task-bid-grid">
+          ${bids.map(b => `<button class="bid-btn" data-bid="${b}">${BID_DISPLAY[b] || b}</button>`).join('')}
         </div>
       </div>
     `;
@@ -660,24 +725,51 @@ export default class DailyMix {
     return correct;
   }
 
+  /** Build decision tree HTML from steps array */
+  _buildDecisionTree(correctAnswer) {
+    const steps = correctAnswer.steps || [];
+    if (steps.length === 0 && !correctAnswer.reason) return '';
+
+    const stepsHtml = steps.map(s => {
+      const icon = s.passed ? '✓' : '✗';
+      const cls = s.passed ? 'step-passed' : 'step-failed';
+      return `<div class="decision-step ${cls}">
+        <span class="step-icon">${icon}</span>
+        <span class="step-text">${s.text}</span>
+      </div>`;
+    }).join('');
+
+    return `
+      <div class="explanation decision-tree">
+        <h3>Путь решения</h3>
+        ${stepsHtml}
+        ${correctAnswer.reason ? `<p style="margin-top: 8px; font-weight: 600; border-top: 1px solid var(--border); padding-top: 8px;">${correctAnswer.reason}</p>` : ''}
+        ${correctAnswer.lessonRef ? `<p class="lesson-ref">Занятие ${correctAnswer.lessonRef}</p>` : ''}
+      </div>
+    `;
+  }
+
   /** Shared feedback renderer for opening/response bid tasks */
   _showBidFeedback(correct, correctAnswer, timeTaken) {
     const fb = document.getElementById('mix-feedback-area');
+    const treeHtml = this._buildDecisionTree(correctAnswer);
+
     if (correct) {
       fb.innerHTML = `
         <div class="feedback feedback-success">✓ Правильно! ${correctAnswer.bidDisplay || correctAnswer.bid} (${(timeTaken / 1000).toFixed(1)}с)</div>
+        ${treeHtml ? `<button class="btn btn-outline btn-block btn-sm" id="mix-explain-btn" style="margin-top: 8px;">Объяснить</button>
+        <div id="mix-explain-area" class="hidden">${treeHtml}</div>` : ''}
       `;
+      const explainBtn = document.getElementById('mix-explain-btn');
+      if (explainBtn) {
+        explainBtn.addEventListener('click', () => {
+          document.getElementById('mix-explain-area').classList.toggle('hidden');
+        });
+      }
     } else {
-      const steps = (correctAnswer.steps || []).map(s =>
-        `<p>${s.passed ? '✓' : '✗'} ${s.text}</p>`
-      ).join('');
       fb.innerHTML = `
         <div class="feedback feedback-error">✗ Неправильно. Правильный ответ: ${correctAnswer.bidDisplay || correctAnswer.bid}</div>
-        <div class="explanation">
-          ${steps ? `<h3>Объяснение</h3>${steps}` : ''}
-          ${correctAnswer.reason ? `<p style="margin-top: 8px; font-weight: 600;">${correctAnswer.reason}</p>` : ''}
-          ${correctAnswer.lessonRef ? `<p class="lesson-ref">Занятие ${correctAnswer.lessonRef}</p>` : ''}
-        </div>
+        ${treeHtml}
       `;
     }
   }

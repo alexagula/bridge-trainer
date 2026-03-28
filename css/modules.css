@@ -173,3 +173,30 @@
 .lesson-tag-3 { background: rgba(0, 200, 83, 0.15); color: #00c853; }
 .lesson-tag-4 { background: rgba(29, 155, 240, 0.15); color: #1d9bf0; }
 .lesson-tag-5 { background: rgba(156, 39, 176, 0.15); color: #9c27b0; }
+
+/* Decision tree (daily mix feedback) */
+.decision-tree h3 {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+}
+.decision-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.decision-step:last-of-type { border-bottom: none; }
+.step-icon {
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  font-weight: 700;
+}
+.step-passed .step-icon { color: var(--success); }
+.step-failed .step-icon { color: var(--error); }
+.step-passed .step-text { color: var(--text-secondary); }
+.step-failed .step-text { color: var(--text-primary); font-weight: 600; }
