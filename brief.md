@@ -1,88 +1,181 @@
-# Бриф: Исправление проблем безопасности (аудит от 2026-03-28)
+# Бриф: Улучшение Daily Mix — баги, session framing, error retry
 
 ## Что делаем и зачем
-По результатам аудита безопасности выявлено 5 проблем. Нужно исправить, не ломая функциональность.
+По результатам экспертного анализа (2026-03-28) выявлены 3 приоритетных улучшения для Daily Mix — основного режима тренировки. Цель: сделать тренировку стабильной, мотивирующей и эффективной для обучения.
 
 ---
 
-## Таск 1: Вынести регистрацию Service Worker в отдельный файл
+## Таск 1: Баг-фиксы Daily Mix
 
-**Файлы:** `index.html` (строки 133-142), новый `js/sw-register.js`
-**Что сделать:**
-1. Создать `js/sw-register.js` с содержимым inline-скрипта
-2. В index.html заменить inline `<script>` блок на `<script src="js/sw-register.js"></script>`
-**Важно:** НЕ type="module" — обычный скрипт.
+### 1a. Добавить tricks/defense в moduleTypes
 
----
+**Файл:** `js/trainers/daily-mix.js`, строка 126
+**Проблема:** `moduleTypes = ['opening', 'response', 'hcp', 'quiz', 'lead']` — не включает модули `tricks` и `defense`. Daily Mix никогда не генерирует задачи из этих модулей.
+**Фикс:** Добавить `'tricks'` и `'defense'` в массив `moduleTypes`.
 
-## Таск 2: Убрать inline onclick из index.html и app.js
-
-**Файлы:** `index.html`, `js/app.js`
-
-В `index.html` — убрать onclick атрибуты с 3 кнопок:
-- Строка 40: `<button id="notify-btn" ...>` — убрать `onclick="bridgeApp.enableNotifications()"` (id уже есть)
-- Строка 43: добавить `id="start-training-btn"`, убрать `onclick="window.bridgeApp.switchModule('hcp')"`
-- Строка 50: добавить `id="daily-mix-btn"`, убрать `onclick="window.bridgeApp.switchModule('mix')"`
-
-В `js/app.js` — добавить addEventListener в конструктор App (после `this.setupTabs()`):
+Также добавить обработку в `_generateTaskOfType()` (строка 167):
 ```javascript
-this.setupWelcomeButtons();
+case 'tricks':   return this._generateTricksTask();
+case 'defense':  return this._generateDefenseTask();
 ```
 
-Добавить метод:
+Новые методы:
 ```javascript
-setupWelcomeButtons() {
-  document.getElementById('notify-btn')?.addEventListener('click', () => this.enableNotifications());
-  document.getElementById('start-training-btn')?.addEventListener('click', () => this.switchModule('hcp'));
-  document.getElementById('daily-mix-btn')?.addEventListener('click', () => this.switchModule('mix'));
+_generateTricksTask() {
+  const deal = Deal.random();
+  const hand = deal.getHand('S');
+  return { type: 'tricks', deal, hand, sm2Id: null };
+}
+
+_generateDefenseTask() {
+  const scenarios = getDefenseScenariosByCategory('all');
+  const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+  return { type: 'defense', scenario, sm2Id: null };
 }
 ```
 
-Также в app.js строки 155 и 181 — кнопки "На главную" в innerHTML с onclick. Заменить:
-- Убрать onclick, добавить класс `go-home-btn`
-- После innerHTML добавить:
+Для tricks задачи — нужно импортировать countTopTricksForHand из trick-trainer.js (или вынести в core).
+Для defense задачи — нужно импортировать getDefenseScenariosByCategory из play/defense-scenarios.js.
+
+Также добавить рендер и проверку ответов для этих типов (showTask, _renderTricksTask, _renderDefenseTask, _checkTricksAnswer, _checkDefenseAnswer). Следовать паттерну существующих задач.
+
+Также добавить в `_attachTaskHandlers`, `typeLabels` (строка 348), и `moduleNames` (строка 794).
+
+### 1b. Добавить tricks/defense в SM-2 fallback
+
+**Файл:** `js/trainers/daily-mix.js`, строка 86-117
+**Проблема:** `_sm2ItemToTask()` не обрабатывает moduleType `tricks` и `defense` — fallback на opening.
+**Фикс:** Добавить:
 ```javascript
-this.content.querySelector('.go-home-btn')?.addEventListener('click', () => this.switchModule('welcome'));
+} else if (moduleType === 'tricks') {
+  task = this._generateTricksTask();
+} else if (moduleType === 'defense') {
+  task = this._generateDefenseTask();
+}
 ```
 
----
+### 1c. Убрать inline onclick на результатах
 
-## Таск 3: Экранировать err.message в innerHTML (XSS)
-
-**Файл:** `js/app.js`, строка 180
-**Проблема:** `${err.message}` в innerHTML — потенциальный XSS-вектор.
-**Фикс:** В innerHTML поставить пустой элемент:
+**Файл:** `js/trainers/daily-mix.js`, строка 828
+**Проблема:** `onclick="window.bridgeApp.switchModule('welcome')"` — inline onclick, нарушает CSP. `window.bridgeApp` удалён.
+**Фикс:** Убрать onclick, добавить id `mix-home-btn`:
 ```html
-<p class="text-muted mt-sm error-detail" style="font-size: 12px;"></p>
+<button class="btn btn-outline btn-block" id="mix-home-btn">На главную</button>
 ```
-После innerHTML:
+После innerHTML добавить addEventListener. Но! Модуль не имеет доступа к app.switchModule. Вместо этого: использовать навигацию через click на tab-bar:
 ```javascript
-const errEl = this.content.querySelector('.error-detail');
-if (errEl) errEl.textContent = err.message;
+document.getElementById('mix-home-btn')?.addEventListener('click', () => {
+  document.querySelector('.tab-item[data-module="welcome"]')?.click();
+});
 ```
 
 ---
 
-## Таск 4: Добавить Content-Security-Policy в index.html
+## Таск 2: Session Framing — прогресс-бар и финальный экран
 
-**Файл:** `index.html`
-**Что сделать:** Добавить мета-тег CSP в `<head>` после `<meta name="description">`:
+### 2a. Визуальный прогресс-бар (точки)
+
+**Файл:** `js/trainers/daily-mix.js` (render), `css/modules.css`
+
+Добавить визуальный прогресс-бар из 10 точек вместо текстового "1/10". Каждая точка показывает статус:
+- Серая — ещё не решена
+- Зелёная — правильно
+- Красная — неправильно
+- Пульсирующая — текущая задача
+
+HTML (вставить вместо stats-bar или над ним):
 ```html
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+<div class="session-progress" id="session-progress">
+  <!-- 10 dots generated dynamically -->
+</div>
 ```
-**Важно:** `script-src 'self'` БЕЗ `'unsafe-inline'` — потому что inline-скрипты вынесены (Таск 1) и onclick убраны (Таск 2).
+
+CSS (в modules.css):
+```css
+.session-progress {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+}
+.progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.3s, transform 0.3s;
+}
+.progress-dot.current {
+  background: var(--accent);
+  transform: scale(1.3);
+  animation: pulse 1.5s infinite;
+}
+.progress-dot.correct { background: var(--success); }
+.progress-dot.wrong { background: var(--error); }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+```
+
+JS: Метод `_renderProgressDots()` генерирует HTML. Массив `this.taskResults = []` (заполняется при ответе: 'correct' | 'wrong'). Вызывается в `render()` и обновляется в `checkAnswer()`.
+
+### 2b. Улучшенный финальный экран
+
+В `showResults()` добавить:
+- Визуальную полоску точек (те же 10, все раскрашены)
+- Среднее время на задачу
+- Кнопку "Тренировать слабые" если accuracy < 70%
 
 ---
 
-## Таск 5: Убрать window.bridgeApp
+## Таск 3: Intra-session Error Retry
 
-**Файл:** `js/app.js`, строка 310
-**Что сделать:** Удалить `window.bridgeApp = app;` — после Таска 2 не нужна (обработчики через addEventListener).
+**Файл:** `js/trainers/daily-mix.js`
+
+### Механика
+Когда пользователь ошибается, через 2-3 задачи показать **аналогичную** задачу того же типа (не ту же самую — новую сгенерированную).
+
+### Реализация
+1. В `checkAnswer()`, если ответ неправильный — добавить retry-задачу в сессию:
+```javascript
+if (!correct) {
+  this._scheduleRetry(task);
+}
+```
+
+2. Метод `_scheduleRetry(task)`:
+```javascript
+_scheduleRetry(task) {
+  // Insert a new task of same type 2-3 positions ahead
+  const retryTask = this._generateTaskOfType(task.type);
+  retryTask.isRetry = true;
+
+  const insertAt = Math.min(
+    this.taskIndex + 2 + Math.floor(Math.random() * 2), // 2-3 positions ahead
+    this.session.length  // but not beyond session end
+  );
+  this.session.splice(insertAt, 0, retryTask);
+  // SESSION_SIZE stays the same — retry tasks are bonus
+  // Update progress dots to show new total
+}
+```
+
+3. Retry-задачи не увеличивают SESSION_SIZE (сессия может стать 11-13 задач).
+4. В прогресс-баре retry-задачи показываются как дополнительные точки (меньшего размера или другого стиля).
+5. Badge `🔁` на retry-задачах чтобы пользователь понимал почему тема повторяется.
+
+### Ограничения
+- Максимум 3 retry-задачи за сессию (чтобы сессия не растягивалась бесконечно)
+- Retry не генерирует retry (нет рекурсии)
 
 ---
 
-## Ограничения
+## Общие ограничения
 - Vanilla JS, ES modules, без фреймворков
 - Не ломать PWA (service worker, offline, manifest)
 - Не ломать lazy-loading модулей
-- Минимальные изменения — только фиксы безопасности
+- Не ломать CSP (никаких inline onclick/scripts)
+- Терминология на русском (Т/К/Д/В, ♠♥♦♣)
+- Минимальные изменения в файлах за пределами daily-mix.js и css/modules.css

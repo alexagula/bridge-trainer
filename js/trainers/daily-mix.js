@@ -16,11 +16,13 @@ import {
   ALL_OPENING_BIDS, ALL_RESPONSE_BIDS, BID_DISPLAY
 } from '../utils/bid-filter.js';
 import { bidToRuleId } from '../utils/bid-utils.js';
+import { getDefenseScenariosByCategory } from '../play/defense-scenarios.js';
 
 const MODULE_ID = 'mix';
 const SESSION_SIZE = 10;
 const MAX_SM2_TASKS = 5;
 const MIN_MODULES = 3;
+const MAX_RETRIES = 3;
 
 // Openings used for response tasks
 const RESPONSE_OPENINGS = ['1♥', '1♠', '1БК', '1♣', '1♦', '2♣', '2БК'];
@@ -37,6 +39,8 @@ export default class DailyMix {
     this.startTime = 0;
     this.sessionErrors = [];
     this.sessionTimes = [];  // Time taken per task (ms), for variable reward calc
+    this.taskResults = [];   // 'correct' | 'wrong' per task for progress dots
+    this.retryCount = 0;     // Number of retry tasks inserted this session
   }
 
   init() {
@@ -45,6 +49,8 @@ export default class DailyMix {
     this.correctCount = 0;
     this.sessionErrors = [];
     this.sessionTimes = [];
+    this.taskResults = [];
+    this.retryCount = 0;
     this.render();
     this.showTask();
   }
@@ -108,6 +114,10 @@ export default class DailyMix {
       task = this._generateQuizTask();
     } else if (moduleType === 'hcp') {
       task = this._generateHcpTask();
+    } else if (moduleType === 'tricks') {
+      task = this._generateTricksTask();
+    } else if (moduleType === 'defense') {
+      task = this._generateDefenseTask();
     } else {
       console.warn(`SM-2: unknown module type "${moduleType}", falling back to opening`);
       task = this._generateOpeningTask();
@@ -123,7 +133,7 @@ export default class DailyMix {
   _generateFillTasks(count, coveredModules) {
     const allStats = ProgressTracker.getAllStats();
     // Module types available in the mix
-    const moduleTypes = ['opening', 'response', 'hcp', 'quiz', 'lead'];
+    const moduleTypes = ['opening', 'response', 'hcp', 'quiz', 'lead', 'tricks', 'defense'];
 
     // Sort by accuracy ascending (weakest first)
     const sorted = moduleTypes.slice().sort((a, b) => {
@@ -171,6 +181,8 @@ export default class DailyMix {
       case 'hcp':      return this._generateHcpTask();
       case 'quiz':     return this._generateQuizTask();
       case 'lead':     return this._generateLeadTask();
+      case 'tricks':   return this._generateTricksTask();
+      case 'defense':  return this._generateDefenseTask();
       default:         return this._generateHcpTask();
     }
   }
@@ -252,6 +264,31 @@ export default class DailyMix {
     };
   }
 
+  _generateTricksTask() {
+    const deal = Deal.random();
+    const hand = deal.getHand('S');
+    // Count top tricks for south hand only (defender perspective, simpler for mix)
+    const bySuit = {};
+    let total = 0;
+    for (const suitId of SUIT_ORDER) {
+      const cards = hand.getSuitCards(suitId);
+      let tricks = 0;
+      let expectedRank = 14;
+      for (const card of cards) {
+        if (card.rankValue === expectedRank) { tricks++; expectedRank--; } else break;
+      }
+      bySuit[suitId] = { tricks, cards };
+      total += tricks;
+    }
+    return { type: 'tricks', deal, hand, correctAnswer: total, tricksBySuit: bySuit, sm2Id: null };
+  }
+
+  _generateDefenseTask() {
+    const scenarios = getDefenseScenariosByCategory('all');
+    const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+    return { type: 'defense', scenario, sm2Id: null };
+  }
+
   /**
    * Interleave tasks so same-type tasks are spread out.
    * Simple approach: bucket by type, then round-robin pick.
@@ -299,6 +336,8 @@ export default class DailyMix {
         </div>
       </div>
 
+      <div class="session-progress" id="session-progress"></div>
+
       <div id="mix-task-area"></div>
       <div id="mix-feedback-area"></div>
 
@@ -310,11 +349,37 @@ export default class DailyMix {
     document.getElementById('mix-next-btn').addEventListener('click', () => this._onNext());
   }
 
+  /** Generate HTML for progress dots based on current session state */
+  _renderProgressDots() {
+    const total = this.session.length;
+    const dots = [];
+    for (let i = 0; i < total; i++) {
+      const task = this.session[i];
+      const isRetry = task.isRetry === true;
+      const sizeClass = isRetry ? ' dot-retry' : '';
+      if (i < this.taskIndex) {
+        const result = this.taskResults[i] || 'wrong';
+        dots.push(`<span class="progress-dot ${result}${sizeClass}" title="${result === 'correct' ? 'Правильно' : 'Неправильно'}"></span>`);
+      } else if (i === this.taskIndex) {
+        dots.push(`<span class="progress-dot current${sizeClass}"></span>`);
+      } else {
+        dots.push(`<span class="progress-dot${sizeClass}"></span>`);
+      }
+    }
+    return dots.join('');
+  }
+
+  _updateProgressDots() {
+    const el = document.getElementById('session-progress');
+    if (el) el.innerHTML = this._renderProgressDots();
+  }
+
   _updateStatsBar() {
     const taskNum = document.getElementById('mix-task-num');
     const correctEl = document.getElementById('mix-correct');
     const accuracyEl = document.getElementById('mix-accuracy');
-    if (taskNum) taskNum.textContent = `${this.taskIndex + 1}/${SESSION_SIZE}`;
+    const total = this.session.length;
+    if (taskNum) taskNum.textContent = `${this.taskIndex + 1}/${total}`;
     if (correctEl) correctEl.textContent = String(this.correctCount);
     if (accuracyEl) {
       if (this.taskIndex > 0) {
@@ -324,10 +389,11 @@ export default class DailyMix {
         accuracyEl.textContent = '—';
       }
     }
+    this._updateProgressDots();
   }
 
   showTask() {
-    if (this.taskIndex >= SESSION_SIZE) {
+    if (this.taskIndex >= this.session.length) {
       this.showResults();
       return;
     }
@@ -345,8 +411,17 @@ export default class DailyMix {
     nextBtn.classList.add('hidden');
 
     // Task type badge
-    const typeLabels = { opening: 'Открытие', response: 'Ответ', hcp: 'HCP', quiz: 'Тест', lead: 'Первый ход' };
-    const badgeHtml = `<div class="task-type-badge task-type-${task.type}">${typeLabels[task.type]}</div>`;
+    const typeLabels = {
+      opening: 'Открытие',
+      response: 'Ответ',
+      hcp: 'HCP',
+      quiz: 'Тест',
+      lead: 'Первый ход',
+      tricks: 'Взятки',
+      defense: 'Защита',
+    };
+    const retryBadge = task.isRetry ? ' <span class="retry-badge" title="Повтор ошибки">🔁</span>' : '';
+    const badgeHtml = `<div class="task-type-badge task-type-${task.type}">${typeLabels[task.type] || task.type}${retryBadge}</div>`;
 
     switch (task.type) {
       case 'opening':  taskArea.innerHTML = badgeHtml + this._renderOpeningTask(task); break;
@@ -354,6 +429,8 @@ export default class DailyMix {
       case 'hcp':      taskArea.innerHTML = badgeHtml + this._renderHcpTask(task); break;
       case 'quiz':     taskArea.innerHTML = badgeHtml + this._renderQuizTask(task); break;
       case 'lead':     taskArea.innerHTML = badgeHtml + this._renderLeadTask(task); break;
+      case 'tricks':   taskArea.innerHTML = badgeHtml + this._renderTricksTask(task); break;
+      case 'defense':  taskArea.innerHTML = badgeHtml + this._renderDefenseTask(task); break;
     }
 
     this._attachTaskHandlers(task);
@@ -461,6 +538,51 @@ export default class DailyMix {
     `;
   }
 
+  _renderTricksTask(task) {
+    return `
+      <div class="card-area">
+        <div class="card-area-title">Ваша рука (Юг). Сколько верных взяток?</div>
+        ${renderHand(task.hand)}
+        <p class="text-muted" style="font-size:13px; margin-top:8px;">Верная взятка = непрерывная секвенция сверху (Т, Т-К, Т-К-Д…)</p>
+      </div>
+      <div class="card-area">
+        <div class="card-area-title">Сколько верных взяток в этой руке?</div>
+        <div class="flex gap-sm" style="align-items:center;">
+          <input id="tricks-input" type="number" min="0" max="13" inputmode="numeric"
+            style="width:80px; font-size:20px; padding:10px; border-radius:8px;
+                   border:2px solid var(--border); background:var(--bg-secondary);
+                   color:var(--text-primary); text-align:center;"
+            placeholder="0" />
+          <button class="btn btn-primary" id="tricks-submit-btn" style="min-height:44px; padding:10px 20px;">
+            Ответить
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  _renderDefenseTask(task) {
+    const { scenario } = task;
+    const ctxLine = scenario.context
+      ? `Контракт: ${scenario.context.contract || ''}${scenario.context.partnerLead ? ' · Ход партнёра: ' + scenario.context.partnerLead : ''}`
+      : '';
+    return `
+      <div class="card-area">
+        <div class="card-area-title">${scenario.title}</div>
+        <p style="font-size:15px; line-height:1.6; margin:12px 0;">${scenario.description}</p>
+        ${ctxLine ? `<p class="text-muted" style="font-size:13px;">${ctxLine}</p>` : ''}
+      </div>
+      <div class="card-area">
+        <div class="card-area-title">${scenario.question}</div>
+        <div id="defense-options" style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+          ${scenario.options.map((opt, i) => `
+            <button class="bid-btn" data-defense-idx="${i}" style="text-align:left; padding:10px 14px; font-size:14px; min-height:44px;">${opt}</button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
   // --- Event attachment ---
 
   _attachTaskHandlers(task) {
@@ -509,6 +631,29 @@ export default class DailyMix {
         }
         break;
       }
+      case 'tricks': {
+        const submitBtn = document.getElementById('tricks-submit-btn');
+        const input = document.getElementById('tricks-input');
+        if (submitBtn && input) {
+          const doCheck = () => {
+            const val = parseInt(input.value, 10);
+            if (!isNaN(val)) this.checkAnswer(String(val));
+          };
+          submitBtn.addEventListener('click', doCheck);
+          input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doCheck(); });
+          setTimeout(() => input.focus(), 100);
+        }
+        break;
+      }
+      case 'defense': {
+        const optionsEl = document.getElementById('defense-options');
+        if (optionsEl) {
+          optionsEl.querySelectorAll('[data-defense-idx]').forEach(btn => {
+            btn.addEventListener('click', () => this.checkAnswer(btn.dataset.defenseIdx));
+          });
+        }
+        break;
+      }
     }
   }
 
@@ -528,13 +673,41 @@ export default class DailyMix {
       case 'hcp':      correct = this._checkHcpAnswer(userAnswer, task, timeTaken); break;
       case 'quiz':     correct = this._checkQuizAnswer(userAnswer, task, timeTaken); break;
       case 'lead':     correct = this._checkLeadAnswer(userAnswer, task, timeTaken); break;
+      case 'tricks':   correct = this._checkTricksAnswer(userAnswer, task, timeTaken); break;
+      case 'defense':  correct = this._checkDefenseAnswer(userAnswer, task, timeTaken); break;
     }
 
-    if (correct) this.correctCount++;
+    if (correct) {
+      this.correctCount++;
+      this.taskResults.push('correct');
+    } else {
+      this.taskResults.push('wrong');
+      // Schedule retry if not already a retry and under limit
+      if (!task.isRetry && this.retryCount < MAX_RETRIES) {
+        this._scheduleRetry(task);
+      }
+    }
     this.sessionTimes.push(timeTaken);
+
+    // Update progress dots after answer
+    this._updateProgressDots();
 
     document.getElementById('mix-next-btn').classList.remove('hidden');
     document.getElementById('mix-next-btn').focus();
+  }
+
+  _scheduleRetry(task) {
+    const retryTask = this._generateTaskOfType(task.type);
+    retryTask.isRetry = true;
+
+    const insertAt = Math.min(
+      this.taskIndex + 2 + Math.floor(Math.random() * 2), // 2-3 positions ahead
+      this.session.length  // not beyond session end
+    );
+    this.session.splice(insertAt, 0, retryTask);
+    this.retryCount++;
+    // Update dots to reflect new session length
+    this._updateProgressDots();
   }
 
   _checkOpeningAnswer(userBid, task, timeTaken) {
@@ -698,6 +871,79 @@ export default class DailyMix {
     return correct;
   }
 
+  _checkTricksAnswer(userAnswer, task, timeTaken) {
+    const correct = parseInt(userAnswer, 10) === task.correctAnswer;
+
+    ProgressTracker.record('tricks', { correct, time: timeTaken });
+
+    const input = document.getElementById('tricks-input');
+    if (input) input.classList.add(correct ? 'correct' : 'wrong');
+
+    const fb = document.getElementById('mix-feedback-area');
+    if (correct) {
+      fb.innerHTML = `
+        <div class="feedback feedback-success">✓ Правильно! ${task.correctAnswer} верных взяток (${(timeTaken / 1000).toFixed(1)}с)</div>
+      `;
+    } else {
+      // Build suit breakdown for explanation
+      const { SUITS: SUITS_MAP } = { SUITS: { SPADES: { symbol: '♠' }, HEARTS: { symbol: '♥' }, DIAMONDS: { symbol: '♦' }, CLUBS: { symbol: '♣' } } };
+      const suitOrder = ['SPADES', 'HEARTS', 'DIAMONDS', 'CLUBS'];
+      const rows = suitOrder.map(suitId => {
+        const data = task.tricksBySuit[suitId];
+        if (!data) return '';
+        const suitSymbols = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
+        const sym = suitSymbols[suitId];
+        const cardsStr = data.cards.length > 0 ? data.cards.map(c => c.rank.display).join('-') : '—';
+        return `<div style="display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid var(--border);">
+          <span><strong>${sym}</strong> ${cardsStr}</span>
+          <strong style="color:${data.tricks > 0 ? 'var(--success)' : 'var(--text-secondary)'}">${data.tricks}</strong>
+        </div>`;
+      }).join('');
+      fb.innerHTML = `
+        <div class="feedback feedback-error">✗ Неправильно. Верных взяток: ${task.correctAnswer}, вы ответили: ${userAnswer}</div>
+        <div class="explanation">
+          ${rows}
+          <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">Верная взятка = непрерывная секвенция от туза (Т, Т-К, Т-К-Д…)</p>
+        </div>
+      `;
+    }
+    return correct;
+  }
+
+  _checkDefenseAnswer(userAnswer, task, timeTaken) {
+    const correct = parseInt(userAnswer, 10) === task.scenario.correct;
+
+    ProgressTracker.record('defense', { correct, time: timeTaken });
+
+    // Highlight buttons
+    const optionsEl = document.getElementById('defense-options');
+    if (optionsEl) {
+      optionsEl.querySelectorAll('[data-defense-idx]').forEach(btn => {
+        const idx = parseInt(btn.dataset.defenseIdx, 10);
+        if (idx === task.scenario.correct) {
+          btn.classList.add('correct');
+        } else if (idx === parseInt(userAnswer, 10) && !correct) {
+          btn.classList.add('wrong');
+        }
+      });
+    }
+
+    const fb = document.getElementById('mix-feedback-area');
+    if (correct) {
+      fb.innerHTML = `
+        <div class="feedback feedback-success">✓ Правильно! (${(timeTaken / 1000).toFixed(1)}с)</div>
+        <div class="explanation"><p>${task.scenario.explanation}</p></div>
+      `;
+    } else {
+      fb.innerHTML = `
+        <div class="feedback feedback-error">✗ Неправильно. Правильный ответ: ${task.scenario.options[task.scenario.correct]}</div>
+        <div class="explanation"><p>${task.scenario.explanation}</p></div>
+      `;
+      this.sessionErrors.push({ module: 'defense', reason: task.scenario.explanation.slice(0, 120) });
+    }
+    return correct;
+  }
+
   /** Build decision tree HTML from steps array */
   _buildDecisionTree(correctAnswer) {
     const steps = correctAnswer.steps || [];
@@ -762,7 +1008,7 @@ export default class DailyMix {
   _onNext() {
     this.taskIndex++;
     this._updateStatsBar();
-    if (this.taskIndex >= SESSION_SIZE) {
+    if (this.taskIndex >= this.session.length) {
       this.showResults();
     } else {
       this.showTask();
@@ -772,8 +1018,9 @@ export default class DailyMix {
   // --- Results screen ---
 
   showResults() {
-    const accuracy = SESSION_SIZE > 0
-      ? Math.round((this.correctCount / SESSION_SIZE) * 100)
+    const totalTasks = this.session.length;
+    const accuracy = totalTasks > 0
+      ? Math.round((this.correctCount / totalTasks) * 100)
       : 0;
 
     const emoji = accuracy >= 80 ? '🏆' : accuracy >= 60 ? '👍' : '💪';
@@ -797,11 +1044,32 @@ export default class DailyMix {
       hcp:      '🔢 HCP',
       quiz:     '✅ Тест',
       lead:     '➡️ Ход',
+      tricks:   '🎯 Взятки',
+      defense:  '🛡️ Защита',
     };
 
     const moduleList = Object.entries(moduleCounts)
       .map(([mod, n]) => `<span class="text-muted">${moduleNames[mod] || mod}: ${n}</span>`)
       .join(' · ');
+
+    // Average time per task
+    const avgTimeSec = this.sessionTimes.length > 0
+      ? (this.sessionTimes.reduce((s, t) => s + t, 0) / this.sessionTimes.length / 1000).toFixed(1)
+      : null;
+
+    // Final progress dots HTML
+    const finalDots = this.taskResults.map((res, i) => {
+      const isRetry = this.session[i] && this.session[i].isRetry;
+      const sizeClass = isRetry ? ' dot-retry' : '';
+      return `<span class="progress-dot ${res}${sizeClass}"></span>`;
+    }).join('');
+
+    // "Train weak" button if accuracy < 70%
+    const trainWeakBtn = accuracy < 70
+      ? `<button class="btn btn-outline btn-block" id="mix-train-weak-btn" style="margin-bottom:12px;">
+           Тренировать слабые модули
+         </button>`
+      : '';
 
     this.container.innerHTML = `
       <div class="module-container text-center" style="padding: 32px 16px;">
@@ -812,11 +1080,14 @@ export default class DailyMix {
           ${accuracy}%
         </div>
         <p class="text-muted" style="margin-bottom: 8px;">
-          Правильных ответов: ${this.correctCount} из ${SESSION_SIZE}
+          Правильных ответов: ${this.correctCount} из ${totalTasks}
         </p>
-        <p class="text-muted" style="font-size: 13px; margin-bottom: 24px;">
+        ${avgTimeSec ? `<p class="text-muted" style="font-size:13px; margin-bottom:8px;">Среднее время: ${avgTimeSec}с на задачу</p>` : ''}
+        <p class="text-muted" style="font-size: 13px; margin-bottom: 16px;">
           ${moduleList}
         </p>
+
+        <div class="session-progress" style="margin-bottom:24px;">${finalDots}</div>
 
         ${this._buildRecapHtml()}
 
@@ -825,13 +1096,29 @@ export default class DailyMix {
         <button class="btn btn-primary btn-block btn-lg" id="mix-restart-btn" style="margin-bottom: 12px;">
           Новая сессия
         </button>
-        <button class="btn btn-outline btn-block" onclick="window.bridgeApp.switchModule('welcome')">
+        ${trainWeakBtn}
+        <button class="btn btn-outline btn-block" id="mix-home-btn">
           На главную
         </button>
       </div>
     `;
 
     document.getElementById('mix-restart-btn').addEventListener('click', () => this.init());
+
+    const homeBtn = document.getElementById('mix-home-btn');
+    if (homeBtn) {
+      homeBtn.addEventListener('click', () => {
+        document.querySelector('.tab-item[data-module="welcome"]')?.click();
+      });
+    }
+
+    const trainWeakBtnEl = document.getElementById('mix-train-weak-btn');
+    if (trainWeakBtnEl) {
+      trainWeakBtnEl.addEventListener('click', () => {
+        // Restart session — SM-2 will prioritise weak items automatically
+        this.init();
+      });
+    }
   }
 
   /** Build recap HTML from session errors (up to 3 unique reasons) */
@@ -870,7 +1157,7 @@ export default class DailyMix {
 
     // Perfect session reward
     if (accuracy === 100) {
-      rewards.push(`<div class="reward-item">🏆 Идеальная сессия! Все ${SESSION_SIZE} задач правильно!</div>`);
+      rewards.push(`<div class="reward-item">🏆 Идеальная сессия! Все ${this.session.length} задач правильно!</div>`);
     }
 
     // Bridge fact for good performance (accuracy >= 80%)
@@ -880,7 +1167,7 @@ export default class DailyMix {
     }
 
     // Speed record reward: compare avgTime of this session to historical avg per module
-    if (this.sessionTimes.length === SESSION_SIZE) {
+    if (this.sessionTimes.length >= SESSION_SIZE) {
       const sessionAvgTime = Math.round(
         this.sessionTimes.reduce((sum, t) => sum + t, 0) / SESSION_SIZE
       );
