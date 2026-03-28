@@ -1,6 +1,6 @@
 // Bridge Trainer — Opening Lead Trainer (Module 7)
 import { Deal } from '../core/card.js';
-import { SUITS, SUIT_ORDER } from '../core/constants.js';
+import { SUITS } from '../core/constants.js';
 import { evaluateHand } from '../core/evaluator.js';
 import { recommendLead } from '../play/lead.js';
 import { ProgressTracker } from '../progress/tracker.js';

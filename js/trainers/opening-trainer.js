@@ -1,9 +1,8 @@
 // Bridge Trainer — Opening Bid Trainer (Module 2)
-import { Deal } from '../core/card.js';
 import { SUITS } from '../core/constants.js';
 import { evaluateHand } from '../core/evaluator.js';
 import { dealForOpening } from '../core/dealer.js';
-import { determineOpening, getOpeningOptions } from '../bidding/opening.js';
+import { determineOpening } from '../bidding/opening.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand, renderStats } from '../app.js';
 import { pickRelevantBids, ALL_OPENING_BIDS, BID_DISPLAY } from '../utils/bid-filter.js';

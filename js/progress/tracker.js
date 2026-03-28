@@ -3,6 +3,14 @@
 const STORAGE_KEY = 'bridge-trainer-progress';
 const SM2_KEY = 'bridge-trainer-sm2';
 const USER_KEY = 'bridge-analytics-user';
+const ONBOARDING_KEY = 'bridge-onboarding';
+const MAX_RESULTS = 500;
+const MAX_SM2_ITEMS = 200;
+const DEBOUNCE_MS = 500;
+const MS_PER_DAY = 86400000;
+const SM2_GRADUATION_DAYS = 30;
+const SM2_MIN_EASE = 1.3;
+const SM2_DEFAULT_EASE = 2.5;
 
 let _cache = null;
 let _sm2Cache = null;
@@ -24,7 +32,7 @@ function saveData(data) {
     _saveTimer = setTimeout(() => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(_cache));
       _saveTimer = null;
-    }, 500);
+    }, DEBOUNCE_MS);
   }
 }
 
@@ -38,19 +46,21 @@ function loadSM2Data() {
 }
 
 function saveSM2Data(data) {
-  // Keep max 200 items
-  if (data.items.length > 200) {
+  // Keep max MAX_SM2_ITEMS items
+  if (data.items.length > MAX_SM2_ITEMS) {
     data.items.sort((a, b) => a.nextReview - b.nextReview);
-    data.items = data.items.slice(0, 200);
+    data.items = data.items.slice(0, MAX_SM2_ITEMS);
   }
   _sm2Cache = data;
   if (!_sm2SaveTimer) {
     _sm2SaveTimer = setTimeout(() => {
       localStorage.setItem(SM2_KEY, JSON.stringify(_sm2Cache));
       _sm2SaveTimer = null;
-    }, 500);
+    }, DEBOUNCE_MS);
   }
 }
+
+export { ONBOARDING_KEY };
 
 export const ProgressTracker = {
   /**
@@ -68,9 +78,9 @@ export const ProgressTracker = {
       ts: Date.now(),
     });
 
-    // Keep last 500 results per module
-    if (mod.results.length > 500) {
-      mod.results = mod.results.slice(-500);
+    // Keep last MAX_RESULTS results per module
+    if (mod.results.length > MAX_RESULTS) {
+      mod.results = mod.results.slice(-MAX_RESULTS);
     }
 
     // Streak
@@ -178,7 +188,7 @@ export const ProgressTracker = {
     let item = sm2.items.find(i => i.id === situationId);
 
     if (!item) {
-      item = { id: situationId, module, description, easeFactor: 2.5, repetitions: 0 };
+      item = { id: situationId, module, description, easeFactor: SM2_DEFAULT_EASE, repetitions: 0 };
       sm2.items.push(item);
     }
 
@@ -186,7 +196,7 @@ export const ProgressTracker = {
     item.interval = 1;
     item.repetitions = 0;
     item.lastReview = Date.now();
-    item.nextReview = Date.now() + 1 * 86400000; // tomorrow
+    item.nextReview = Date.now() + 1 * MS_PER_DAY; // tomorrow
 
     saveSM2Data(sm2);
   },
@@ -208,13 +218,13 @@ export const ProgressTracker = {
 
     // Update ease factor (SM-2 formula, quality=4 for correct)
     const quality = 4;
-    item.easeFactor = Math.max(1.3, item.easeFactor + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+    item.easeFactor = Math.max(SM2_MIN_EASE, item.easeFactor + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
 
     item.lastReview = Date.now();
-    item.nextReview = Date.now() + item.interval * 86400000;
+    item.nextReview = Date.now() + item.interval * MS_PER_DAY;
 
-    // Remove if interval > 30 days (well learned)
-    if (item.interval > 30) {
+    // Remove if interval > SM2_GRADUATION_DAYS (well learned)
+    if (item.interval > SM2_GRADUATION_DAYS) {
       sm2.items = sm2.items.filter(i => i.id !== situationId);
     }
 
@@ -283,7 +293,7 @@ export const ProgressTracker = {
    */
   getMaxLesson() {
     try {
-      const data = JSON.parse(localStorage.getItem('bridge-onboarding'));
+      const data = JSON.parse(localStorage.getItem(ONBOARDING_KEY));
       return data?.maxLesson || 10;
     } catch { return 10; }
   },
@@ -293,7 +303,7 @@ export const ProgressTracker = {
    * @param {number} n - lesson number 1-10
    */
   setMaxLesson(n) {
-    localStorage.setItem('bridge-onboarding', JSON.stringify({ maxLesson: n }));
+    localStorage.setItem(ONBOARDING_KEY, JSON.stringify({ maxLesson: n }));
   },
 
   /**

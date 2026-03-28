@@ -181,30 +181,3 @@ function result(bid, reason, lessonRef, steps) {
   let bidDisplay = bid;
   return { bid, bidDisplay, reason, lessonRef, steps };
 }
-
-/**
- * Get all possible opening bids for the UI
- */
-export function getOpeningOptions() {
-  return [
-    { bid: 'пас', display: 'Пас' },
-    { bid: '1♣', display: '1♣' },
-    { bid: '1♦', display: '1♦' },
-    { bid: '1♥', display: '1♥' },
-    { bid: '1♠', display: '1♠' },
-    { bid: '1БК', display: '1БК' },
-    { bid: '2♣', display: '2♣ ФГ' },
-    { bid: '2♦', display: '2♦' },
-    { bid: '2♥', display: '2♥' },
-    { bid: '2♠', display: '2♠' },
-    { bid: '2БК', display: '2БК' },
-    { bid: '3♣', display: '3♣' },
-    { bid: '3♦', display: '3♦' },
-    { bid: '3♥', display: '3♥' },
-    { bid: '3♠', display: '3♠' },
-    { bid: '4♣', display: '4♣' },
-    { bid: '4♦', display: '4♦' },
-    { bid: '4♥', display: '4♥' },
-    { bid: '4♠', display: '4♠' },
-  ];
-}

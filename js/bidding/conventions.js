@@ -95,23 +95,6 @@ export function blackwoodResponse(hand, trumpSuit) {
   };
 }
 
-/**
- * Decide after Blackwood response: slam or stop at 5
- */
-export function blackwoodDecision(myAces, partnerResponse) {
-  // partnerResponse count
-  const partnerCount = partnerResponse.count;
-  const total = myAces + partnerCount;
-
-  if (total >= 5) {
-    return { bid: '7', reason: `Все 5 → большой шлем!` };
-  }
-  if (total >= 4) {
-    return { bid: '6', reason: `На двоих ${total} из 5 → малый шлем` };
-  }
-  return { bid: '5', reason: `На двоих ${total} из 5, тузов не хватает → стоп на 5` };
-}
-
 // ===================== TAKEOUT DOUBLE (Lesson 7) =====================
 
 /**
@@ -187,12 +170,3 @@ export function respondToTakeoutDouble(hand, doubledSuit) {
   return { bid: `${level}${sym}`, reason: `0-9 HCP → ${level}${sym} (лучшая масть)` };
 }
 
-/**
- * Is this double takeout or penalty?
- */
-export function isDoubleType(auction) {
-  // Simplified: if no one on our side has bid yet AND opponent bid a suit (not NT) → takeout
-  // If opponent opened 1NT → penalty
-  // Late in auction → penalty
-  return 'takeout'; // Default for trainer simplification
-}

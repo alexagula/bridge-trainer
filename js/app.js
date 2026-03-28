@@ -1,6 +1,6 @@
 // Bridge Trainer — SPA Router and Module Lifecycle
-import { SUITS, SUIT_ORDER } from './core/constants.js';
-import { ProgressTracker } from './progress/tracker.js';
+import { SUITS } from './core/constants.js';
+import { ProgressTracker, ONBOARDING_KEY } from './progress/tracker.js';
 import { createProgressView } from './progress/progress-view.js';
 import { NotificationManager } from './notifications.js';
 
@@ -96,7 +96,7 @@ class App {
     });
 
     // Show onboarding on first visit (no bridge-onboarding in localStorage)
-    if (!localStorage.getItem('bridge-onboarding')) {
+    if (!localStorage.getItem(ONBOARDING_KEY)) {
       this.showOnboarding();
     }
   }
@@ -330,7 +330,7 @@ class App {
 
       welcome.querySelector('#change-level-link')?.addEventListener('click', (e) => {
         e.preventDefault();
-        localStorage.removeItem('bridge-onboarding');
+        localStorage.removeItem(ONBOARDING_KEY);
         this.showOnboarding();
       });
     } else {
@@ -521,7 +521,7 @@ window.addEventListener('beforeunload', () => {
 const initialHash = window.location.hash.slice(1);
 if (initialHash && MODULE_LOADERS[initialHash]) {
   app.switchModule(initialHash);
-} else if (localStorage.getItem('bridge-onboarding')) {
+} else if (localStorage.getItem(ONBOARDING_KEY)) {
   // Auto-launch daily mix if there are SM-2 due items (only if onboarding already done)
   const dueCount = ProgressTracker.getDueCount();
   if (dueCount > 0) {

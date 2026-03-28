@@ -1,4 +1,5 @@
 // Bridge Trainer — Progress View (extracted from app.js)
+import { ONBOARDING_KEY } from './tracker.js';
 
 /**
  * Progress view factory
@@ -103,7 +104,7 @@ export function createProgressView(tracker) {
       });
 
       document.getElementById('change-level-btn')?.addEventListener('click', () => {
-        localStorage.removeItem('bridge-onboarding');
+        localStorage.removeItem(ONBOARDING_KEY);
         document.querySelector('.tab-item[data-module="welcome"]')?.click();
       });
     },

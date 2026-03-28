@@ -1,87 +1,74 @@
-# Бриф: 5 фиксов по результатам Logic Review (2026-03-28)
+# Бриф: Фаза 1 — Быстрые победы (Code Quality Review)
 
 ## Что делаем и зачем
-Logic Review выявил 3 FAIL и 2 важных WARN. Исправляем логические ошибки в бридж-правилах, UX-баги и проблемы целостности данных.
+Удаляем мёртвый код, неиспользуемые импорты/экспорты, вынесим магические строки в константы. По результатам Code Quality Review — 9 мёртвых экспортов, 11 неиспользуемых импортов, 2 мёртвых файла.
 
 ---
 
-## Таск 1: respondTo1NT — порядок проверок 5+/6+ мажора
+## Таск 1: Удалить неиспользуемые импорты (11 штук)
 
-**Файл:** `js/bidding/response.js`, строки 136-139
-**Проблема:** Проверки `>=5` стоят раньше `>=6`. Рука с 10+ HCP и 6 пиками получает 3♠ вместо 4♠ (гейм). Код никогда не доходит до проверки `>=6`.
-**Фикс:** Поменять порядок — проверять 6+ перед 5+:
-```javascript
-// СНАЧАЛА 6+ (гейм), потом 5+ (форсинг)
-if (hcp >= 10 && hand.suitLength('SPADES') >= 6) return res('4♠', ...);
-if (hcp >= 10 && hand.suitLength('HEARTS') >= 6) return res('4♥', ...);
-if (hcp >= 10 && hand.suitLength('SPADES') >= 5) return res('3♠', ...);
-if (hcp >= 10 && hand.suitLength('HEARTS') >= 5) return res('3♥', ...);
-```
+| Файл | Убрать импорт |
+|------|--------------|
+| js/trainers/opening-trainer.js | `Deal` из card.js, `getOpeningOptions` из opening.js |
+| js/trainers/response-trainer.js | `getResponseOptions` из response.js |
+| js/trainers/convention-drill.js | `SUIT_ORDER` из constants.js, `staymanRebid` и `canTakeoutDouble` из conventions.js |
+| js/trainers/lead-trainer.js | `SUIT_ORDER` из constants.js |
+| js/app.js | `SUIT_ORDER` из constants.js |
+| js/core/card.js | `NT` и `SEATS` из constants.js |
+| js/bidding/sequence.js | `SUIT_ORDER` из constants.js |
 
----
-
-## Таск 2: NaN guard в hcp-trainer
-
-**Файл:** `js/trainers/hcp-trainer.js`, метод checkAnswer
-**Проблема:** `parseInt("")` = NaN. При пустом вводе или нечисловом — записывается как ошибка, в фидбеке отображается "NaN".
-**Фикс:** Добавить `isNaN` проверку для всех числовых case (Q_HCP, Q_DIST, Q_TOTAL):
-```javascript
-case Q_HCP: {
-  const input = document.getElementById('answer-input');
-  userAnswer = parseInt(input.value);
-  if (isNaN(userAnswer)) return;  // <-- добавить
-  correctAnswer = this.evaluation.hcp;
-  // ...
-}
-```
-Аналогично для Q_DIST и Q_TOTAL.
+**ВАЖНО:** Не удалять используемые импорты из той же строки! Прочитай файл, проверь что именно используется.
 
 ---
 
-## Таск 3: beforeunload flush в app.js
+## Таск 2: Удалить мёртвые экспорты (9 штук)
 
-**Файл:** `js/app.js`
-**Проблема:** Debounce 500ms в saveData() — при закрытии вкладки последний ответ может потеряться.
-**Фикс:** Добавить в app.js после инициализации:
-```javascript
-window.addEventListener('beforeunload', () => {
-  ProgressTracker.flush();
-});
-```
+| Файл | Удалить функцию/экспорт |
+|------|------------------------|
+| js/bidding/opening.js | `getOpeningOptions()` |
+| js/bidding/response.js | `getResponseOptions()` |
+| js/bidding/conventions.js | `blackwoodDecision()`, `isDoubleType()` |
+| js/core/evaluator.js | `describeHand()`, `getOpeningQualification()` |
 
----
-
-## Таск 4: Math.random position fix в opening-trainer
-
-**Файл:** `js/trainers/opening-trainer.js`, строка 79
-**Проблема:** `Math.ceil(Math.random() * 4)` — при `Math.random() === 0` даёт `Math.ceil(0) = 0`. Position 0 невалидна.
-**Фикс:**
-```javascript
-this.position = Math.floor(Math.random() * 4) + 1;
-```
+**ВАЖНО:** Перед удалением — grep по проекту чтобы убедиться что функция нигде не используется.
 
 ---
 
-## Таск 5: resetModule() должен чистить SM-2 items
+## Таск 3: Убрать мёртвые файлы из SW кэша
 
-**Файл:** `js/progress/tracker.js`, метод resetModule()
-**Проблема:** Удаляет только progress модуля, но SM-2 items остаются → задачи продолжают появляться в daily-mix.
-**Фикс:**
-```javascript
-resetModule(moduleId) {
-  const data = loadData();
-  delete data[moduleId];
-  saveData(data);
-  // Also remove SM-2 items for this module
-  const sm2 = loadSM2Data();
-  sm2.items = sm2.items.filter(i => i.module !== moduleId);
-  saveSM2Data(sm2);
-}
+В service-worker.js удалить из ASSETS:
+- `'./js/play/signals.js'` (если есть)
+- `'./js/trainers/base-trainer.js'` (если есть)
+
+Сами файлы НЕ удалять. Обновить CACHE_NAME (инкрементировать версию).
+
+---
+
+## Таск 4: Вынести магические значения в константы
+
+**Файл:** js/progress/tracker.js — добавить константы и заменить bare numbers:
 ```
+ONBOARDING_KEY = 'bridge-onboarding'
+MAX_RESULTS = 500
+MAX_SM2_ITEMS = 200
+DEBOUNCE_MS = 500
+MS_PER_DAY = 86400000
+SM2_GRADUATION_DAYS = 30
+SM2_MIN_EASE = 1.3
+SM2_DEFAULT_EASE = 2.5
+```
+
+Экспортировать ONBOARDING_KEY и импортировать в js/app.js и js/progress/progress-view.js (заменить хардкод 'bridge-onboarding').
+
+---
+
+## Таск 5: Удалить debug console.log
+
+js/sw-register.js строка 5: удалить `console.log('SW registered:', reg.scope)`.
 
 ---
 
 ## Ограничения
-- Минимальные изменения — только фиксы, не рефакторинг
-- Не ломать существующую функциональность
-- Не ломать CSP
+- Не ломать функциональность
+- Grep перед каждым удалением
+- Обновить CACHE_NAME в service-worker.js

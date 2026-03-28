@@ -2,7 +2,7 @@
 import { SUITS } from '../core/constants.js';
 import { evaluateHand } from '../core/evaluator.js';
 import { dealForResponse } from '../core/dealer.js';
-import { determineResponse, getResponseOptions } from '../bidding/response.js';
+import { determineResponse } from '../bidding/response.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand, renderStats } from '../app.js';
 import { pickRelevantBids, ALL_RESPONSE_BIDS, BID_DISPLAY } from '../utils/bid-filter.js';

@@ -316,37 +316,6 @@ function respondToWeakTwo(hand, suitId) {
   return res('пас', 'Нет баланса на гейм → пас', 9, steps);
 }
 
-// --- Response options for UI ---
-export function getResponseOptions(opening) {
-  const basic = [
-    { bid: 'пас', display: 'Пас' },
-    { bid: '1♣', display: '1♣' },
-    { bid: '1♦', display: '1♦' },
-    { bid: '1♥', display: '1♥' },
-    { bid: '1♠', display: '1♠' },
-    { bid: '1БК', display: '1БК' },
-    { bid: '2♣', display: '2♣' },
-    { bid: '2♦', display: '2♦' },
-    { bid: '2♥', display: '2♥' },
-    { bid: '2♠', display: '2♠' },
-    { bid: '2БК', display: '2БК' },
-    { bid: '3♣', display: '3♣' },
-    { bid: '3♦', display: '3♦' },
-    { bid: '3♥', display: '3♥' },
-    { bid: '3♠', display: '3♠' },
-    { bid: '3БК', display: '3БК' },
-    { bid: '4♣', display: '4♣' },
-    { bid: '4♦', display: '4♦' },
-    { bid: '4♥', display: '4♥' },
-    { bid: '4♠', display: '4♠' },
-    { bid: '4БК', display: '4БК' },
-    { bid: '5♣', display: '5♣' },
-    { bid: '5♦', display: '5♦' },
-    { bid: '6БК', display: '6БК' },
-  ];
-  return basic;
-}
-
 function res(bid, reason, lessonRef, steps) {
   return { bid, bidDisplay: bid === 'пас' ? 'Пас' : bid, reason, lessonRef, steps };
 }

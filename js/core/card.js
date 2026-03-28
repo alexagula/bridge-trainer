@@ -1,5 +1,5 @@
 // Bridge Trainer — Card, Hand, Deck, Deal classes
-import { SUITS, SUIT_ORDER, MAJOR_SUITS, MINOR_SUITS, RANKS, RANK_VALUES, SEATS, NT, VULNERABILITY } from './constants.js';
+import { SUITS, SUIT_ORDER, MAJOR_SUITS, MINOR_SUITS, RANKS, RANK_VALUES, VULNERABILITY } from './constants.js';
 
 export class Card {
   constructor(suitId, rankValue) {

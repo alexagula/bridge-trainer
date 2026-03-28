@@ -1,5 +1,5 @@
 // Bridge Trainer — Bidding Sequence State Machine
-import { NEXT_SEAT, PARTNER_SEAT, SUITS, SUIT_ORDER } from '../core/constants.js';
+import { NEXT_SEAT, PARTNER_SEAT, SUITS } from '../core/constants.js';
 import { determineOpening } from './opening.js';
 import { determineResponse } from './response.js';
 import { determineOvercall } from './overcall.js';

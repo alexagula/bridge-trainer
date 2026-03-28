@@ -1,9 +1,9 @@
 // Bridge Trainer — Convention Drills (Module 5): Stayman, Blackwood, Takeout Double
 import { Deal } from '../core/card.js';
-import { SUITS, SUIT_ORDER } from '../core/constants.js';
+import { SUITS } from '../core/constants.js';
 import { evaluateHand } from '../core/evaluator.js';
 import { dealWithConstraints, combineConstraints, hcpRange, balanced, no5CardMajor, has4CardMajor } from '../core/dealer.js';
-import { staymanResponse, staymanRebid, blackwoodResponse, respondToTakeoutDouble, canTakeoutDouble } from '../bidding/conventions.js';
+import { staymanResponse, blackwoodResponse, respondToTakeoutDouble } from '../bidding/conventions.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand, renderStats } from '../app.js';
 
