@@ -246,6 +246,7 @@ export default class HCPTrainer {
       case Q_HCP: {
         const input = document.getElementById('answer-input');
         userAnswer = parseInt(input.value);
+        if (isNaN(userAnswer)) { this.answered = false; return; }
         correctAnswer = this.evaluation.hcp;
         correct = userAnswer === correctAnswer;
         input.classList.add(correct ? 'correct' : 'wrong');
@@ -254,6 +255,7 @@ export default class HCPTrainer {
       case Q_DIST: {
         const input = document.getElementById('answer-input');
         userAnswer = parseInt(input.value);
+        if (isNaN(userAnswer)) { this.answered = false; return; }
         correctAnswer = this.evaluation.distributionPoints;
         correct = userAnswer === correctAnswer;
         input.classList.add(correct ? 'correct' : 'wrong');
@@ -262,6 +264,7 @@ export default class HCPTrainer {
       case Q_TOTAL: {
         const input = document.getElementById('answer-input');
         userAnswer = parseInt(input.value);
+        if (isNaN(userAnswer)) { this.answered = false; return; }
         correctAnswer = this.evaluation.totalPoints;
         correct = userAnswer === correctAnswer;
         input.classList.add(correct ? 'correct' : 'wrong');

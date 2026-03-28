@@ -132,11 +132,11 @@ function respondTo1NT(hand) {
     return res('2♣', 'Стейман: 4+ в мажоре, ищем фит', 3, steps);
   }
 
-  // 5+ card major with game values
-  if (hcp >= 10 && hand.suitLength('SPADES') >= 5) return res('3♠', '10+ HCP, 5 пик → ФГ 3♠', 3, steps);
-  if (hcp >= 10 && hand.suitLength('HEARTS') >= 5) return res('3♥', '10+ HCP, 5 червей → ФГ 3♥', 3, steps);
+  // 5+ card major with game values (check 6+ before 5+ to avoid shadowing game bids)
   if (hcp >= 10 && hand.suitLength('SPADES') >= 6) return res('4♠', '10+ HCP, 6+ пик → гейм 4♠', 3, steps);
   if (hcp >= 10 && hand.suitLength('HEARTS') >= 6) return res('4♥', '10+ HCP, 6+ червей → гейм 4♥', 3, steps);
+  if (hcp >= 10 && hand.suitLength('SPADES') >= 5) return res('3♠', '10+ HCP, 5 пик → ФГ 3♠', 3, steps);
+  if (hcp >= 10 && hand.suitLength('HEARTS') >= 5) return res('3♥', '10+ HCP, 5 червей → ФГ 3♥', 3, steps);
 
   // NT responses
   if (hcp >= 8 && hcp <= 9) {

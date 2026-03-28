@@ -161,6 +161,10 @@ export const ProgressTracker = {
     const data = loadData();
     delete data[moduleId];
     saveData(data);
+    // Also remove SM-2 items for this module
+    const sm2 = loadSM2Data();
+    sm2.items = sm2.items.filter(i => i.module !== moduleId);
+    saveSM2Data(sm2);
   },
 
   /**

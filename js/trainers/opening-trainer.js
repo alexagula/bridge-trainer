@@ -76,7 +76,7 @@ export default class OpeningTrainer {
     this.startTime = Date.now();
 
     // Random position (1-4) and vulnerability
-    this.position = Math.ceil(Math.random() * 4);
+    this.position = Math.floor(Math.random() * 4) + 1;
     this.vulnerable = VULNERABILITY_KEYS[Math.floor(Math.random() * VULNERABILITY_KEYS.length)];
 
     this.deal = dealForOpening();

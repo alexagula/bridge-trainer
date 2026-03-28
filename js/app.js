@@ -513,6 +513,10 @@ export function renderStats(stats) {
 // Initialize app
 const app = new App();
 
+window.addEventListener('beforeunload', () => {
+  ProgressTracker.flush();
+});
+
 // Restore module from URL hash on page load
 const initialHash = window.location.hash.slice(1);
 if (initialHash && MODULE_LOADERS[initialHash]) {
