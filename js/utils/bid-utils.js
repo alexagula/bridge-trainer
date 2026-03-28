@@ -25,33 +25,47 @@ export function getBidLevel(bid) {
 }
 
 /**
- * Map a bid to a rule-based situationId for SM-2 tracking.
- * Groups by rule (e.g. "opening 1-major") instead of by hand shape.
+ * Map a bid to a granular rule-based situationId for SM-2 tracking.
+ * Takes into account HCP bucket and hand balance for finer granularity.
  * @param {string} module - e.g. 'opening', 'response'
  * @param {string} bid
- * @param {object} [hand]
- * @param {string} [opening]
+ * @param {object} [hand] - Hand object with .hcp and .isBalanced properties
+ * @param {string} [opening] - Opening bid string (for response module)
  * @returns {string}
  */
 export function bidToRuleId(module, bid, hand, opening) {
   if (module === 'opening') {
+    const hcp = hand ? hand.hcp : 0;
+    const balanced = hand ? hand.isBalanced : true;
+
     if (bid === 'пас') return 'rule:opening-pass';
     if (bid === '1БК') return 'rule:opening-1nt';
     if (bid === '2БК') return 'rule:opening-2nt';
-    if (bid === '2♣') return 'rule:opening-2c-fg';
-    if (bid.startsWith('1') && (bid.includes('♥') || bid.includes('♠'))) return 'rule:opening-1major';
-    if (bid.startsWith('1') && (bid.includes('♣') || bid.includes('♦'))) return 'rule:opening-1minor';
-    if (['2♦','2♥','2♠','3♣','3♦','3♥','3♠','4♣','4♦','4♥','4♠'].includes(bid)) return 'rule:opening-preempt';
+    if (bid === '2♣') return 'rule:opening-2c-strong';
+    if (bid.startsWith('1') && (bid.includes('♥') || bid.includes('♠'))) {
+      // Differentiate by HCP: min = 12-14, max = 15+
+      return `rule:opening-1major-${hcp <= 14 ? 'min' : 'max'}`;
+    }
+    if (bid.startsWith('1') && (bid.includes('♣') || bid.includes('♦'))) {
+      // Differentiate by hand balance
+      return `rule:opening-1minor-${balanced ? 'bal' : 'unbal'}`;
+    }
+    if (['2♦','2♥','2♠','3♣','3♦','3♥','3♠','4♣','4♦','4♥','4♠'].includes(bid)) {
+      return 'rule:opening-preempt';
+    }
     return `rule:opening-${bid}`;
   }
+
   if (module === 'response') {
-    if (bid === 'пас') return `rule:response-pass-after-${opening}`;
-    if (bid === '1БК') return 'rule:response-1nt';
-    if (bid === '2БК') return 'rule:response-2nt';
-    if (bid === '3БК') return 'rule:response-3nt';
-    // Raise
-    if (opening && bid.includes(opening.slice(-1))) return `rule:response-raise-${bid}`;
-    return `rule:response-${bid}`;
+    const hcp = hand ? hand.hcp : 0;
+    // Three HCP buckets: weak (<6), invite (6-9), game-forcing (10+)
+    const hcpBucket = hcp < 6 ? 'weak' : hcp < 10 ? 'invite' : 'gf';
+    // Normalize opening string: remove suit symbols for a safe key segment
+    const openingKey = opening ? opening.replace(/[♠♥♦♣]/g, s => ({
+      '♠': 'S', '♥': 'H', '♦': 'D', '♣': 'C',
+    }[s])) : 'unknown';
+    return `rule:response-${openingKey}-${hcpBucket}`;
   }
+
   return `rule:${module}-${bid}`;
 }

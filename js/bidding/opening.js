@@ -6,13 +6,20 @@ import { SUITS, SUIT_ORDER, MAJOR_SUITS, MINOR_SUITS } from '../core/constants.j
  * Determine the correct opening bid for a hand.
  * Returns { bid, bidDisplay, reason, lessonRef, steps }
  * where steps is an array of decision steps for explanation.
+ *
+ * @param {Hand} hand
+ * @param {Object} [options={}] - optional context
+ * @param {number} [options.position] - 1..4 (seat position at table)
+ * @param {string} [options.vulnerable] - 'NONE'|'NS'|'EW'|'BOTH'
  */
-export function determineOpening(hand) {
+export function determineOpening(hand, options = {}) {
   const hcp = hand.hcp;
+  const position = options.position ?? null; // null = position unknown, use standard rules
   const steps = [];
 
   // === Step 0: Check for preemptive openings (Lesson 9) ===
-  if (hcp >= 6 && hcp <= 10) {
+  // Position 4 (4th seat): do NOT open preempt — partner has already passed
+  if (hcp >= 6 && hcp <= 10 && position !== 4) {
     // Check for 8-9 card suit → 4-level preempt
     for (const s of SUIT_ORDER) {
       const len = hand.suitLength(s);
@@ -50,6 +57,48 @@ export function determineOpening(hand) {
         }
       }
     }
+  }
+
+  // === Step 0b: Position 3 — light opening with 10-11 HCP and good 5+ suit ===
+  // 3rd seat (after 2 passes): can open lighter to suggest lead and compete
+  if (position === 3 && hcp >= 10 && hcp <= 11) {
+    for (const s of SUIT_ORDER) {
+      const len = hand.suitLength(s);
+      if (len >= 5 && hand.hasGoodSuit(s, 5)) {
+        const sym = SUITS[s].symbol;
+        steps.push({
+          text: `3-я рука: лёгкое открытие с ${hcp} HCP и ${len} картами в ${SUITS[s].nameGen}`,
+          passed: true
+        });
+        // Open at 1-level in that suit (major preferred)
+        if (MAJOR_SUITS.includes(s)) {
+          return result(`1${sym}`, `3-я рука: ${hcp} HCP, хорошие ${len} карт в ${SUITS[s].nameGen} → 1${sym}`, 1, steps);
+        }
+        // Minor: only if no major suit available
+        const hasMajor5 = MAJOR_SUITS.some(m => hand.suitLength(m) >= 5 && hand.hasGoodSuit(m, 5));
+        if (!hasMajor5) {
+          return result(`1${sym}`, `3-я рука: ${hcp} HCP, хорошие ${len} карт в ${SUITS[s].nameGen} → 1${sym}`, 1, steps);
+        }
+      }
+    }
+    // No good 5+ suit found in 3rd seat with 10-11 HCP → pass
+    steps.push({ text: `3-я рука: ${hcp} HCP — нет хорошей 5-карточной масти для лёгкого открытия`, passed: false });
+    return result('пас', `${hcp} HCP, 3-я рука — нет масти для лёгкого открытия, пас`, 1, steps);
+  }
+
+  // === Step 0c: Position 4 — rule of 15 (HCP + spade length >= 15) ===
+  // 4th seat (all three passed): open only if profitable; preempt already blocked above
+  if (position === 4 && hcp >= 10 && hcp <= 11) {
+    const spadeLen = hand.suitLength('SPADES');
+    const rule15 = hcp + spadeLen;
+    steps.push({
+      text: `4-я рука: правило 15 — HCP (${hcp}) + длина ♠ (${spadeLen}) = ${rule15}. Нужно ≥15?`,
+      passed: rule15 >= 15
+    });
+    if (rule15 < 15) {
+      return result('пас', `4-я рука: правило 15 — ${hcp} HCP + ${spadeLen}♠ = ${rule15} < 15, пас`, 1, steps);
+    }
+    // Falls through to standard opening logic below
   }
 
   // === Step 1: Enough to open? ===

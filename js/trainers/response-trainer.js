@@ -6,19 +6,10 @@ import { determineResponse, getResponseOptions } from '../bidding/response.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand, renderStats } from '../app.js';
 import { pickRelevantBids, ALL_RESPONSE_BIDS, BID_DISPLAY } from '../utils/bid-filter.js';
+import { bidToRuleId } from '../utils/bid-utils.js';
 
 const MODULE_ID = 'response';
 const OPENINGS = ['1♥', '1♠', '1БК', '1♣', '1♦', '2♣', '2БК', '2♥', '2♠'];
-
-function bidToRuleId(bid, opening) {
-  if (bid === 'пас') return `rule:response-pass-${opening}`;
-  if (bid === '1БК') return 'rule:response-1nt';
-  if (bid === '2БК') return 'rule:response-2nt';
-  if (bid === '3БК') return 'rule:response-3nt';
-  if (bid.includes('♥') || bid.includes('♠')) return `rule:response-major-${bid}`;
-  if (bid.includes('♣') || bid.includes('♦')) return `rule:response-minor-${bid}`;
-  return `rule:response-${bid}`;
-}
 
 export default class ResponseTrainer {
   constructor(containerId) {
@@ -141,7 +132,7 @@ export default class ResponseTrainer {
     ProgressTracker.record(MODULE_ID, { correct, time: timeTaken });
 
     // SM-2 tracking
-    const situationId = bidToRuleId(this.correctBid.bid, this.opening);
+    const situationId = bidToRuleId('response', this.correctBid.bid, this.hand, this.opening);
     if (correct) {
       ProgressTracker.recordSuccess(situationId);
     } else {

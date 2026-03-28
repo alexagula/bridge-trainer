@@ -233,4 +233,42 @@ export const ProgressTracker = {
   getDueCount() {
     return this.getDueItems().length;
   },
+
+  /**
+   * Get global streak — consecutive days with at least 1 task solved.
+   * Counts backwards from today.
+   * @returns {number}
+   */
+  getGlobalStreak() {
+    const data = loadData();
+    const days = new Set();
+    for (const mod of Object.values(data)) {
+      for (const r of (mod.results || [])) {
+        days.add(new Date(r.ts).toDateString());
+      }
+    }
+    let streak = 0;
+    const d = new Date();
+    while (days.has(d.toDateString())) {
+      streak++;
+      d.setDate(d.getDate() - 1);
+    }
+    return streak;
+  },
+
+  /**
+   * Get number of tasks solved today (across all modules).
+   * @returns {number}
+   */
+  getTodayCount() {
+    const data = loadData();
+    const today = new Date().toDateString();
+    let count = 0;
+    for (const mod of Object.values(data)) {
+      for (const r of (mod.results || [])) {
+        if (new Date(r.ts).toDateString() === today) count++;
+      }
+    }
+    return count;
+  },
 };

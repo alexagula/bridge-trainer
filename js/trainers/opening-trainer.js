@@ -7,19 +7,23 @@ import { determineOpening, getOpeningOptions } from '../bidding/opening.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand, renderStats } from '../app.js';
 import { pickRelevantBids, ALL_OPENING_BIDS, BID_DISPLAY } from '../utils/bid-filter.js';
+import { bidToRuleId } from '../utils/bid-utils.js';
 
 const MODULE_ID = 'opening';
 
-function bidToRuleId(bid) {
-  if (bid === 'пас') return 'rule:opening-pass';
-  if (bid === '1БК') return 'rule:opening-1nt';
-  if (bid === '2БК') return 'rule:opening-2nt';
-  if (bid === '2♣') return 'rule:opening-2c-fg';
-  if (bid.startsWith('1') && (bid.includes('♥') || bid.includes('♠'))) return 'rule:opening-1major';
-  if (bid.startsWith('1') && (bid.includes('♣') || bid.includes('♦'))) return 'rule:opening-1minor';
-  if (['2♦','2♥','2♠','3♣','3♦','3♥','3♠','4♣','4♦','4♥','4♠'].includes(bid)) return 'rule:opening-preempt';
-  return `rule:opening-${bid}`;
-}
+// Position labels for display (1-indexed)
+const POSITION_LABELS = ['', '1-я рука', '2-я рука', '3-я рука', '4-я рука'];
+
+// Vulnerability display labels (match VULNERABILITY ids)
+const VULNERABILITY_LABELS = {
+  NONE: 'Никто не уязвим',
+  NS:   'СЮ уязвимы',
+  EW:   'ЗВ уязвимы',
+  BOTH: 'Все уязвимы',
+};
+
+// All vulnerability keys to pick from at random
+const VULNERABILITY_KEYS = ['NONE', 'NS', 'EW', 'BOTH'];
 
 export default class OpeningTrainer {
   constructor(containerId) {
@@ -29,6 +33,8 @@ export default class OpeningTrainer {
     this.correctBid = null;
     this.answered = false;
     this.startTime = 0;
+    this.position = 1;     // current position at table (1-4)
+    this.vulnerable = 'NONE'; // current vulnerability key
   }
 
   init() {
@@ -44,7 +50,8 @@ export default class OpeningTrainer {
       ${renderStats(stats)}
 
       <div class="card-area">
-        <div class="card-area-title">Вы — сдающий. Ваша рука:</div>
+        <div id="position-info" class="text-muted mt-sm" style="font-size: 13px; margin-bottom: 6px;"></div>
+        <div class="card-area-title">Ваша рука:</div>
         <div id="hand-area"></div>
         <div id="hand-info" class="text-muted mt-sm" style="font-size: 13px;"></div>
       </div>
@@ -68,9 +75,20 @@ export default class OpeningTrainer {
     this.answered = false;
     this.startTime = Date.now();
 
+    // Random position (1-4) and vulnerability
+    this.position = Math.ceil(Math.random() * 4);
+    this.vulnerable = VULNERABILITY_KEYS[Math.floor(Math.random() * VULNERABILITY_KEYS.length)];
+
     this.deal = dealForOpening();
     this.hand = this.deal.getHand('S');
-    this.correctBid = determineOpening(this.hand);
+    this.correctBid = determineOpening(this.hand, {
+      position: this.position,
+      vulnerable: this.vulnerable,
+    });
+
+    // Show position and vulnerability context
+    document.getElementById('position-info').textContent =
+      `Позиция: ${POSITION_LABELS[this.position]} | Зона: ${VULNERABILITY_LABELS[this.vulnerable]}`;
 
     // Show hand
     document.getElementById('hand-area').innerHTML = renderHand(this.hand);
@@ -118,7 +136,7 @@ export default class OpeningTrainer {
     ProgressTracker.record(MODULE_ID, { correct, time: timeTaken });
 
     // SM-2 tracking
-    const situationId = bidToRuleId(this.correctBid.bid);
+    const situationId = bidToRuleId('opening', this.correctBid.bid, this.hand);
     if (correct) {
       ProgressTracker.recordSuccess(situationId);
     } else {

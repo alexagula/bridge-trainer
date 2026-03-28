@@ -2,6 +2,7 @@
 import { SUITS, SUIT_ORDER } from './core/constants.js';
 import { ProgressTracker } from './progress/tracker.js';
 import { createProgressView } from './progress/progress-view.js';
+import { NotificationManager } from './notifications.js';
 
 // Module registry — lazy-loaded
 const MODULE_LOADERS = {
@@ -15,6 +16,8 @@ const MODULE_LOADERS = {
   play:        () => import('./trainers/play-trainer.js'),
   lead:        () => import('./trainers/lead-trainer.js'),
   quiz:        () => import('./trainers/quiz-trainer.js'),
+  tricks:      () => import('./trainers/trick-trainer.js'),
+  defense:     () => import('./trainers/defense-trainer.js'),
   theory:      () => import('./reference/theory.js'),
   progress:    () => Promise.all([
     import('./progress/tracker.js'),
@@ -33,6 +36,8 @@ const MODULE_TITLES = {
   play:        'Розыгрыш',
   lead:        'Первый ход',
   quiz:        'Тесты',
+  tricks:      'Подсчёт взяток',
+  defense:     'Защита',
   theory:      'Справочник',
   progress:    'Прогресс',
 };
@@ -196,6 +201,20 @@ class App {
           badge.style.display = 'none';
         }
       }
+      // Update streak banner
+      const streakCount = document.getElementById('streak-count');
+      const todayCount = document.getElementById('today-count');
+      if (streakCount) streakCount.textContent = String(ProgressTracker.getGlobalStreak());
+      if (todayCount) todayCount.textContent = String(ProgressTracker.getTodayCount());
+
+      // Show notify button if: API supported, permission not yet requested, user has done tasks today
+      const notifyBtn = document.getElementById('notify-btn');
+      if (notifyBtn) {
+        const shouldShow = NotificationManager.isSupported()
+          && Notification.permission === 'default'
+          && ProgressTracker.getTodayCount() > 0;
+        notifyBtn.classList.toggle('hidden', !shouldShow);
+      }
     } else {
       this.content.innerHTML = `
         <div class="module-container text-center" style="padding: 48px 16px;">
@@ -204,6 +223,15 @@ class App {
           <p class="text-muted">Выберите модуль в панели внизу</p>
         </div>
       `;
+    }
+  }
+
+  async enableNotifications() {
+    const permission = await NotificationManager.requestPermission();
+    if (permission === 'granted') {
+      NotificationManager.scheduleReminder();
+      const notifyBtn = document.getElementById('notify-btn');
+      if (notifyBtn) notifyBtn.classList.add('hidden');
     }
   }
 }

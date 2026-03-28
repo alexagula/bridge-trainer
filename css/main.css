@@ -426,3 +426,21 @@ body {
 .flex-wrap { flex-wrap: wrap; }
 .w-full { width: 100%; }
 .hidden { display: none !important; }
+
+/* Streak banner on welcome screen */
+.streak-banner {
+  text-align: center;
+  padding: 12px;
+  margin: 8px 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+.streak-days {
+  font-size: 1.3em;
+  font-weight: 700;
+}
+.daily-progress {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}

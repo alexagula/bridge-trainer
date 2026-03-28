@@ -32,6 +32,13 @@
           <h2 style="margin-bottom: 8px;">Тренажёр спортивного бриджа</h2>
           <p class="text-muted" style="margin-bottom: 24px;">10 модулей для отработки навыков.<br>Выбери модуль в панели внизу.</p>
 
+          <div id="streak-banner" class="streak-banner">
+            <div class="streak-days"><span id="streak-count">0</span> дней подряд 🔥</div>
+            <div class="daily-progress">Сегодня: <span id="today-count">0</span>/10 задач</div>
+          </div>
+
+          <button id="notify-btn" class="secondary-btn hidden" onclick="bridgeApp.enableNotifications()">🔔 Включить напоминания</button>
+
           <div class="flex flex-col gap-sm">
             <button class="btn btn-primary btn-block btn-lg" onclick="window.bridgeApp.switchModule('hcp')">
               Начать тренировку
@@ -117,6 +124,8 @@
       <div class="popup-item" data-module="play">🎯 Розыгрыш</div>
       <div class="popup-item" data-module="lead">➡️ Первый ход</div>
       <div class="popup-item" data-module="quiz">✅ Тесты</div>
+      <div class="popup-item" data-module="tricks">🎯 Подсчёт взяток</div>
+      <div class="popup-item" data-module="defense">🛡️ Защита</div>
     </div>
   </div>
 

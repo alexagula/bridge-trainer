@@ -8,6 +8,7 @@ import { determineOpening } from '../bidding/opening.js';
 import { determineResponse } from '../bidding/response.js';
 import { recommendLead } from '../play/lead.js';
 import { QUIZZES } from '../../data/quizzes.js';
+import { BRIDGE_FACTS } from '../../data/bridge-facts.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand } from '../app.js';
 import {
@@ -35,6 +36,7 @@ export default class DailyMix {
     this.correctCount = 0;
     this.startTime = 0;
     this.sessionErrors = [];
+    this.sessionTimes = [];  // Time taken per task (ms), for variable reward calc
   }
 
   init() {
@@ -42,6 +44,7 @@ export default class DailyMix {
     this.taskIndex = 0;
     this.correctCount = 0;
     this.sessionErrors = [];
+    this.sessionTimes = [];
     this.render();
     this.showTask();
   }
@@ -81,7 +84,19 @@ export default class DailyMix {
    * so we regenerate a hand matching roughly that profile.
    */
   _sm2ItemToTask(item) {
-    const [moduleType] = item.id.split(':');
+    // ruleId format: "rule:opening-*" or "rule:response-*"
+    // Legacy format: "opening:..." or "response:..."
+    let moduleType = '';
+    const id = item.id || '';
+    if (id.startsWith('rule:opening')) {
+      moduleType = 'opening';
+    } else if (id.startsWith('rule:response')) {
+      moduleType = 'response';
+    } else {
+      // Legacy: first segment before ':'
+      [moduleType] = id.split(':');
+    }
+
     let task;
     if (moduleType === 'opening') {
       task = this._generateOpeningTask();
@@ -509,6 +524,7 @@ export default class DailyMix {
     }
 
     if (correct) this.correctCount++;
+    this.sessionTimes.push(timeTaken);
 
     document.getElementById('mix-next-btn').classList.remove('hidden');
     document.getElementById('mix-next-btn').focus();
@@ -797,6 +813,8 @@ export default class DailyMix {
 
         ${this._buildRecapHtml()}
 
+        ${this._buildRewardsHtml(accuracy)}
+
         <button class="btn btn-primary btn-block btn-lg" id="mix-restart-btn" style="margin-bottom: 12px;">
           Новая сессия
         </button>
@@ -832,6 +850,56 @@ export default class DailyMix {
         ${unique.map(r => `<p style="font-size: 14px; line-height: 1.6; color: var(--text-secondary); padding: 4px 0;">• ${r}</p>`).join('')}
       </div>
     `;
+  }
+
+  /**
+   * Build variable reward HTML to show after session results.
+   * Rewards are shown based on performance criteria.
+   * @param {number} accuracy - session accuracy 0-100
+   * @returns {string} HTML string
+   */
+  _buildRewardsHtml(accuracy) {
+    const rewards = [];
+
+    // Perfect session reward
+    if (accuracy === 100) {
+      rewards.push(`<div class="reward-item">🏆 Идеальная сессия! Все ${SESSION_SIZE} задач правильно!</div>`);
+    }
+
+    // Bridge fact for good performance (accuracy >= 80%)
+    if (accuracy >= 80) {
+      const fact = BRIDGE_FACTS[Math.floor(Math.random() * BRIDGE_FACTS.length)];
+      rewards.push(`<div class="reward-item">💡 ${fact}</div>`);
+    }
+
+    // Speed record reward: compare avgTime of this session to historical avg per module
+    if (this.sessionTimes.length === SESSION_SIZE) {
+      const sessionAvgTime = Math.round(
+        this.sessionTimes.reduce((sum, t) => sum + t, 0) / SESSION_SIZE
+      );
+      // Compute historical avg across modules used in this session
+      const moduleAvgTimes = this.session.map(task => ProgressTracker.getStats(task.type).avgTime)
+        .filter(t => t > 0);
+      const historicalAvg = moduleAvgTimes.length > 0
+        ? Math.round(moduleAvgTimes.reduce((sum, t) => sum + t, 0) / moduleAvgTimes.length)
+        : 0;
+      // Show speed record if current avg is at least 10% faster than historical avg
+      // and there is enough data (historicalAvg > 0 means at least one prior result)
+      if (historicalAvg > 0 && sessionAvgTime > 0 && sessionAvgTime < historicalAvg * 0.9) {
+        const avgSec = (sessionAvgTime / 1000).toFixed(1);
+        rewards.push(`<div class="reward-item">⚡ Рекорд скорости! ${avgSec}с в среднем за задачу</div>`);
+      }
+    }
+
+    // Streak reward
+    const streak = ProgressTracker.getGlobalStreak();
+    if (streak >= 3) {
+      rewards.push(`<div class="reward-item">🔥 ${streak} дней подряд — отличная привычка!</div>`);
+    }
+
+    if (rewards.length === 0) return '';
+
+    return `<div style="margin-bottom: 16px; text-align: left;">${rewards.join('')}</div>`;
   }
 }
 

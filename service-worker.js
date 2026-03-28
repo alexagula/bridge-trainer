@@ -1,5 +1,5 @@
 // Bridge Trainer — Service Worker for PWA offline support
-const CACHE_NAME = 'bridge-trainer-v7';
+const CACHE_NAME = 'bridge-trainer-v8';
 
 const ASSETS = [
   './',
@@ -40,6 +40,11 @@ const ASSETS = [
   './data/quizzes.js',
   './data/theory-entries.js',
   './data/scenarios.js',
+  './js/trainers/trick-trainer.js',
+  './js/trainers/defense-trainer.js',
+  './js/play/defense-scenarios.js',
+  './js/notifications.js',
+  './data/bridge-facts.js',
 ];
 
 // Install: cache all assets
