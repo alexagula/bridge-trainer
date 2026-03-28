@@ -1,6 +1,7 @@
 // Bridge Trainer — Progress Tracker (localStorage)
 
 const STORAGE_KEY = 'bridge-trainer-progress';
+const SM2_KEY = 'bridge-trainer-sm2';
 
 function loadData() {
   try {
@@ -13,6 +14,24 @@ function loadData() {
 
 function saveData(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadSM2Data() {
+  try {
+    const raw = localStorage.getItem(SM2_KEY);
+    return raw ? JSON.parse(raw) : { items: [] };
+  } catch {
+    return { items: [] };
+  }
+}
+
+function saveSM2Data(data) {
+  // Keep max 200 items
+  if (data.items.length > 200) {
+    data.items.sort((a, b) => a.nextReview - b.nextReview);
+    data.items = data.items.slice(0, 200);
+  }
+  localStorage.setItem(SM2_KEY, JSON.stringify(data));
 }
 
 export const ProgressTracker = {
@@ -102,6 +121,7 @@ export const ProgressTracker = {
    */
   reset() {
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(SM2_KEY);
   },
 
   /**
@@ -111,5 +131,77 @@ export const ProgressTracker = {
     const data = loadData();
     delete data[moduleId];
     saveData(data);
+  },
+
+  /**
+   * Record an error — add/update item in SM-2 queue
+   * @param {string} module - 'opening', 'response', etc.
+   * @param {string} situationId - unique situation id, e.g. "opening:12hcp-5spades"
+   * @param {string} description - description for UI, e.g. "12 HCP, 5♠ — открытие?"
+   */
+  recordError(module, situationId, description) {
+    const sm2 = loadSM2Data();
+    let item = sm2.items.find(i => i.id === situationId);
+
+    if (!item) {
+      item = { id: situationId, module, description, easeFactor: 2.5, repetitions: 0 };
+      sm2.items.push(item);
+    }
+
+    // Reset on error
+    item.interval = 1;
+    item.repetitions = 0;
+    item.lastReview = Date.now();
+    item.nextReview = Date.now() + 1 * 86400000; // tomorrow
+
+    saveSM2Data(sm2);
+  },
+
+  /**
+   * Record a correct answer — increase interval
+   * @param {string} situationId - unique situation id
+   */
+  recordSuccess(situationId) {
+    const sm2 = loadSM2Data();
+    const item = sm2.items.find(i => i.id === situationId);
+    if (!item) return;
+
+    item.repetitions++;
+    if (item.repetitions === 1) item.interval = 1;
+    else if (item.repetitions === 2) item.interval = 3;
+    else if (item.repetitions === 3) item.interval = 7;
+    else item.interval = Math.round(item.interval * item.easeFactor);
+
+    // Update ease factor (SM-2 formula, quality=4 for correct)
+    const quality = 4;
+    item.easeFactor = Math.max(1.3, item.easeFactor + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+
+    item.lastReview = Date.now();
+    item.nextReview = Date.now() + item.interval * 86400000;
+
+    // Remove if interval > 30 days (well learned)
+    if (item.interval > 30) {
+      sm2.items = sm2.items.filter(i => i.id !== situationId);
+    }
+
+    saveSM2Data(sm2);
+  },
+
+  /**
+   * Get items that are due for review
+   * @returns {Array} items where nextReview <= now
+   */
+  getDueItems() {
+    const sm2 = loadSM2Data();
+    const now = Date.now();
+    return sm2.items.filter(i => i.nextReview <= now);
+  },
+
+  /**
+   * Get count of items due for review
+   * @returns {number}
+   */
+  getDueCount() {
+    return this.getDueItems().length;
   },
 };

@@ -3,6 +3,7 @@ import { NEXT_SEAT, PARTNER_SEAT, SUITS, SUIT_ORDER } from '../core/constants.js
 import { determineOpening } from './opening.js';
 import { determineResponse } from './response.js';
 import { determineOvercall } from './overcall.js';
+import { determineRebid } from './rebid.js';
 
 export class BiddingSequence {
   constructor(deal) {
@@ -74,9 +75,23 @@ export class BiddingSequence {
     const opponentBids = this.bids.filter(b =>
       b.seat !== seat && b.seat !== partner && b.bid !== 'пас'
     );
+    const myBids = this.bids.filter(b => b.seat === seat && b.bid !== 'пас');
+
+    // I opened and partner has responded — time to rebid
+    if (myBids.length > 0 && partnerBids.length > 0 && opponentBids.length === 0) {
+      const myOpening = myBids[0].bid;
+      const partnerResponse = partnerBids[partnerBids.length - 1].bid;
+      const rebidResult = determineRebid(hand, myOpening, partnerResponse);
+      // For 2♣ FG: never pass until game is reached
+      if (myOpening === '2♣' && rebidResult.bid === 'пас') {
+        // Force a 3NT minimum if we somehow got a pass suggestion
+        return '3БК';
+      }
+      return rebidResult.bid;
+    }
 
     // Partner opened?
-    if (partnerBids.length > 0 && opponentBids.length === 0) {
+    if (partnerBids.length > 0 && opponentBids.length === 0 && myBids.length === 0) {
       const partnerOpening = partnerBids[0].bid;
       const response = determineResponse(partnerOpening, hand);
       return response.bid;
@@ -84,7 +99,6 @@ export class BiddingSequence {
 
     // Opponent opened, we haven't bid
     if (opponentBids.length > 0 && partnerBids.length === 0) {
-      const myBids = this.bids.filter(b => b.seat === seat && b.bid !== 'пас');
       if (myBids.length === 0) {
         const overcall = determineOvercall(hand, opponentBids[0].bid);
         return overcall.bid;
@@ -105,20 +119,34 @@ export class BiddingSequence {
     const opponentBids = this.bids.filter(b =>
       b.seat !== seat && b.seat !== partner && b.bid !== 'пас'
     );
+    const myBids = this.bids.filter(b => b.seat === seat && b.bid !== 'пас');
 
     if (this.bids.every(b => b.bid === 'пас') || this.bids.length === 0) {
       return determineOpening(hand);
     }
 
-    if (partnerBids.length > 0) {
+    // I opened and partner has responded — return rebid with explanation
+    if (myBids.length > 0 && partnerBids.length > 0 && opponentBids.length === 0) {
+      const myOpening = myBids[0].bid;
+      const partnerResponse = partnerBids[partnerBids.length - 1].bid;
+      const rebidResult = determineRebid(hand, myOpening, partnerResponse);
+      // For 2♣ FG: never pass until game is reached
+      if (myOpening === '2♣' && rebidResult.bid === 'пас') {
+        return { bid: '3БК', bidDisplay: '3БК', reason: '2♣ ФГ: нельзя пасовать до гейма → 3БК', lessonRef: 8, steps: rebidResult.steps };
+      }
+      return rebidResult;
+    }
+
+    // Partner opened and I haven't responded yet
+    if (partnerBids.length > 0 && myBids.length === 0) {
       return determineResponse(partnerBids[0].bid, hand);
     }
 
-    if (opponentBids.length > 0) {
+    if (opponentBids.length > 0 && myBids.length === 0) {
       return determineOvercall(hand, opponentBids[0].bid);
     }
 
-    return { bid: 'пас', reason: 'Пас по умолчанию', steps: [] };
+    return { bid: 'пас', bidDisplay: 'Пас', reason: 'Пас по умолчанию', lessonRef: 1, steps: [] };
   }
 
   getBiddingHistory() {

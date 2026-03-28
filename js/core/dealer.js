@@ -75,6 +75,25 @@ export function dealForHCP() {
  * Sometimes generates hands that should open, sometimes pass
  */
 export function dealForOpening() {
+  // 30% chance: boundary cases for deliberate difficulty
+  if (Math.random() < 0.3) {
+    const boundary = Math.random();
+    if (boundary < 0.25) {
+      // 11-12 HCP: border of opening (open or pass?)
+      return dealWithConstraints({ S: hcpRange(11, 12) });
+    }
+    if (boundary < 0.5) {
+      // 15 HCP with 5-card major: 1NT or 1M?
+      return dealWithConstraints({ S: combineConstraints(hcpRange(15, 15), has5PlusMajor()) });
+    }
+    if (boundary < 0.75) {
+      // 18-19 HCP balanced: 1NT (18) or 2NT (19)?
+      return dealWithConstraints({ S: combineConstraints(hcpRange(18, 19), balanced(), no5CardMajor()) });
+    }
+    // 21-22 HCP: normal opening or 2♣ FG?
+    return dealWithConstraints({ S: hcpRange(21, 22) });
+  }
+
   // 60% openable (12+), 40% pass
   if (Math.random() < 0.4) {
     return dealWithConstraints({ S: hcpRange(0, 11) });
@@ -150,6 +169,34 @@ export function dealForResponse(openingType) {
       break;
     default:
       break;
+  }
+
+  // 30% chance: boundary case for responder (South)
+  if (Math.random() < 0.3) {
+    const boundary = Math.random();
+    if (boundary < 0.25) {
+      // 5-6 HCP: pass or simple raise?
+      constraints.S = hcpRange(5, 6);
+    } else if (boundary < 0.5) {
+      // 9-10 HCP with fit: raise 2M or invite 3M?
+      const hasFit = openingType?.startsWith('1') && ['1H', '1S'].includes(openingType);
+      if (hasFit) {
+        const suitId = openingType === '1H' ? 'HEARTS' : 'SPADES';
+        constraints.S = combineConstraints(hcpRange(9, 10), suitMinLength(suitId, 3));
+      } else {
+        constraints.S = hcpRange(9, 10);
+      }
+    } else if (boundary < 0.75) {
+      // 12-13 HCP: invite or game?
+      constraints.S = hcpRange(12, 13);
+    } else {
+      // 7-8 HCP after 1NT: pass or Stayman?
+      if (openingType === '1NT') {
+        constraints.S = combineConstraints(hcpRange(7, 8));
+      } else {
+        constraints.S = hcpRange(7, 8);
+      }
+    }
   }
 
   return dealWithConstraints(constraints);

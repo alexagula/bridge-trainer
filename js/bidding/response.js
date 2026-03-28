@@ -33,6 +33,16 @@ function respondToOneMajor(hand, suitId) {
 
   steps.push({ text: `HCP: ${hcp}`, passed: true });
 
+  // Weak preemptive raise: 0-9 HCP, 5+ fit, singleton or void on the side
+  // Checked before the hcp<6 pass because this bid works with any HCP count
+  if (fit && hcp <= 9 && hand.suitLength(suitId) >= 5) {
+    const hasSideShortness = SUIT_ORDER.filter(s => s !== suitId).some(s => hand.suitLength(s) <= 1);
+    if (hasSideShortness) {
+      steps.push({ text: `0-9 HCP + фит 5+ + краткость сбоку → перебивка 4${sym}`, passed: true });
+      return res(`4${sym}`, `0-9 HCP, ${hand.suitLength(suitId)} карт фита, краткость сбоку → перебивка 4${sym}`, 2, steps);
+    }
+  }
+
   if (hcp < 6) {
     steps.push({ text: 'Менее 6 HCP → пас', passed: true });
     return res('пас', 'Менее 6 HCP — пас', 1, steps);
@@ -41,29 +51,47 @@ function respondToOneMajor(hand, suitId) {
   steps.push({ text: `Фит в ${SUITS[suitId].nameGen}: ${hand.suitLength(suitId)} карт (нужно 3+)`, passed: fit });
 
   if (fit) {
-    if (hcp >= 6 && hcp <= 9) {
-      steps.push({ text: `6-9 HCP + фит → простой подъём 2${sym}`, passed: true });
-      return res(`2${sym}`, `6-9 HCP, ${hand.suitLength(suitId)} карт фита → подъём 2${sym}`, 1, steps);
+    if (hcp >= 12) {
+      steps.push({ text: `12+ HCP + фит → гейм 4${sym}`, passed: true });
+      return res(`4${sym}`, `12+ HCP, фит → гейм 4${sym}`, 2, steps);
     }
     if (hcp >= 10 && hcp <= 11) {
       steps.push({ text: `10-11 HCP + фит → инвит 3${sym}`, passed: true });
       return res(`3${sym}`, `10-11 HCP, фит → инвит 3${sym}`, 2, steps);
     }
-    if (hcp >= 12) {
-      steps.push({ text: `12+ HCP + фит → гейм 4${sym}`, passed: true });
-      return res(`4${sym}`, `12+ HCP, фит → гейм 4${sym}`, 2, steps);
+    if (hcp >= 6 && hcp <= 9) {
+      steps.push({ text: `6-9 HCP + фит → простой подъём 2${sym}`, passed: true });
+      return res(`2${sym}`, `6-9 HCP, ${hand.suitLength(suitId)} карт фита → подъём 2${sym}`, 1, steps);
     }
   }
 
   // Without fit — search for own suit or NT
-  // 4+ card major (the other one)
-  const otherMajor = suitId === 'HEARTS' ? 'SPADES' : 'HEARTS';
+
+  // 1♥ → 2♠: jump (forcing to game), 13+ HCP, 5+ spades
+  if (suitId === 'HEARTS' && hand.suitLength('SPADES') >= 5 && hcp >= 13) {
+    steps.push({ text: `13+ HCP, 5+ пик → прыжок 2♠ (ФГ)`, passed: true });
+    return res('2♠', `13+ HCP, 5+ пик → прыжок 2♠ (ФГ, форс до гейма)`, 5, steps);
+  }
+
+  // 1♥ → 1♠: 4+ spades, 6+ HCP (1st level, Ф1)
   if (suitId === 'HEARTS' && hand.suitLength('SPADES') >= 4 && hcp >= 6) {
     steps.push({ text: `4+ пик, 6+ HCP → ответ 1♠`, passed: true });
     return res('1♠', `Нет фита в черве, 4+ пик → 1♠`, 4, steps);
   }
 
-  // NT responses (balanced, no fit)
+  // New suit on 2nd level (Ф1, 10+ HCP, 4+ cards)
+  for (const s of [...SUIT_ORDER].reverse()) {
+    if (s === suitId) continue;
+    // Spades after 1♥ are already handled above (1-level and jump)
+    if (suitId === 'HEARTS' && s === 'SPADES') continue;
+    if (hand.suitLength(s) >= 4 && hcp >= 10) {
+      const newSym = SUITS[s].symbol;
+      steps.push({ text: `10+ HCP, 4+ ${SUITS[s].nameGen} → новая масть 2${newSym}`, passed: true });
+      return res(`2${newSym}`, `10+ HCP, 4+ в ${SUITS[s].nameGen} → 2${newSym}`, 5, steps);
+    }
+  }
+
+  // NT responses (balanced, no fit, no suitable new suit)
   if (hand.isBalanced || !hand.has5PlusMajor()) {
     if (hcp >= 6 && hcp <= 9) {
       steps.push({ text: '6-9 HCP, нет фита → 1БК', passed: true });
@@ -76,16 +104,6 @@ function respondToOneMajor(hand, suitId) {
     if (hcp >= 13) {
       steps.push({ text: '13+ HCP, нет фита → 3БК', passed: true });
       return res('3БК', '13+ HCP → гейм 3БК', 6, steps);
-    }
-  }
-
-  // New suit (10+)
-  for (const s of [...SUIT_ORDER].reverse()) {
-    if (s === suitId) continue;
-    if (hand.suitLength(s) >= 4 && hcp >= 10) {
-      const newSym = SUITS[s].symbol;
-      steps.push({ text: `10+ HCP, 4+ ${SUITS[s].nameGen} → новая масть 2${newSym}`, passed: true });
-      return res(`2${newSym}`, `10+ HCP, 4+ в ${SUITS[s].nameGen} → 2${newSym}`, 5, steps);
     }
   }
 

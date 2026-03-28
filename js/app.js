@@ -1,9 +1,11 @@
 // Bridge Trainer — SPA Router and Module Lifecycle
 import { SUITS, SUIT_ORDER } from './core/constants.js';
+import { ProgressTracker } from './progress/tracker.js';
 
 // Module registry — lazy-loaded
 const MODULE_LOADERS = {
   welcome:     null, // static HTML, no JS module
+  mix:         () => import('./trainers/daily-mix.js'),
   hcp:         () => import('./trainers/hcp-trainer.js'),
   opening:     () => import('./trainers/opening-trainer.js'),
   response:    () => import('./trainers/response-trainer.js'),
@@ -18,6 +20,7 @@ const MODULE_LOADERS = {
 
 const MODULE_TITLES = {
   welcome:     'Тренажёр',
+  mix:         'Микс дня',
   hcp:         'Подсчёт HCP',
   opening:     'Выбор открытия',
   response:    'Ответ на открытие',
@@ -127,6 +130,17 @@ class App {
       welcome.style.display = '';
       this.content.innerHTML = '';
       this.content.appendChild(welcome);
+      // Update SM-2 due badge
+      const badge = document.getElementById('due-badge');
+      if (badge) {
+        const dueCount = ProgressTracker.getDueCount();
+        if (dueCount > 0) {
+          badge.textContent = `${dueCount}`;
+          badge.style.display = 'inline';
+        } else {
+          badge.style.display = 'none';
+        }
+      }
     } else {
       this.content.innerHTML = `
         <div class="module-container text-center" style="padding: 48px 16px;">

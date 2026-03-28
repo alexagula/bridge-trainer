@@ -1,0 +1,6261 @@
+{
+  "version": "1.0",
+  "source": "quizlet_mega_pack",
+  "total": 277,
+  "tasks": [
+    {
+      "id": "T0001",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: A сколько очков?"
+      },
+      "correct_bid": "4",
+      "explanation": "4. Занятие 1.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0002",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: K сколько очков?"
+      },
+      "correct_bid": "3",
+      "explanation": "3. Занятие 1.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0003",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: Q сколько очков?"
+      },
+      "correct_bid": "2",
+      "explanation": "2. Занятие 1.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0004",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: J сколько очков?"
+      },
+      "correct_bid": "1",
+      "explanation": "1. Занятие 1.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0005",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: всего HCP в колоде"
+      },
+      "correct_bid": "40",
+      "explanation": "40. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0006",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: что означает уровень заявки (2♥)"
+      },
+      "correct_bid": "Взятки сверх 6 (2 уровень = 8 взяток)",
+      "explanation": "Взятки сверх 6 (2 уровень = 8 взяток). Занятие 1.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0007",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: порядок мастей в торговле"
+      },
+      "correct_bid": "♣ < ♦ < ♥ < ♠ < БК",
+      "explanation": "♣ < ♦ < ♥ < ♠ < БК. Занятие 1.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0008",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: когда заканчивается торговля"
+      },
+      "correct_bid": "Три паса подряд после любой заявки",
+      "explanation": "Три паса подряд после любой заявки. Занятие 1.",
+      "tags": [
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0009",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: кто делает первый ход в розыгрыше"
+      },
+      "correct_bid": "Игрок слева от разыгрывающего",
+      "explanation": "Игрок слева от разыгрывающего. Занятие 1.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0010",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: когда болван открывает карты"
+      },
+      "correct_bid": "После первого хода",
+      "explanation": "После первого хода. Занятие 1.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0011",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: что такое фит"
+      },
+      "correct_bid": "8+ карт одной масти на линии",
+      "explanation": "8+ карт одной масти на линии. Занятие 1.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0012",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: открытие 1♠ означает"
+      },
+      "correct_bid": "12–21 HCP и 5+ ♠",
+      "explanation": "12–21 HCP и 5+ ♠. Занятие 1.",
+      "tags": [
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0013",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: открытие 1♥ означает"
+      },
+      "correct_bid": "12–21 HCP и 5+ ♥ и нет 5♠",
+      "explanation": "12–21 HCP и 5+ ♥ и нет 5♠. Занятие 1.",
+      "tags": [
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0014",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: вход 1♠ после открытия оппонента"
+      },
+      "correct_bid": "12–16 HCP и 5+ ♠",
+      "explanation": "12–16 HCP и 5+ ♠. Занятие 1.",
+      "tags": [
+        "major",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0015",
+      "module": "hand_eval",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 1: вход 1♥ после открытия оппонента"
+      },
+      "correct_bid": "12–16 HCP и 5+ ♥",
+      "explanation": "12–16 HCP и 5+ ♥. Занятие 1.",
+      "tags": [
+        "major",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0016",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: после 1M, если <6 HCP"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major",
+        "minor",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0017",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: после 1M, 6–9 и фит 3+"
+      },
+      "correct_bid": "2M",
+      "explanation": "2M. Занятие 2.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0018",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: после 1M, 10–11 и фит 3+"
+      },
+      "correct_bid": "3M (инвит)",
+      "explanation": "3M (инвит). Занятие 2.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0019",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: после 1M, 12+ и фит 3+"
+      },
+      "correct_bid": "4M (гейм)",
+      "explanation": "4M (гейм). Занятие 2.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0020",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: что обещает 2M"
+      },
+      "correct_bid": "Фит 3+ и 6–9 HCP",
+      "explanation": "Фит 3+ и 6–9 HCP. Занятие 2.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0021",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: что обещает 3M"
+      },
+      "correct_bid": "Фит 3+ и 10–11 HCP (инвит)",
+      "explanation": "Фит 3+ и 10–11 HCP (инвит). Занятие 2.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0022",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: что обещает 4M"
+      },
+      "correct_bid": "Фит 3+ и 12+ HCP (игра)",
+      "explanation": "Фит 3+ и 12+ HCP (игра). Занятие 2.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0023",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: после 1M–2M, у открывшего 12–14"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 2.",
+      "tags": [
+        "major",
+        "minor",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0024",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: после 1M–2M, у открывшего 15–17"
+      },
+      "correct_bid": "3M (инвит)",
+      "explanation": "3M (инвит). Занятие 2.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0025",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: после 1M–2M, у открывшего 18–21"
+      },
+      "correct_bid": "4M",
+      "explanation": "4M. Занятие 2.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0026",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: после 1M–3M, у открывшего 12–13"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 2.",
+      "tags": [
+        "major",
+        "minor",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0027",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: после 1M–3M, у открывшего 14–21"
+      },
+      "correct_bid": "4M",
+      "explanation": "4M. Занятие 2.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0028",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: когда добавляем очки за расклад"
+      },
+      "correct_bid": "Только после найденного фита",
+      "explanation": "Только после найденного фита. Занятие 2.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0029",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: синглет после фита"
+      },
+      "correct_bid": "+1",
+      "explanation": "+1. Занятие 2.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0030",
+      "module": "response_major",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 2: ренонс после фита"
+      },
+      "correct_bid": "+3",
+      "explanation": "+3. Занятие 2.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0031",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: открытие 1БК означает"
+      },
+      "correct_bid": "15–18 HCP, равномерная, нет 5♥/5♠",
+      "explanation": "15–18 HCP, равномерная, нет 5♥/5♠. Занятие 3.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0032",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: равномерная рука (для БК)"
+      },
+      "correct_bid": "Нет синглетов/ренонсов и не больше 1 дуплета",
+      "explanation": "Нет синглетов/ренонсов и не больше 1 дуплета. Занятие 3.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0033",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: после 1БК, 0–7 равномерная"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 3.",
+      "tags": [
+        "notrump",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0034",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: после 1БК, 0–7 неравномерная и 5+ масть"
+      },
+      "correct_bid": "2♦/2♥/2♠ (побег, sign-off)",
+      "explanation": "2♦/2♥/2♠ (побег, sign-off). Занятие 3.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0035",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: после 1БК, 8+ и 4-картный мажор"
+      },
+      "correct_bid": "2♣ Стейман (Ф1)",
+      "explanation": "2♣ Стейман (Ф1). Занятие 3.",
+      "tags": [
+        "major",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0036",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: после 1БК, 8–9 без 4M"
+      },
+      "correct_bid": "2БК (инвит)",
+      "explanation": "2БК (инвит). Занятие 3.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0037",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: после 1БК, 10–15 без 4M"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК. Занятие 3.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0038",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: после 1БК, 16–17 без 4M"
+      },
+      "correct_bid": "4БК (инвит в 6БК)",
+      "explanation": "4БК (инвит в 6БК). Занятие 3.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0039",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: после 1БК, 18+ без 4M"
+      },
+      "correct_bid": "6БК",
+      "explanation": "6БК. Занятие 3.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0040",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: 2♣ после 1БК это"
+      },
+      "correct_bid": "Стейман: вопрос о 4-картном мажоре",
+      "explanation": "Стейман: вопрос о 4-картном мажоре. Занятие 3.",
+      "tags": [
+        "notrump",
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0041",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: можно ли пасовать на 2♣ Стейман"
+      },
+      "correct_bid": "Нет (Ф1)",
+      "explanation": "Нет (Ф1). Занятие 3.",
+      "tags": [
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0042",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: 1БК–2♣ ответ 2♦ означает"
+      },
+      "correct_bid": "Нет 4-картного мажора",
+      "explanation": "Нет 4-картного мажора. Занятие 3.",
+      "tags": [
+        "notrump",
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0043",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: 1БК–2♣ ответ 2♥ означает"
+      },
+      "correct_bid": "Есть 4♥",
+      "explanation": "Есть 4♥. Занятие 3.",
+      "tags": [
+        "notrump",
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0044",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: 1БК–2♣ ответ 2♠ означает"
+      },
+      "correct_bid": "Есть 4♠",
+      "explanation": "Есть 4♠. Занятие 3.",
+      "tags": [
+        "notrump",
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0045",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: 1БК–2БК, открывший 15–16"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 3.",
+      "tags": [
+        "notrump",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0046",
+      "module": "notrump",
+      "lesson": 3,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 3: 1БК–2БК, открывший 17–18"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК. Занятие 3.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0047",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: открытие 1♣ означает"
+      },
+      "correct_bid": "12–21, нет 5M, не 1БК, минор по выбору",
+      "explanation": "12–21, нет 5M, не 1БК, минор по выбору. Занятие 4.",
+      "tags": [
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0048",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: открытие 1♦ означает"
+      },
+      "correct_bid": "12–21, нет 5M, не 1БК, минор по выбору",
+      "explanation": "12–21, нет 5M, не 1БК, минор по выбору. Занятие 4.",
+      "tags": [
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0049",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: почему минорный фит от 5 карт у отвечающего"
+      },
+      "correct_bid": "Потому что 1m у открывшего может быть от 3 карт",
+      "explanation": "Потому что 1m у открывшего может быть от 3 карт. Занятие 4.",
+      "tags": [
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0050",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: после 1m, если <6 HCP"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 4.",
+      "tags": [
+        "hcp",
+        "major",
+        "minor",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0051",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: после 1m, 6+ и 4+ в мажоре"
+      },
+      "correct_bid": "1♥/1♠ (Ф1)",
+      "explanation": "1♥/1♠ (Ф1). Занятие 4.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0052",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: после 1m, 6–9 без 4M, равномерная"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 4.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0053",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: после 1m, 10–12 без 4M, равномерная"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК. Занятие 4.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0054",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: после 1m, 13–18 без 4M, равномерная"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК. Занятие 4.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0055",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: после 1m, 6–9 без 4M, неравномерная, 5+ фит"
+      },
+      "correct_bid": "2m",
+      "explanation": "2m. Занятие 4.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0056",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: после 1m, 10–14 без 4M, неравномерная, 5+ фит"
+      },
+      "correct_bid": "3m",
+      "explanation": "3m. Занятие 4.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0057",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: после 1m, 15–18 без 4M, 5+ фит, синглет/ренонс"
+      },
+      "correct_bid": "5m",
+      "explanation": "5m. Занятие 4.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0058",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: 1m–1M означает"
+      },
+      "correct_bid": "6+ HCP и 4+ карты в мажоре (Ф1)",
+      "explanation": "6+ HCP и 4+ карты в мажоре (Ф1). Занятие 4.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0059",
+      "module": "response_minor",
+      "lesson": 4,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 4: можно ли открывшему пасовать на 1m–1M"
+      },
+      "correct_bid": "Нет (Ф1)",
+      "explanation": "Нет (Ф1). Занятие 4.",
+      "tags": [
+        "major",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0060",
+      "module": "principles",
+      "lesson": 5,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 5: новая масть (без прыжка) обычно"
+      },
+      "correct_bid": "Форсирует на круг (Ф1)",
+      "explanation": "Форсирует на круг (Ф1). Занятие 5.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0061",
+      "module": "principles",
+      "lesson": 5,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 5: прыжок в новую масть"
+      },
+      "correct_bid": "Форсинг до гейма (ФГ)",
+      "explanation": "Форсинг до гейма (ФГ). Занятие 5.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0062",
+      "module": "principles",
+      "lesson": 5,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 5: повтор своей масти открывшим"
+      },
+      "correct_bid": "Не форсинг",
+      "explanation": "Не форсинг. Занятие 5.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0063",
+      "module": "principles",
+      "lesson": 5,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 5: заявка БК по умолчанию"
+      },
+      "correct_bid": "Не форсинг",
+      "explanation": "Не форсинг. Занятие 5.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0064",
+      "module": "principles",
+      "lesson": 5,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 5: приоритет целей"
+      },
+      "correct_bid": "Мажорный гейм > БК гейм > минорный гейм",
+      "explanation": "Мажорный гейм > БК гейм > минорный гейм. Занятие 5.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0065",
+      "module": "principles",
+      "lesson": 5,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 5: убитка (ruff) это"
+      },
+      "correct_bid": "Резка козырем",
+      "explanation": "Резка козырем. Занятие 5.",
+      "tags": [
+        "play"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0066",
+      "module": "principles",
+      "lesson": 5,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 5: убитка даёт лишнюю взятку когда"
+      },
+      "correct_bid": "Когда режем коротким козырем",
+      "explanation": "Когда режем коротким козырем. Занятие 5.",
+      "tags": [
+        "play"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0067",
+      "module": "principles",
+      "lesson": 6,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 6: ответ новой мастью на 2 уровне (без прыжка) требует"
+      },
+      "correct_bid": "10+ HCP",
+      "explanation": "10+ HCP. Занятие 6.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0068",
+      "module": "principles",
+      "lesson": 6,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 6: импас это"
+      },
+      "correct_bid": "Игра на положение фигуры (примерно 50/50)",
+      "explanation": "Игра на положение фигуры (примерно 50/50). Занятие 6.",
+      "tags": [
+        "play"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0069",
+      "module": "principles",
+      "lesson": 6,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 6: экспас это"
+      },
+      "correct_bid": "Разновидность импаса через пропуск/позицию",
+      "explanation": "Разновидность импаса через пропуск/позицию. Занятие 6.",
+      "tags": [
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0070",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: открытие 2БК означает"
+      },
+      "correct_bid": "19–21, равномерная, нет 5M",
+      "explanation": "19–21, равномерная, нет 5M. Занятие 8.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0071",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: Стейман после 2БК"
+      },
+      "correct_bid": "3♣",
+      "explanation": "3♣. Занятие 8.",
+      "tags": [
+        "notrump",
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0072",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: открытие 2♣ означает"
+      },
+      "correct_bid": "Форсинг до гейма (ФГ)",
+      "explanation": "Форсинг до гейма (ФГ). Занятие 8.",
+      "tags": [
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0073",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: 2♣ по очкам"
+      },
+      "correct_bid": "22+ HCP",
+      "explanation": "22+ HCP. Занятие 8.",
+      "tags": [
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0074",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: 2♣–2♦ означает"
+      },
+      "correct_bid": "Негатив",
+      "explanation": "Негатив. Занятие 8.",
+      "tags": [
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0075",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: 4БК это Блэквуд когда"
+      },
+      "correct_bid": "При шлемовой торговле с фитом (не после 1БК/2БК)",
+      "explanation": "При шлемовой торговле с фитом (не после 1БК/2БК). Занятие 8.",
+      "tags": [
+        "blackwood"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0076",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: 4БК НЕ Блэквуд когда"
+      },
+      "correct_bid": "После 1БК/2БК это инвит в 6БК",
+      "explanation": "После 1БК/2БК это инвит в 6БК. Занятие 8.",
+      "tags": [
+        "blackwood"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0077",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: Блэквуд ответы: 5♣"
+      },
+      "correct_bid": "0 ключевых карт",
+      "explanation": "0 ключевых карт. Занятие 8.",
+      "tags": [
+        "blackwood"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0078",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: Блэквуд ответы: 5♦"
+      },
+      "correct_bid": "1 ключевая карта",
+      "explanation": "1 ключевая карта. Занятие 8.",
+      "tags": [
+        "blackwood"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0079",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: Блэквуд ответы: 5♥"
+      },
+      "correct_bid": "2 ключевые карты",
+      "explanation": "2 ключевые карты. Занятие 8.",
+      "tags": [
+        "blackwood"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0080",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: Блэквуд ответы: 5♠"
+      },
+      "correct_bid": "3 ключевые карты",
+      "explanation": "3 ключевые карты. Занятие 8.",
+      "tags": [
+        "blackwood"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0081",
+      "module": "conventions",
+      "lesson": 8,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 8: Блэквуд ответы: 5БК"
+      },
+      "correct_bid": "4 ключевые карты",
+      "explanation": "4 ключевые карты. Занятие 8.",
+      "tags": [
+        "blackwood"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0082",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 9: блок 2 уровня условия"
+      },
+      "correct_bid": "6–10 HCP и 6 карт в масти",
+      "explanation": "6–10 HCP и 6 карт в масти. Занятие 9.",
+      "tags": [
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0083",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 9: блок 3 уровня условия"
+      },
+      "correct_bid": "6–10 HCP и 7 карт в масти",
+      "explanation": "6–10 HCP и 7 карт в масти. Занятие 9.",
+      "tags": [
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0084",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 9: блок 4 уровня условия"
+      },
+      "correct_bid": "6–10 HCP и 8–9 карт в масти",
+      "explanation": "6–10 HCP и 8–9 карт в масти. Занятие 9.",
+      "tags": [
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0085",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 9: лучший блок по позиции"
+      },
+      "correct_bid": "3-я рука",
+      "explanation": "3-я рука. Занятие 9.",
+      "tags": [
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0086",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 9: блок на 4-й руке (после трёх пасов)"
+      },
+      "correct_bid": "Не делаем",
+      "explanation": "Не делаем. Занятие 9.",
+      "tags": [
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0087",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 9: принцип одной заявки после блока"
+      },
+      "correct_bid": "Не продолжаем без необходимости",
+      "explanation": "Не продолжаем без необходимости. Занятие 9.",
+      "tags": [
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0088",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 10: из последовательности ходим"
+      },
+      "correct_bid": "Старшей",
+      "explanation": "Старшей. Занятие 10.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0089",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 10: из дуплета ходим"
+      },
+      "correct_bid": "Старшей",
+      "explanation": "Старшей. Занятие 10.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0090",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 10: из триплета ходим"
+      },
+      "correct_bid": "Средней (кроме KQ2)",
+      "explanation": "Средней (кроме KQ2). Занятие 10.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0091",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 10: снос маленькой означает"
+      },
+      "correct_bid": "«Хочу эту масть»",
+      "explanation": "«Хочу эту масть». Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0092",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "УРОК 10: снос большой означает"
+      },
+      "correct_bid": "«Не хочу эту масть»",
+      "explanation": "«Не хочу эту масть». Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0093",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТКРЫТИЕ): HCP=11, ♠5"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 1.",
+      "tags": [
+        "hcp",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0094",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТКРЫТИЕ): HCP=13, ♠5"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0095",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТКРЫТИЕ): HCP=13, ♥5, нет 5♠"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0096",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТКРЫТИЕ): HCP=16, равномерная, без 5M"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0097",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТКРЫТИЕ): HCP=13, нет 5M, не 1БК"
+      },
+      "correct_bid": "1♣/1♦",
+      "explanation": "1♣/1♦. Занятие 1.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0098",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "PRACTICE (OPENING): HCP=20, равномерная, без 5M"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0099",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "PRACTICE (OPENING): HCP=23 (любая форма)"
+      },
+      "correct_bid": "2♣ (ФГ)",
+      "explanation": "2♣ (ФГ). Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0100",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТВЕТЧИК): партнёр 1♠, HCP=5, ♠3"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0101",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТВЕТЧИК): партнёр 1♠, HCP=7, ♠3"
+      },
+      "correct_bid": "2♠",
+      "explanation": "2♠. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0102",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТВЕТЧИК): партнёр 1♠, HCP=11, ♠3"
+      },
+      "correct_bid": "3♠",
+      "explanation": "3♠. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0103",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТВЕТЧИК): партнёр 1♠, HCP=12, ♠3"
+      },
+      "correct_bid": "4♠",
+      "explanation": "4♠. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0104",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТВЕТЧИК): партнёр 1♥, HCP=9, ♥3"
+      },
+      "correct_bid": "2♥",
+      "explanation": "2♥. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0105",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТВЕТЧИК): партнёр 1♥, HCP=10, ♥4"
+      },
+      "correct_bid": "3♥",
+      "explanation": "3♥. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0106",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (ОТВЕТЧИК): партнёр 1♥, HCP=12, ♥3"
+      },
+      "correct_bid": "4♥",
+      "explanation": "4♥. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0107",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (1БК): партнёр 1БК, HCP=6, равномерная"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС.",
+      "tags": [
+        "hcp",
+        "notrump",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0108",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (1БК): партнёр 1БК, HCP=6, неравномерная, ♠5"
+      },
+      "correct_bid": "2♠ (побег)",
+      "explanation": "2♠ (побег).",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0109",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (1БК): партнёр 1БК, HCP=8, есть 4♠"
+      },
+      "correct_bid": "2♣ (Стейман)",
+      "explanation": "2♣ (Стейман).",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0110",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (1БК): партнёр 1БК, HCP=9, 4M нет"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0111",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (1БК): партнёр 1БК, HCP=11, 4M нет"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0112",
+      "module": "response_minor",
+      "lesson": 0,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (МИНОРЫ): партнёр 1♦, HCP=7, есть 4♥"
+      },
+      "correct_bid": "1♥ (Ф1)",
+      "explanation": "1♥ (Ф1).",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0113",
+      "module": "response_minor",
+      "lesson": 0,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (МИНОРЫ): партнёр 1♣, HCP=8, 4M нет, равномерная"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0114",
+      "module": "response_minor",
+      "lesson": 0,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (МИНОРЫ): партнёр 1♦, HCP=11, 4M нет, равномерная"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0115",
+      "module": "response_minor",
+      "lesson": 0,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "ПРАКТИКА (МИНОРЫ): партнёр 1♣, HCP=8, 4M нет, неравномерная, ♣5"
+      },
+      "correct_bid": "2♣",
+      "explanation": "2♣.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0116",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Открытие: HCP=11"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 1.",
+      "tags": [
+        "hcp",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0117",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Открытие: HCP=13 и ♠5"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0118",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Открытие: HCP=13, нет 5♠, ♥5"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0119",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Открытие: HCP=16, равномерная, без 5M"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0120",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Открытие: HCP=13, нет 5M, не 1БК"
+      },
+      "correct_bid": "1♣/1♦",
+      "explanation": "1♣/1♦. Занятие 1.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0121",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Открытие: HCP=20, равномерная, без 5M"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0122",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Открытие: HCP=23"
+      },
+      "correct_bid": "2♣",
+      "explanation": "2♣. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0123",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1♠, HCP=7, ♠3"
+      },
+      "correct_bid": "2♠",
+      "explanation": "2♠.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0124",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1♠, HCP=11, ♠3"
+      },
+      "correct_bid": "3♠",
+      "explanation": "3♠.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0125",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1♥, HCP=12, ♥3"
+      },
+      "correct_bid": "4♥",
+      "explanation": "4♥.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0126",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Я открыл 1♠, партнёр 2♠, у меня 13"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС.",
+      "tags": [
+        "major",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0127",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Я открыл 1♥, партнёр 2♥, у меня 16"
+      },
+      "correct_bid": "3♥",
+      "explanation": "3♥.",
+      "tags": [
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0128",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Я открыл 1♠, партнёр 2♠, у меня 19"
+      },
+      "correct_bid": "4♠",
+      "explanation": "4♠.",
+      "tags": [
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0129",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1БК, у меня 6, равномерная"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС.",
+      "tags": [
+        "notrump",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0130",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1БК, у меня 8 и 4♠"
+      },
+      "correct_bid": "2♣",
+      "explanation": "2♣.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0131",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1БК, у меня 9, 4M нет"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0132",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1БК, у меня 11, 4M нет"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0133",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1♦, у меня 7 и 4♥"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥.",
+      "tags": [
+        "minor"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0134",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1♣, у меня 8, 4M нет, равномерная"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК.",
+      "tags": [
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0135",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Партнёр 1♦, у меня 11, 4M нет, равномерная"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК.",
+      "tags": [
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0136",
+      "module": "preempt",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Блок 2♥ условия"
+      },
+      "correct_bid": "6–10 HCP и 6♥",
+      "explanation": "6–10 HCP и 6♥.",
+      "tags": [
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0137",
+      "module": "preempt",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Блок 3♠ условия"
+      },
+      "correct_bid": "6–10 HCP и 7♠",
+      "explanation": "6–10 HCP и 7♠.",
+      "tags": [
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0138",
+      "module": "preempt",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Блок 4♦ условия"
+      },
+      "correct_bid": "6–10 HCP и 8–9♦",
+      "explanation": "6–10 HCP и 8–9♦.",
+      "tags": [
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0139",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Вист: из дуплета ходим"
+      },
+      "correct_bid": "Старшей",
+      "explanation": "Старшей. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0140",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Вист: из последовательности ходим"
+      },
+      "correct_bid": "Старшей",
+      "explanation": "Старшей. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0141",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Снос маленькой означает"
+      },
+      "correct_bid": "Хочу эту масть",
+      "explanation": "Хочу эту масть.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0142",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): Снос большой означает"
+      },
+      "correct_bid": "Не хочу эту масть",
+      "explanation": "Не хочу эту масть.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0143",
+      "module": "notrump",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): 3БК это сколько взяток"
+      },
+      "correct_bid": "9",
+      "explanation": "9.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0144",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): 4♥/4♠ это сколько взяток"
+      },
+      "correct_bid": "10",
+      "explanation": "10.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0145",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): 5♣/5♦ это сколько взяток"
+      },
+      "correct_bid": "11",
+      "explanation": "11.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0146",
+      "module": "exam",
+      "lesson": 0,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (ЭКЗАМЕН): 6 уровень это сколько взяток"
+      },
+      "correct_bid": "12",
+      "explanation": "12.",
+      "tags": [
+        "general"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0147",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 9: БЛОКИ): 3-я рука, HCP=7, ♥6, половина очков в ♥"
+      },
+      "correct_bid": "Открыть 2♥ (блок)",
+      "explanation": "Открыть 2♥ (блок). Занятие 9.",
+      "tags": [
+        "hcp",
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0148",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 9: БЛОКИ): 4-я рука (после 3 пасов), HCP=7, ♠7"
+      },
+      "correct_bid": "ПАС (блок не делаем)",
+      "explanation": "ПАС (блок не делаем). Занятие 9.",
+      "tags": [
+        "hcp",
+        "preempt",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0149",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 9: БЛОКИ): HCP=9, ♦7, половина очков в ♦"
+      },
+      "correct_bid": "Открыть 3♦ (блок)",
+      "explanation": "Открыть 3♦ (блок). Занятие 9.",
+      "tags": [
+        "hcp",
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0150",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 9: БЛОКИ): HCP=8, ♣8, половина очков в ♣"
+      },
+      "correct_bid": "Открыть 4♣ (блок)",
+      "explanation": "Открыть 4♣ (блок). Занятие 9.",
+      "tags": [
+        "hcp",
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0151",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 9: БЛОКИ): оппонент 2♠ (блок), у меня 15–18 равномерная и держка ♠"
+      },
+      "correct_bid": "Вход 2БК/3БК? (по вашей схеме: БК-вход при держке)",
+      "explanation": "Вход 2БК/3БК? (по вашей схеме: БК-вход при держке). Занятие 9.",
+      "tags": [
+        "notrump",
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0152",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 9: БЛОКИ): оппонент 3♥ (блок), у меня краткость ♥ и поддержка остальных мастей"
+      },
+      "correct_bid": "Вызывная контра (X)",
+      "explanation": "Вызывная контра (X). Занятие 9.",
+      "tags": [
+        "notrump",
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0153",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 9: БЛОКИ): оппонент 2♥, у меня 13 HCP и ♠5"
+      },
+      "correct_bid": "Вход 2♠ (если по уровню возможно) / иначе PASS (в рамках вашей системы)",
+      "explanation": "Вход 2♠ (если по уровню возможно) / иначе PASS (в рамках вашей системы). Занятие 9.",
+      "tags": [
+        "hcp",
+        "notrump",
+        "preempt"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0154",
+      "module": "preempt",
+      "lesson": 9,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 9: БЛОКИ): после блока партнёра, у меня слабая рука"
+      },
+      "correct_bid": "ПАС (принцип одной заявки)",
+      "explanation": "ПАС (принцип одной заявки). Занятие 9.",
+      "tags": [
+        "preempt",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0155",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 10: ВИСТ): масть K Q J 5 2, карта атаки"
+      },
+      "correct_bid": "K",
+      "explanation": "K. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0156",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 10: ВИСТ): масть A K Q 2, карта атаки"
+      },
+      "correct_bid": "A",
+      "explanation": "A. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0157",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 10: ВИСТ): масть A Q J 10, карта атаки"
+      },
+      "correct_bid": "Q",
+      "explanation": "Q. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0158",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 10: ВИСТ): масть K J 10 3 2, карта атаки"
+      },
+      "correct_bid": "J",
+      "explanation": "J. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0159",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 10: ВИСТ): масть K 10 8 5 (4+ с одной фигурой), карта атаки"
+      },
+      "correct_bid": "5 (четвёртой сверху)",
+      "explanation": "5 (четвёртой сверху). Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0160",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 10: ВИСТ): масть J 10 5 3 2 (исключение), карта атаки"
+      },
+      "correct_bid": "J",
+      "explanation": "J. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0161",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 10: ВИСТ): снос 2 в масти партнёра означает"
+      },
+      "correct_bid": "Хочу эту масть",
+      "explanation": "Хочу эту масть. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0162",
+      "module": "hand_eval",
+      "lesson": 10,
+      "difficulty": 1,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "30 СИТУАЦИЙ (УРОК 10: ВИСТ): снос 9 в масти партнёра означает"
+      },
+      "correct_bid": "Не хочу эту масть",
+      "explanation": "Не хочу эту масть. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0163",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=11, ♥5"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 1.",
+      "tags": [
+        "hcp",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0164",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=12, ♠5"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0165",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=12, нет 5♠, ♥5"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0166",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=12, нет 5M, не 1БК"
+      },
+      "correct_bid": "1♣/1♦",
+      "explanation": "1♣/1♦. Занятие 1.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0167",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=13, ♠6"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0168",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=13, ♥6, нет 5♠"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0169",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=14, ♠5"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0170",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=14, ♥5, нет 5♠"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0171",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=15, равномерная, нет 5M"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0172",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=18, равномерная, нет 5M"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0173",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=18, ♠5 (даже равномерная)"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0174",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=17, ♥5, нет 5♠"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0175",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=13, ♦5+, нет 5M, не 1БК"
+      },
+      "correct_bid": "1♦",
+      "explanation": "1♦. Занятие 1.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0176",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=13, ♣5+, нет 5M, не 1БК"
+      },
+      "correct_bid": "1♣",
+      "explanation": "1♣. Занятие 1.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0177",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=14, ♦4 ♣3, нет 5M, не 1БК"
+      },
+      "correct_bid": "1♦",
+      "explanation": "1♦. Занятие 1.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0178",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=14, ♦3 ♣4, нет 5M, не 1БК"
+      },
+      "correct_bid": "1♣",
+      "explanation": "1♣. Занятие 1.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0179",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=14, ♦4 ♣4, нет 5M, не 1БК"
+      },
+      "correct_bid": "1♣",
+      "explanation": "1♣. Занятие 1.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0180",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=19, равномерная, нет 5M"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0181",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=21, равномерная, нет 5M"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0182",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=20, ♠5"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0183",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=20, ♥5, нет 5♠"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0184",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=23, любая форма"
+      },
+      "correct_bid": "2♣ (ФГ)",
+      "explanation": "2♣ (ФГ). Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0185",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): 3-я рука, HCP=7, ♥6, половина очков в ♥"
+      },
+      "correct_bid": "2♥ (блок)",
+      "explanation": "2♥ (блок). Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0186",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): 3-я рука, HCP=9, ♠7, половина очков в ♠"
+      },
+      "correct_bid": "3♠ (блок)",
+      "explanation": "3♠ (блок). Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0187",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): 3-я рука, HCP=8, ♦8, половина очков в ♦"
+      },
+      "correct_bid": "4♦ (блок)",
+      "explanation": "4♦ (блок). Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0188",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): 4-я рука (после 3 пасов), HCP=8, ♥7"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 1.",
+      "tags": [
+        "hcp",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0189",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=16, равномерная, но есть ♠5"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0190",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=16, равномерная, но есть ♥5"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0191",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=15, неравномерная, нет 5M"
+      },
+      "correct_bid": "1♣/1♦",
+      "explanation": "1♣/1♦. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0192",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=12, ♦5, нет 5M"
+      },
+      "correct_bid": "1♦",
+      "explanation": "1♦. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0193",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=12, ♣5, нет 5M"
+      },
+      "correct_bid": "1♣",
+      "explanation": "1♣. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0194",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=18, ♦5, нет 5M, неравномерная"
+      },
+      "correct_bid": "1♦",
+      "explanation": "1♦. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0195",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=18, ♣5, нет 5M, неравномерная"
+      },
+      "correct_bid": "1♣",
+      "explanation": "1♣. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0196",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=22, равномерная, нет 5M"
+      },
+      "correct_bid": "2♣ (ФГ)",
+      "explanation": "2♣ (ФГ). Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0197",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=10, ♠7"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 1.",
+      "tags": [
+        "hcp",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0198",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=11, равномерная"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 1.",
+      "tags": [
+        "hcp",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0199",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=12, ♠5, ♥5"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0200",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=12, ♠4, ♥5"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0201",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=18, ♠6"
+      },
+      "correct_bid": "1♠",
+      "explanation": "1♠. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0202",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=18, ♥6, нет 5♠"
+      },
+      "correct_bid": "1♥",
+      "explanation": "1♥. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0203",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=15, равномерная, 4-3-3-3"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0204",
+      "module": "opening",
+      "lesson": 1,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENING (ПАКЕТ 200, часть 1 из 4): HCP=17, равномерная, 4-4-3-2, нет 5M"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 1.",
+      "tags": [
+        "hcp"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0205",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♠, HCP=6, ♠3"
+      },
+      "correct_bid": "2♠",
+      "explanation": "2♠. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0206",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♠, HCP=9, ♠3"
+      },
+      "correct_bid": "2♠",
+      "explanation": "2♠. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0207",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♠, HCP=10, ♠3"
+      },
+      "correct_bid": "3♠",
+      "explanation": "3♠. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0208",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♠, HCP=12, ♠4"
+      },
+      "correct_bid": "4♠",
+      "explanation": "4♠. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0209",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♠, HCP=8, ♠2"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0210",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♥, HCP=7, ♥3"
+      },
+      "correct_bid": "2♥",
+      "explanation": "2♥. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0211",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♥, HCP=9, ♥4"
+      },
+      "correct_bid": "2♥",
+      "explanation": "2♥. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0212",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♥, HCP=11, ♥3"
+      },
+      "correct_bid": "3♥",
+      "explanation": "3♥. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0213",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♥, HCP=12, ♥4"
+      },
+      "correct_bid": "4♥",
+      "explanation": "4♥. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0214",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♥, HCP=6, ♥2"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 2.",
+      "tags": [
+        "hcp",
+        "major",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0215",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♦, HCP=7 и 4♠"
+      },
+      "correct_bid": "1♠ (Ф1)",
+      "explanation": "1♠ (Ф1). Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0216",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♣, HCP=8 и 4♥"
+      },
+      "correct_bid": "1♥ (Ф1)",
+      "explanation": "1♥ (Ф1). Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0217",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♦, HCP=6 и 4♥+4♠"
+      },
+      "correct_bid": "1♥ (сначала младший мажор)",
+      "explanation": "1♥ (сначала младший мажор). Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0218",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♣, HCP=9 и 4♥+4♠"
+      },
+      "correct_bid": "1♥ (сначала младший мажор)",
+      "explanation": "1♥ (сначала младший мажор). Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♠",
+        "ПАС",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0219",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♦, HCP=8, без 4M, равномерная"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0220",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♣, HCP=9, без 4M, равномерная"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0221",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♦, HCP=11, без 4M, равномерная"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0222",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♣, HCP=12, без 4M, равномерная"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0223",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♦, HCP=14, без 4M, равномерная"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0224",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♣, HCP=16, без 4M, равномерная"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0225",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♣, HCP=8, без 4M, неравномерная, ♣5"
+      },
+      "correct_bid": "2♣",
+      "explanation": "2♣. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0226",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♦, HCP=9, без 4M, неравномерная, ♦5"
+      },
+      "correct_bid": "2♦",
+      "explanation": "2♦. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0227",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♣, HCP=11, без 4M, неравномерная, ♣5"
+      },
+      "correct_bid": "3♣",
+      "explanation": "3♣. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0228",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1♦, HCP=13, без 4M, неравномерная, ♦5"
+      },
+      "correct_bid": "3♦",
+      "explanation": "3♦. Занятие 2.",
+      "tags": [
+        "hcp",
+        "minor"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0229",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1БК, HCP=6, равномерная"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 2.",
+      "tags": [
+        "hcp",
+        "notrump",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0230",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1БК, HCP=7, неравномерная, ♥5"
+      },
+      "correct_bid": "2♥ (побег)",
+      "explanation": "2♥ (побег). Занятие 2.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0231",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1БК, HCP=8, есть 4♥"
+      },
+      "correct_bid": "2♣ (Стейман)",
+      "explanation": "2♣ (Стейман). Занятие 2.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0232",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1БК, HCP=9, без 4M"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК. Занятие 2.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0233",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 1БК, HCP=11, без 4M"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК. Занятие 2.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0234",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 2БК, HCP=8, есть 4♠"
+      },
+      "correct_bid": "3♣ (Стейман)",
+      "explanation": "3♣ (Стейман). Занятие 2.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0235",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 2БК, HCP=10, без 4M"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК. Занятие 2.",
+      "tags": [
+        "hcp",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0236",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 2♣ (ФГ), A+K=0–6"
+      },
+      "correct_bid": "2♦ (негатив)",
+      "explanation": "2♦ (негатив). Занятие 2.",
+      "tags": [
+        "stayman",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0237",
+      "module": "response",
+      "lesson": 2,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "RESPONDER (ПАКЕТ 250, часть 1 из 4): партнёр 2♣ (ФГ), A+K=7+, 4+♥"
+      },
+      "correct_bid": "2♥ (позитив)",
+      "explanation": "2♥ (позитив). Занятие 2.",
+      "tags": [
+        "stayman",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0238",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1♠–2♠, у меня 12"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 5.",
+      "tags": [
+        "major",
+        "notrump",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0239",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1♠–2♠, у меня 16"
+      },
+      "correct_bid": "3♠",
+      "explanation": "3♠. Занятие 5.",
+      "tags": [
+        "major",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0240",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1♠–2♠, у меня 19"
+      },
+      "correct_bid": "4♠",
+      "explanation": "4♠. Занятие 5.",
+      "tags": [
+        "major",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0241",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1♥–2♥, у меня 13"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 5.",
+      "tags": [
+        "major",
+        "notrump",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0242",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1♥–2♥, у меня 15"
+      },
+      "correct_bid": "3♥",
+      "explanation": "3♥. Занятие 5.",
+      "tags": [
+        "major",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0243",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1♥–2♥, у меня 18"
+      },
+      "correct_bid": "4♥",
+      "explanation": "4♥. Занятие 5.",
+      "tags": [
+        "major",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0244",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1♠–3♠, у меня 12"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 5.",
+      "tags": [
+        "major",
+        "notrump",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0245",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1♠–3♠, у меня 14"
+      },
+      "correct_bid": "4♠",
+      "explanation": "4♠. Занятие 5.",
+      "tags": [
+        "major",
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0246",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1m–1♥ (Ф1), у меня 4♥ и 13"
+      },
+      "correct_bid": "2♥",
+      "explanation": "2♥. Занятие 5.",
+      "tags": [
+        "major",
+        "minor",
+        "notrump",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0247",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1m–1♥ (Ф1), у меня 4♥ и 16"
+      },
+      "correct_bid": "3♥",
+      "explanation": "3♥. Занятие 5.",
+      "tags": [
+        "major",
+        "minor",
+        "notrump",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0248",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1m–1♥ (Ф1), у меня 4♥ и 19"
+      },
+      "correct_bid": "4♥",
+      "explanation": "4♥. Занятие 5.",
+      "tags": [
+        "major",
+        "minor",
+        "notrump",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0249",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1m–1♠ (Ф1), у меня 4♠ и 12"
+      },
+      "correct_bid": "2♠",
+      "explanation": "2♠. Занятие 5.",
+      "tags": [
+        "major",
+        "minor",
+        "notrump",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0250",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1m–1♠ (Ф1), у меня 4♠ и 15"
+      },
+      "correct_bid": "3♠",
+      "explanation": "3♠. Занятие 5.",
+      "tags": [
+        "major",
+        "minor",
+        "notrump",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0251",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1m–1♠ (Ф1), у меня 4♠ и 18"
+      },
+      "correct_bid": "4♠",
+      "explanation": "4♠. Занятие 5.",
+      "tags": [
+        "major",
+        "minor",
+        "notrump",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0252",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1m–1♥ (Ф1), фита нет, равномерная 13"
+      },
+      "correct_bid": "1БК",
+      "explanation": "1БК. Занятие 5.",
+      "tags": [
+        "major",
+        "minor",
+        "notrump",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0253",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1m–1♥ (Ф1), фита нет, равномерная 16"
+      },
+      "correct_bid": "2БК",
+      "explanation": "2БК. Занятие 5.",
+      "tags": [
+        "major",
+        "minor",
+        "notrump",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0254",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1m–1♥ (Ф1), фита нет, равномерная 19"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК. Занятие 5.",
+      "tags": [
+        "major",
+        "minor",
+        "notrump",
+        "forcing"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0255",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1БК–2♣, нет 4M"
+      },
+      "correct_bid": "2♦",
+      "explanation": "2♦. Занятие 5.",
+      "tags": [
+        "notrump",
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0256",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1БК–2♣, есть 4♥"
+      },
+      "correct_bid": "2♥",
+      "explanation": "2♥. Занятие 5.",
+      "tags": [
+        "notrump",
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0257",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1БК–2♣, есть 4♠"
+      },
+      "correct_bid": "2♠",
+      "explanation": "2♠. Занятие 5.",
+      "tags": [
+        "notrump",
+        "stayman"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0258",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1БК–2БК, у меня 15–16"
+      },
+      "correct_bid": "ПАС",
+      "explanation": "ПАС. Занятие 5.",
+      "tags": [
+        "notrump",
+        "pass_trap"
+      ],
+      "distractors": [
+        "1♠",
+        "1♣",
+        "4♥",
+        "1БК"
+      ]
+    },
+    {
+      "id": "T0259",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 1БК–2БК, у меня 17–18"
+      },
+      "correct_bid": "3БК",
+      "explanation": "3БК. Занятие 5.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "4♥",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0260",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 2БК–3♣, нет 4M"
+      },
+      "correct_bid": "3♦",
+      "explanation": "3♦. Занятие 5.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0261",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 2БК–3♣, есть 4♥"
+      },
+      "correct_bid": "3♥",
+      "explanation": "3♥. Занятие 5.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0262",
+      "module": "rebid",
+      "lesson": 5,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "OPENER CONT (ПАКЕТ 200, часть 1 из 4): 2БК–3♣, есть 4♠"
+      },
+      "correct_bid": "3♠",
+      "explanation": "3♠. Занятие 5.",
+      "tags": [
+        "notrump"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0263",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): масть A K Q 2, карта атаки"
+      },
+      "correct_bid": "A",
+      "explanation": "A. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0264",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): масть K Q 10 5, карта атаки"
+      },
+      "correct_bid": "K",
+      "explanation": "K. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0265",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): масть Q J 10 2, карта атаки"
+      },
+      "correct_bid": "Q",
+      "explanation": "Q. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0266",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): масть A Q J 10, карта атаки"
+      },
+      "correct_bid": "Q",
+      "explanation": "Q. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0267",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): масть K J 10 3 2, карта атаки"
+      },
+      "correct_bid": "J",
+      "explanation": "J. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0268",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): масть K 10 8 5, атака (4-я сверху)"
+      },
+      "correct_bid": "5",
+      "explanation": "5. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0269",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): масть J 10 5 3 2 (исключение), атака"
+      },
+      "correct_bid": "J",
+      "explanation": "J. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0270",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): триплет 9 5 3, атака"
+      },
+      "correct_bid": "5",
+      "explanation": "5. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0271",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): триплет K 6 5, атака"
+      },
+      "correct_bid": "6",
+      "explanation": "6. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0272",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): триплет K Q 2, атака"
+      },
+      "correct_bid": "K",
+      "explanation": "K. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0273",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): дуплет 8 2, атака"
+      },
+      "correct_bid": "8",
+      "explanation": "8. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0274",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): снос 2 в масти партнёра"
+      },
+      "correct_bid": "Хочу эту масть",
+      "explanation": "Хочу эту масть. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0275",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): снос 9 в масти партнёра"
+      },
+      "correct_bid": "Не хочу эту масть",
+      "explanation": "Не хочу эту масть. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0276",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): против БК, партнёр входил мастью"
+      },
+      "correct_bid": "Атакуй в масть партнёра",
+      "explanation": "Атакуй в масть партнёра. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    },
+    {
+      "id": "T0277",
+      "module": "defense",
+      "lesson": 10,
+      "difficulty": 2,
+      "source": "quizlet",
+      "prompt": {
+        "type": "concept",
+        "question": "DEFENSE (ПАКЕТ 150, часть 1 из 4): против БК, если нет идей, куда атаковать"
+      },
+      "correct_bid": "Атакуй в неназванный мажор",
+      "explanation": "Атакуй в неназванный мажор. Занятие 10.",
+      "tags": [
+        "defense"
+      ],
+      "distractors": [
+        "1♥",
+        "ПАС",
+        "3БК",
+        "1♠"
+      ]
+    }
+  ]
+}
