@@ -51,6 +51,13 @@ class App {
     this.tabBar = document.getElementById('tabBar');
     this.moduleTitle = document.getElementById('module-title');
     this.setupTabs();
+    this.setupWelcomeButtons();
+  }
+
+  setupWelcomeButtons() {
+    document.getElementById('notify-btn')?.addEventListener('click', () => this.enableNotifications());
+    document.getElementById('start-training-btn')?.addEventListener('click', () => this.switchModule('hcp'));
+    document.getElementById('daily-mix-btn')?.addEventListener('click', () => this.switchModule('mix'));
   }
 
   setupTabs() {
@@ -152,9 +159,10 @@ class App {
         <div class="module-container text-center" style="padding: 48px 16px;">
           <div style="font-size: 32px; margin-bottom: 16px;">🚧</div>
           <p class="text-muted">Модуль в разработке</p>
-          <button class="btn btn-outline btn-sm mt-md" onclick="window.bridgeApp.switchModule('welcome')">На главную</button>
+          <button class="btn btn-outline btn-sm mt-md go-home-btn">На главную</button>
         </div>
       `;
+      this.content.querySelector('.go-home-btn')?.addEventListener('click', () => this.switchModule('welcome'));
       return;
     }
 
@@ -177,10 +185,13 @@ class App {
         <div class="module-container text-center" style="padding: 48px 16px;">
           <div style="font-size: 32px; margin-bottom: 16px;">🚧</div>
           <p class="text-muted">Модуль в разработке</p>
-          <p class="text-muted mt-sm" style="font-size: 12px;">${err.message}</p>
-          <button class="btn btn-outline btn-sm mt-md" onclick="window.bridgeApp.switchModule('welcome')">На главную</button>
+          <p class="text-muted mt-sm error-detail" style="font-size: 12px;"></p>
+          <button class="btn btn-outline btn-sm mt-md go-home-btn">На главную</button>
         </div>
       `;
+      const errEl = this.content.querySelector('.error-detail');
+      if (errEl) errEl.textContent = err.message;
+      this.content.querySelector('.go-home-btn')?.addEventListener('click', () => this.switchModule('welcome'));
     }
   }
 
@@ -307,7 +318,6 @@ export function renderStats(stats) {
 
 // Initialize app
 const app = new App();
-window.bridgeApp = app;
 
 // Auto-launch daily mix if there are SM-2 due items
 const dueCount = ProgressTracker.getDueCount();

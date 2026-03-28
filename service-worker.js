@@ -1,5 +1,5 @@
 // Bridge Trainer — Service Worker for PWA offline support
-const CACHE_NAME = 'bridge-trainer-v8';
+const CACHE_NAME = 'bridge-trainer-v9';
 
 const ASSETS = [
   './',
@@ -9,6 +9,7 @@ const ASSETS = [
   './css/cards.css',
   './css/modules.css',
   './js/app.js',
+  './js/sw-register.js',
   './js/core/constants.js',
   './js/core/card.js',
   './js/core/dealer.js',

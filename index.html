@@ -8,6 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Бридж">
   <meta name="description" content="Тренажёр спортивного бриджа — 10 модулей для отработки навыков">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="css/main.css">
@@ -37,17 +38,17 @@
             <div class="daily-progress">Сегодня: <span id="today-count">0</span>/10 задач</div>
           </div>
 
-          <button id="notify-btn" class="secondary-btn hidden" onclick="bridgeApp.enableNotifications()">🔔 Включить напоминания</button>
+          <button id="notify-btn" class="secondary-btn hidden">🔔 Включить напоминания</button>
 
           <div class="flex flex-col gap-sm">
-            <button class="btn btn-primary btn-block btn-lg" onclick="window.bridgeApp.switchModule('hcp')">
+            <button id="start-training-btn" class="btn btn-primary btn-block btn-lg">
               Начать тренировку
             </button>
           </div>
         </div>
 
         <div style="padding: 16px;">
-          <button class="btn btn-primary btn-block btn-lg" onclick="window.bridgeApp.switchModule('mix')" style="font-size: 18px; padding: 16px;">
+          <button id="daily-mix-btn" class="btn btn-primary btn-block btn-lg" style="font-size: 18px; padding: 16px;">
             🎯 Микс дня
             <span id="due-badge" style="display:none; background: var(--error); color: white; border-radius: 12px; padding: 2px 8px; font-size: 12px; margin-left: 8px;"></span>
           </button>
@@ -130,15 +131,6 @@
   </div>
 
   <script type="module" src="js/app.js"></script>
-  <script>
-    // Register Service Worker for PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-          .then(reg => console.log('SW registered:', reg.scope))
-          .catch(err => console.warn('SW registration failed:', err));
-      });
-    }
-  </script>
+  <script src="js/sw-register.js"></script>
 </body>
 </html>
