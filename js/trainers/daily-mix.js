@@ -10,6 +10,10 @@ import { recommendLead } from '../play/lead.js';
 import { QUIZZES } from '../../data/quizzes.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand } from '../app.js';
+import {
+  pickRelevantBids, pickBinaryBids,
+  ALL_OPENING_BIDS, ALL_RESPONSE_BIDS, BID_DISPLAY
+} from '../utils/bid-filter.js';
 
 const MODULE_ID = 'mix';
 const SESSION_SIZE = 10;
@@ -19,84 +23,31 @@ const MIN_MODULES = 3;
 // Openings used for response tasks
 const RESPONSE_OPENINGS = ['1♥', '1♠', '1БК', '1♣', '1♦', '2♣', '2БК'];
 
-// All possible bids in order (used as pool for filtering)
-const ALL_OPENING_BIDS = [
-  'пас', '1♣', '1♦', '1♥', '1♠', '1БК',
-  '2♣', '2♦', '2♥', '2♠', '2БК',
-  '3♣', '3♦', '3♥', '3♠',
-  '4♣', '4♦', '4♥', '4♠',
-];
-
-const ALL_RESPONSE_BIDS = [
-  'пас', '1♣', '1♦', '1♥', '1♠', '1БК',
-  '2♣', '2♦', '2♥', '2♠', '2БК',
-  '3♣', '3♦', '3♥', '3♠', '3БК',
-  '4♥', '4♠', '4БК', '5♣', '5♦',
-];
-
-const BID_DISPLAY = {
-  'пас': 'Пас',
-  '1♣': '1♣', '1♦': '1♦', '1♥': '1♥', '1♠': '1♠', '1БК': '1БК',
-  '2♣': '2♣ ФГ', '2♦': '2♦', '2♥': '2♥', '2♠': '2♠', '2БК': '2БК',
-  '3♣': '3♣', '3♦': '3♦', '3♥': '3♥', '3♠': '3♠', '3БК': '3БК',
-  '4♣': '4♣', '4♦': '4♦', '4♥': '4♥', '4♠': '4♠',
-  '4БК': '4БК', '5♣': '5♣', '5♦': '5♦',
-};
-
 /**
- * Pick ~8-10 relevant bids from the full pool.
- * Always includes the correct answer + contextual neighbours.
+ * Map a bid to a rule-based situationId for SM-2 tracking.
+ * Groups by rule (e.g. "opening 1-major") instead of by hand shape.
  */
-function pickRelevantBids(pool, correctBid, hcp) {
-  const selected = new Set();
-
-  // Always include correct answer and pass
-  selected.add(correctBid);
-  selected.add('пас');
-
-  // Add contextual bids based on HCP range
-  if (hcp < 12) {
-    // Weak hand: pass, low-level bids, preempts
-    ['1♣', '1♦', '1♥', '1♠', '2♦', '2♥', '2♠', '3♥', '3♠'].forEach(b => selected.add(b));
-  } else if (hcp <= 14) {
-    // Minimum opening: 1-level + simple raises
-    ['1♣', '1♦', '1♥', '1♠', '1БК', '2♣', '2♦', '2♥', '2♠'].forEach(b => selected.add(b));
-  } else if (hcp <= 18) {
-    // Mid-range: 1-level + 1NT + 2-level
-    ['1♣', '1♦', '1♥', '1♠', '1БК', '2♣', '2БК', '2♥', '2♠'].forEach(b => selected.add(b));
-  } else if (hcp <= 21) {
-    // Strong: NT range, 2♣ FG, game bids
-    ['1БК', '2♣', '2БК', '2♥', '2♠', '3БК', '4♥', '4♠'].forEach(b => selected.add(b));
-  } else {
-    // Very strong: 2♣, game+
-    ['2♣', '2БК', '3БК', '4♥', '4♠', '4БК', '5♣', '5♦'].forEach(b => selected.add(b));
+function bidToRuleId(module, bid, hand, opening) {
+  if (module === 'opening') {
+    if (bid === 'пас') return 'rule:opening-pass';
+    if (bid === '1БК') return 'rule:opening-1nt';
+    if (bid === '2БК') return 'rule:opening-2nt';
+    if (bid === '2♣') return 'rule:opening-2c-fg';
+    if (bid.startsWith('1') && (bid.includes('♥') || bid.includes('♠'))) return 'rule:opening-1major';
+    if (bid.startsWith('1') && (bid.includes('♣') || bid.includes('♦'))) return 'rule:opening-1minor';
+    if (['2♦','2♥','2♠','3♣','3♦','3♥','3♠','4♣','4♦','4♥','4♠'].includes(bid)) return 'rule:opening-preempt';
+    return `rule:opening-${bid}`;
   }
-
-  // Add neighbours of correct bid in the pool (±2 positions)
-  const idx = pool.indexOf(correctBid);
-  if (idx >= 0) {
-    for (let d = -2; d <= 2; d++) {
-      const ni = idx + d;
-      if (ni >= 0 && ni < pool.length) selected.add(pool[ni]);
-    }
+  if (module === 'response') {
+    if (bid === 'пас') return `rule:response-pass-after-${opening}`;
+    if (bid === '1БК') return 'rule:response-1nt';
+    if (bid === '2БК') return 'rule:response-2nt';
+    if (bid === '3БК') return 'rule:response-3nt';
+    // Raise
+    if (opening && bid.includes(opening.slice(-1))) return `rule:response-raise-${bid}`;
+    return `rule:response-${bid}`;
   }
-
-  // Filter to only bids that exist in the pool, keep order
-  const result = pool.filter(b => selected.has(b));
-
-  // Ensure 8-10 bids: trim or pad
-  if (result.length > 10) return result.slice(0, 10);
-  if (result.length < 8) {
-    // Pad with random bids from pool not yet selected
-    const remaining = pool.filter(b => !selected.has(b));
-    for (const b of remaining) {
-      result.push(b);
-      if (result.length >= 8) break;
-    }
-    // Re-sort by pool order
-    result.sort((a, b) => pool.indexOf(a) - pool.indexOf(b));
-  }
-  return result;
+  return `rule:${module}-${bid}`;
 }
 
 export default class DailyMix {
@@ -107,12 +58,14 @@ export default class DailyMix {
     this.answered = false;
     this.correctCount = 0;
     this.startTime = 0;
+    this.sessionErrors = [];
   }
 
   init() {
     this.session = this.generateSession();
     this.taskIndex = 0;
     this.correctCount = 0;
+    this.sessionErrors = [];
     this.render();
     this.showTask();
   }
@@ -393,12 +346,16 @@ export default class DailyMix {
     feedbackArea.innerHTML = '';
     nextBtn.classList.add('hidden');
 
+    // Task type badge
+    const typeLabels = { opening: 'Открытие', response: 'Ответ', hcp: 'HCP', quiz: 'Тест', lead: 'Первый ход' };
+    const badgeHtml = `<div class="task-type-badge task-type-${task.type}">${typeLabels[task.type]}</div>`;
+
     switch (task.type) {
-      case 'opening':  taskArea.innerHTML = this._renderOpeningTask(task); break;
-      case 'response': taskArea.innerHTML = this._renderResponseTask(task); break;
-      case 'hcp':      taskArea.innerHTML = this._renderHcpTask(task); break;
-      case 'quiz':     taskArea.innerHTML = this._renderQuizTask(task); break;
-      case 'lead':     taskArea.innerHTML = this._renderLeadTask(task); break;
+      case 'opening':  taskArea.innerHTML = badgeHtml + this._renderOpeningTask(task); break;
+      case 'response': taskArea.innerHTML = badgeHtml + this._renderResponseTask(task); break;
+      case 'hcp':      taskArea.innerHTML = badgeHtml + this._renderHcpTask(task); break;
+      case 'quiz':     taskArea.innerHTML = badgeHtml + this._renderQuizTask(task); break;
+      case 'lead':     taskArea.innerHTML = badgeHtml + this._renderLeadTask(task); break;
     }
 
     this._attachTaskHandlers(task);
@@ -406,7 +363,11 @@ export default class DailyMix {
 
   _renderOpeningTask(task) {
     const ev = task.handInfo;
-    const bids = pickRelevantBids(ALL_OPENING_BIDS, task.correctAnswer.bid, ev.hcp);
+    const openingStats = ProgressTracker.getStats('opening');
+    const useBinary = openingStats.total > 5 && openingStats.accuracy < 50;
+    const bids = useBinary
+      ? pickBinaryBids(ALL_OPENING_BIDS, task.correctAnswer.bid)
+      : pickRelevantBids(ALL_OPENING_BIDS, task.correctAnswer.bid, ev.hcp);
     return `
       <div class="card-area">
         <div class="card-area-title">Вы — сдающий. Ваша рука:</div>
@@ -424,7 +385,11 @@ export default class DailyMix {
 
   _renderResponseTask(task) {
     const ev = task.handInfo;
-    const bids = pickRelevantBids(ALL_RESPONSE_BIDS, task.correctAnswer.bid, ev.hcp);
+    const responseStats = ProgressTracker.getStats('response');
+    const useBinary = responseStats.total > 5 && responseStats.accuracy < 50;
+    const bids = useBinary
+      ? pickBinaryBids(ALL_RESPONSE_BIDS, task.correctAnswer.bid)
+      : pickRelevantBids(ALL_RESPONSE_BIDS, task.correctAnswer.bid, ev.hcp);
     return `
       <div class="card-area">
         <div class="card-area-title">Партнёр открылся: <strong>${task.opening}</strong></div>
@@ -588,15 +553,17 @@ export default class DailyMix {
       });
     }
 
-    // SM-2 integration
+    // SM-2 integration — rule-based situationId
+    const situationId = bidToRuleId('opening', task.correctAnswer.bid, task.hand);
     if (task.sm2Id && correct) {
       ProgressTracker.recordSuccess(task.sm2Id);
     } else if (!correct) {
       const ev = task.handInfo;
-      const shapeStr = ev.shapeStr || 'xxxx';
-      const situationId = `opening:${ev.hcp}hcp-${shapeStr.replace(/\s/g, '')}`;
       ProgressTracker.recordError('opening', situationId,
-        `${ev.hcp} HCP, ${shapeStr} — открытие?`);
+        `${ev.hcp} HCP, ${ev.shapeStr || 'xxxx'} — открытие?`);
+      if (task.correctAnswer.reason) {
+        this.sessionErrors.push({ module: 'opening', reason: task.correctAnswer.reason });
+      }
     }
 
     ProgressTracker.record('opening', { correct, time: timeTaken });
@@ -620,15 +587,17 @@ export default class DailyMix {
       });
     }
 
-    // SM-2 integration
+    // SM-2 integration — rule-based situationId
+    const situationId = bidToRuleId('response', task.correctAnswer.bid, task.hand, task.opening);
     if (task.sm2Id && correct) {
       ProgressTracker.recordSuccess(task.sm2Id);
     } else if (!correct) {
       const ev = task.handInfo;
-      const shapeStr = ev.shapeStr || 'xxxx';
-      const situationId = `response:${task.opening}-${ev.hcp}hcp-${shapeStr.replace(/\s/g, '')}`;
       ProgressTracker.recordError('response', situationId,
-        `${ev.hcp} HCP, ${shapeStr} после ${task.opening} — ответ?`);
+        `${ev.hcp} HCP, ${ev.shapeStr || 'xxxx'} после ${task.opening} — ответ?`);
+      if (task.correctAnswer.reason) {
+        this.sessionErrors.push({ module: 'response', reason: task.correctAnswer.reason });
+      }
     }
 
     ProgressTracker.record('response', { correct, time: timeTaken });
@@ -645,7 +614,9 @@ export default class DailyMix {
     const fb = document.getElementById('mix-feedback-area');
     if (correct) {
       fb.innerHTML = `
-        <div class="feedback feedback-success">✓ Правильно! ${task.hand.hcp} HCP (${(timeTaken / 1000).toFixed(1)}с)</div>
+        <div class="feedback feedback-success">✓ Правильно! ${task.hand.hcp} HCP (${(timeTaken / 1000).toFixed(1)}с)
+          <p class="text-muted" style="font-size: 13px; margin-top: 4px;">Считайте: Т=4, К=3, Д=2, В=1</p>
+        </div>
       `;
     } else {
       fb.innerHTML = `
@@ -720,6 +691,9 @@ export default class DailyMix {
         <div class="feedback feedback-error">✗ Неправильно. Рекомендуется: ${recDisplay}</div>
         ${recommended ? `<div class="explanation"><p>${recommended.reason || ''}</p></div>` : ''}
       `;
+      if (recommended && recommended.reason) {
+        this.sessionErrors.push({ module: 'lead', reason: recommended.reason });
+      }
     }
 
     return correct;
@@ -730,10 +704,18 @@ export default class DailyMix {
     const steps = correctAnswer.steps || [];
     if (steps.length === 0 && !correctAnswer.reason) return '';
 
-    const stepsHtml = steps.map(s => {
+    // Find decisive step index: last passed before first failed
+    let decisiveIdx = -1;
+    const firstFailedIdx = steps.findIndex(s => !s.passed);
+    if (firstFailedIdx > 0) {
+      decisiveIdx = firstFailedIdx - 1;
+    }
+
+    const stepsHtml = steps.map((s, i) => {
       const icon = s.passed ? '✓' : '✗';
       const cls = s.passed ? 'step-passed' : 'step-failed';
-      return `<div class="decision-step ${cls}">
+      const decisive = i === decisiveIdx ? ' step-decisive' : '';
+      return `<div class="decision-step ${cls}${decisive}">
         <span class="step-icon">${icon}</span>
         <span class="step-text">${s.text}</span>
       </div>`;
@@ -756,7 +738,9 @@ export default class DailyMix {
 
     if (correct) {
       fb.innerHTML = `
-        <div class="feedback feedback-success">✓ Правильно! ${correctAnswer.bidDisplay || correctAnswer.bid} (${(timeTaken / 1000).toFixed(1)}с)</div>
+        <div class="feedback feedback-success">✓ Правильно! ${correctAnswer.bidDisplay || correctAnswer.bid} (${(timeTaken / 1000).toFixed(1)}с)
+          ${correctAnswer.reason ? `<p class="text-muted" style="font-size: 13px; margin-top: 4px;">${correctAnswer.reason}</p>` : ''}
+        </div>
         ${treeHtml ? `<button class="btn btn-outline btn-block btn-sm" id="mix-explain-btn" style="margin-top: 8px;">Объяснить</button>
         <div id="mix-explain-area" class="hidden">${treeHtml}</div>` : ''}
       `;
@@ -835,6 +819,8 @@ export default class DailyMix {
           ${moduleList}
         </p>
 
+        ${this._buildRecapHtml()}
+
         <button class="btn btn-primary btn-block btn-lg" id="mix-restart-btn" style="margin-bottom: 12px;">
           Новая сессия
         </button>
@@ -845,6 +831,31 @@ export default class DailyMix {
     `;
 
     document.getElementById('mix-restart-btn').addEventListener('click', () => this.init());
+  }
+
+  /** Build recap HTML from session errors (up to 3 unique reasons) */
+  _buildRecapHtml() {
+    if (!this.sessionErrors || this.sessionErrors.length === 0) return '';
+
+    // Deduplicate reasons
+    const seen = new Set();
+    const unique = [];
+    for (const err of this.sessionErrors) {
+      if (!seen.has(err.reason)) {
+        seen.add(err.reason);
+        unique.push(err.reason);
+      }
+      if (unique.length >= 3) break;
+    }
+
+    if (unique.length === 0) return '';
+
+    return `
+      <div class="card-area" style="padding: 12px 16px; text-align: left; margin-bottom: 16px;">
+        <div class="card-area-title">Запомни</div>
+        ${unique.map(r => `<p style="font-size: 14px; line-height: 1.6; color: var(--text-secondary); padding: 4px 0;">• ${r}</p>`).join('')}
+      </div>
+    `;
   }
 }
 

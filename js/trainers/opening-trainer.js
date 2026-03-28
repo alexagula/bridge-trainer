@@ -6,6 +6,7 @@ import { dealForOpening } from '../core/dealer.js';
 import { determineOpening, getOpeningOptions } from '../bidding/opening.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand, renderStats } from '../app.js';
+import { pickRelevantBids, ALL_OPENING_BIDS, BID_DISPLAY } from '../utils/bid-filter.js';
 
 const MODULE_ID = 'opening';
 
@@ -68,11 +69,11 @@ export default class OpeningTrainer {
     document.getElementById('hand-info').textContent =
       `${ev.hcp} HCP | ${ev.shapeStr} | ${ev.distType}`;
 
-    // Build bid buttons
-    const options = getOpeningOptions();
+    // Build bid buttons — filtered to relevant bids
+    const bids = pickRelevantBids(ALL_OPENING_BIDS, this.correctBid.bid, ev.hcp);
     const grid = document.getElementById('bid-options');
-    grid.innerHTML = options.map(o =>
-      `<button class="bid-btn" data-bid="${o.bid}">${o.display}</button>`
+    grid.innerHTML = bids.map(b =>
+      `<button class="bid-btn" data-bid="${b}">${BID_DISPLAY[b] || b}</button>`
     ).join('');
 
     // Attach events
@@ -109,12 +110,20 @@ export default class OpeningTrainer {
     const feedback = document.getElementById('feedback-area');
     if (correct) {
       feedback.innerHTML = `
-        <div class="feedback feedback-success">✓ Правильно! ${this.correctBid.bidDisplay} (${(timeTaken / 1000).toFixed(1)}с)</div>
+        <div class="feedback feedback-success">✓ Правильно! ${this.correctBid.bidDisplay} (${(timeTaken / 1000).toFixed(1)}с)
+          <p class="text-muted" style="font-size: 13px; margin-top: 4px;">${this.correctBid.reason}</p>
+        </div>
       `;
     } else {
-      const steps = this.correctBid.steps.map(s =>
-        `<p>${s.passed ? '✓' : '✗'} ${s.text}</p>`
-      ).join('');
+      // Find decisive step: last passed before first failed
+      let decisiveIdx = -1;
+      const firstFailedIdx = this.correctBid.steps.findIndex(s => !s.passed);
+      if (firstFailedIdx > 0) decisiveIdx = firstFailedIdx - 1;
+
+      const steps = this.correctBid.steps.map((s, i) => {
+        const decisive = i === decisiveIdx ? ' step-decisive' : '';
+        return `<p class="${s.passed ? 'step-passed' : 'step-failed'}${decisive}"><span class="step-icon">${s.passed ? '✓' : '✗'}</span> <span class="step-text">${s.text}</span></p>`;
+      }).join('');
 
       feedback.innerHTML = `
         <div class="feedback feedback-error">✗ Неправильно. Правильный ответ: ${this.correctBid.bidDisplay}</div>

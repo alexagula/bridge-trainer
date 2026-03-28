@@ -32,6 +32,7 @@ const ASSETS = [
   './js/trainers/lead-trainer.js',
   './js/trainers/quiz-trainer.js',
   './js/reference/theory.js',
+  './js/utils/bid-filter.js',
   './js/progress/tracker.js',
   './data/quizzes.js',
   './data/theory-entries.js',

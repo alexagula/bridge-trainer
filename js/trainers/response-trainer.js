@@ -5,6 +5,7 @@ import { dealForResponse } from '../core/dealer.js';
 import { determineResponse, getResponseOptions } from '../bidding/response.js';
 import { ProgressTracker } from '../progress/tracker.js';
 import { renderHand, renderStats } from '../app.js';
+import { pickRelevantBids, ALL_RESPONSE_BIDS, BID_DISPLAY } from '../utils/bid-filter.js';
 
 const MODULE_ID = 'response';
 const OPENINGS = ['1♥', '1♠', '1БК', '1♣', '1♦', '2♣', '2БК', '2♥', '2♠'];
@@ -106,17 +107,12 @@ export default class ResponseTrainer {
     const ev = evaluateHand(this.hand);
     document.getElementById('hand-info').textContent = `${ev.hcp} HCP | ${ev.shapeStr} | ${ev.distType}`;
 
-    // Filter response options to relevant ones
-    const allOptions = getResponseOptions(this.opening);
-    // Ensure correct answer is in options
-    let filtered = allOptions;
-    if (!filtered.find(o => o.bid === this.correctBid.bid)) {
-      filtered.push({ bid: this.correctBid.bid, display: this.correctBid.bidDisplay });
-    }
+    // Filter response options to relevant bids based on HCP
+    const bids = pickRelevantBids(ALL_RESPONSE_BIDS, this.correctBid.bid, ev.hcp);
 
     const grid = document.getElementById('bid-options');
-    grid.innerHTML = filtered.map(o =>
-      `<button class="bid-btn" data-bid="${o.bid}">${o.display}</button>`
+    grid.innerHTML = bids.map(b =>
+      `<button class="bid-btn" data-bid="${b}">${BID_DISPLAY[b] || b}</button>`
     ).join('');
     grid.querySelectorAll('.bid-btn').forEach(btn => {
       btn.addEventListener('click', () => this.checkAnswer(btn.dataset.bid));
@@ -142,11 +138,20 @@ export default class ResponseTrainer {
 
     const feedback = document.getElementById('feedback-area');
     if (correct) {
-      feedback.innerHTML = `<div class="feedback feedback-success">✓ Правильно! ${this.correctBid.bidDisplay}</div>`;
+      feedback.innerHTML = `<div class="feedback feedback-success">✓ Правильно! ${this.correctBid.bidDisplay}
+          <p class="text-muted" style="font-size: 13px; margin-top: 4px;">${this.correctBid.reason}</p>
+        </div>`;
     } else {
-      const steps = (this.correctBid.steps || []).map(s =>
-        `<p>${s.passed ? '✓' : '✗'} ${s.text}</p>`
-      ).join('');
+      // Find decisive step: last passed before first failed
+      const stepsArr = this.correctBid.steps || [];
+      let decisiveIdx = -1;
+      const firstFailedIdx = stepsArr.findIndex(s => !s.passed);
+      if (firstFailedIdx > 0) decisiveIdx = firstFailedIdx - 1;
+
+      const steps = stepsArr.map((s, i) => {
+        const decisive = i === decisiveIdx ? ' step-decisive' : '';
+        return `<p class="${s.passed ? 'step-passed' : 'step-failed'}${decisive}"><span class="step-icon">${s.passed ? '✓' : '✗'}</span> <span class="step-text">${s.text}</span></p>`;
+      }).join('');
       feedback.innerHTML = `
         <div class="feedback feedback-error">✗ Правильный ответ: ${this.correctBid.bidDisplay}</div>
         <div class="explanation">

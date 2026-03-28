@@ -200,3 +200,62 @@
 .step-failed .step-icon { color: var(--error); }
 .step-passed .step-text { color: var(--text-secondary); }
 .step-failed .step-text { color: var(--text-primary); font-weight: 600; }
+
+/* Decisive step highlight (last passed before first failed) */
+.step-decisive {
+  background: rgba(29,155,240,0.1);
+  border-radius: 6px;
+  padding: 8px;
+  margin: 4px -8px;
+}
+.step-decisive .step-text {
+  color: var(--accent) !important;
+  font-weight: 700 !important;
+}
+
+/* Task type badge (daily mix) */
+.task-type-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.task-type-opening { background: rgba(29,155,240,0.2); color: #1d9bf0; }
+.task-type-response { background: rgba(0,200,83,0.2); color: #00c853; }
+.task-type-hcp { background: rgba(255,193,7,0.2); color: #ffc107; }
+.task-type-quiz { background: rgba(156,39,176,0.2); color: #9c27b0; }
+.task-type-lead { background: rgba(255,152,0,0.2); color: #ff9800; }
+
+/* Modules popup menu */
+.modules-popup {
+  position: fixed;
+  bottom: calc(var(--tab-height) + var(--safe-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 8px 0;
+  z-index: 200;
+  min-width: 220px;
+  max-width: 300px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+}
+.popup-item {
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.popup-item:active { background: var(--bg-surface); }
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+}

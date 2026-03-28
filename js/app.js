@@ -48,9 +48,54 @@ class App {
     this.tabBar.addEventListener('click', (e) => {
       const tab = e.target.closest('.tab-item');
       if (!tab) return;
+
+      // Handle modules-tab popup toggle
+      if (tab.id === 'modules-tab') {
+        this._toggleModulesPopup();
+        return;
+      }
+
       const moduleId = tab.dataset.module;
       if (moduleId) this.switchModule(moduleId);
     });
+
+    // Handle popup item clicks
+    const popup = document.getElementById('modules-popup');
+    if (popup) {
+      popup.addEventListener('click', (e) => {
+        const item = e.target.closest('.popup-item');
+        if (!item) return;
+        const moduleId = item.dataset.module;
+        if (moduleId) {
+          this._closeModulesPopup();
+          this.switchModule(moduleId);
+        }
+      });
+    }
+  }
+
+  _toggleModulesPopup() {
+    const popup = document.getElementById('modules-popup');
+    if (!popup) return;
+
+    if (popup.classList.contains('hidden')) {
+      popup.classList.remove('hidden');
+      // Add overlay to close popup on outside click
+      const overlay = document.createElement('div');
+      overlay.className = 'popup-overlay';
+      overlay.id = 'popup-overlay';
+      overlay.addEventListener('click', () => this._closeModulesPopup());
+      document.body.appendChild(overlay);
+    } else {
+      this._closeModulesPopup();
+    }
+  }
+
+  _closeModulesPopup() {
+    const popup = document.getElementById('modules-popup');
+    if (popup) popup.classList.add('hidden');
+    const overlay = document.getElementById('popup-overlay');
+    if (overlay) overlay.remove();
   }
 
   async switchModule(moduleId) {
@@ -63,8 +108,14 @@ class App {
     currentModule = null;
 
     // Update tab state
+    const popupModules = ['hcp', 'opening', 'response', 'bidding', 'conventions', 'play', 'lead', 'quiz'];
+    const isPopupModule = popupModules.includes(moduleId);
     this.tabBar.querySelectorAll('.tab-item').forEach(t => {
-      t.classList.toggle('active', t.dataset.module === moduleId);
+      if (t.id === 'modules-tab') {
+        t.classList.toggle('active', isPopupModule);
+      } else {
+        t.classList.toggle('active', t.dataset.module === moduleId);
+      }
     });
 
     // Update title
@@ -290,3 +341,9 @@ function createProgressView(tracker) {
 // Initialize app
 const app = new App();
 window.bridgeApp = app;
+
+// Auto-launch daily mix if there are SM-2 due items
+const dueCount = ProgressTracker.getDueCount();
+if (dueCount > 0) {
+  app.switchModule('mix');
+}
