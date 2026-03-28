@@ -103,11 +103,11 @@ export function blackwoodDecision(myAces, partnerResponse) {
   const partnerCount = partnerResponse.count;
   const total = myAces + partnerCount;
 
-  if (total >= 4) {
-    return { bid: '6', reason: `На двоих ${total} из 5 → малый шлем` };
-  }
   if (total >= 5) {
     return { bid: '7', reason: `Все 5 → большой шлем!` };
+  }
+  if (total >= 4) {
+    return { bid: '6', reason: `На двоих ${total} из 5 → малый шлем` };
   }
   return { bid: '5', reason: `На двоих ${total} из 5, тузов не хватает → стоп на 5` };
 }

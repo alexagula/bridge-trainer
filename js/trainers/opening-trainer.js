@@ -10,6 +10,17 @@ import { pickRelevantBids, ALL_OPENING_BIDS, BID_DISPLAY } from '../utils/bid-fi
 
 const MODULE_ID = 'opening';
 
+function bidToRuleId(bid) {
+  if (bid === 'пас') return 'rule:opening-pass';
+  if (bid === '1БК') return 'rule:opening-1nt';
+  if (bid === '2БК') return 'rule:opening-2nt';
+  if (bid === '2♣') return 'rule:opening-2c-fg';
+  if (bid.startsWith('1') && (bid.includes('♥') || bid.includes('♠'))) return 'rule:opening-1major';
+  if (bid.startsWith('1') && (bid.includes('♣') || bid.includes('♦'))) return 'rule:opening-1minor';
+  if (['2♦','2♥','2♠','3♣','3♦','3♥','3♠','4♣','4♦','4♥','4♠'].includes(bid)) return 'rule:opening-preempt';
+  return `rule:opening-${bid}`;
+}
+
 export default class OpeningTrainer {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -105,6 +116,14 @@ export default class OpeningTrainer {
 
     // Record
     ProgressTracker.record(MODULE_ID, { correct, time: timeTaken });
+
+    // SM-2 tracking
+    const situationId = bidToRuleId(this.correctBid.bid);
+    if (correct) {
+      ProgressTracker.recordSuccess(situationId);
+    } else {
+      ProgressTracker.recordError('opening', situationId, this.correctBid.reason);
+    }
 
     // Feedback
     const feedback = document.getElementById('feedback-area');

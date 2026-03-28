@@ -103,6 +103,15 @@ export default class LeadTrainer {
 
     ProgressTracker.record(MODULE_ID, { correct, time: 0 });
 
+    // SM-2 tracking
+    const contractKey = this.contractSuit ? this.contractSuit.toLowerCase() : 'nt';
+    const situationId = 'rule:lead-' + contractKey;
+    if (correct) {
+      ProgressTracker.recordSuccess(situationId);
+    } else {
+      ProgressTracker.recordError('lead', situationId, rec.reason);
+    }
+
     // Highlight
     const chips = document.querySelectorAll('#lead-hand .card-chip.clickable');
     chips.forEach(chip => {

@@ -103,6 +103,14 @@ export default class QuizTrainer {
 
     ProgressTracker.record(MODULE_ID, { correct, time: 0 });
 
+    // SM-2 tracking
+    const situationId = 'rule:quiz-L' + quiz.lesson;
+    if (correct) {
+      ProgressTracker.recordSuccess(situationId);
+    } else {
+      ProgressTracker.recordError('quiz', situationId, quiz.statement);
+    }
+
     document.querySelectorAll('[data-answer]').forEach(btn => {
       const isCorrectBtn = (btn.dataset.answer === 'true') === quiz.answer;
       btn.classList.add(isCorrectBtn ? 'correct' : 'wrong');

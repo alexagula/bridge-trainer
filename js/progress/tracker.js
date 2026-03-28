@@ -3,26 +3,37 @@
 const STORAGE_KEY = 'bridge-trainer-progress';
 const SM2_KEY = 'bridge-trainer-sm2';
 
+let _cache = null;
+let _sm2Cache = null;
+let _saveTimer = null;
+let _sm2SaveTimer = null;
+
 function loadData() {
+  if (_cache !== null) return _cache;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
+    _cache = raw ? JSON.parse(raw) : {};
+  } catch { _cache = {}; }
+  return _cache;
 }
 
 function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  _cache = data;
+  if (!_saveTimer) {
+    _saveTimer = setTimeout(() => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(_cache));
+      _saveTimer = null;
+    }, 500);
+  }
 }
 
 function loadSM2Data() {
+  if (_sm2Cache !== null) return _sm2Cache;
   try {
     const raw = localStorage.getItem(SM2_KEY);
-    return raw ? JSON.parse(raw) : { items: [] };
-  } catch {
-    return { items: [] };
-  }
+    _sm2Cache = raw ? JSON.parse(raw) : { items: [] };
+  } catch { _sm2Cache = { items: [] }; }
+  return _sm2Cache;
 }
 
 function saveSM2Data(data) {
@@ -31,7 +42,13 @@ function saveSM2Data(data) {
     data.items.sort((a, b) => a.nextReview - b.nextReview);
     data.items = data.items.slice(0, 200);
   }
-  localStorage.setItem(SM2_KEY, JSON.stringify(data));
+  _sm2Cache = data;
+  if (!_sm2SaveTimer) {
+    _sm2SaveTimer = setTimeout(() => {
+      localStorage.setItem(SM2_KEY, JSON.stringify(_sm2Cache));
+      _sm2SaveTimer = null;
+    }, 500);
+  }
 }
 
 export const ProgressTracker = {
@@ -117,11 +134,23 @@ export const ProgressTracker = {
   },
 
   /**
+   * Flush pending writes to localStorage immediately
+   */
+  flush() {
+    if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
+    if (_cache !== null) localStorage.setItem(STORAGE_KEY, JSON.stringify(_cache));
+    if (_sm2SaveTimer) { clearTimeout(_sm2SaveTimer); _sm2SaveTimer = null; }
+    if (_sm2Cache !== null) localStorage.setItem(SM2_KEY, JSON.stringify(_sm2Cache));
+  },
+
+  /**
    * Reset all progress
    */
   reset() {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(SM2_KEY);
+    _cache = null;
+    _sm2Cache = null;
   },
 
   /**

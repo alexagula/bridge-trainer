@@ -22,7 +22,9 @@ export default class BiddingSim {
     this.newDeal();
   }
 
-  destroy() {}
+  destroy() {
+    if (this._aiTimeout) clearTimeout(this._aiTimeout);
+  }
 
   render() {
     const stats = ProgressTracker.getStats(MODULE_ID);
@@ -75,7 +77,7 @@ export default class BiddingSim {
       this.promptUser();
     } else {
       // AI bid with small delay
-      setTimeout(() => {
+      this._aiTimeout = setTimeout(() => {
         const bid = this.sequence.getAIBid(seat);
         this.sequence.makeBid(seat, bid);
         this.updateBiddingDisplay();

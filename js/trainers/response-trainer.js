@@ -10,6 +10,16 @@ import { pickRelevantBids, ALL_RESPONSE_BIDS, BID_DISPLAY } from '../utils/bid-f
 const MODULE_ID = 'response';
 const OPENINGS = ['1♥', '1♠', '1БК', '1♣', '1♦', '2♣', '2БК', '2♥', '2♠'];
 
+function bidToRuleId(bid, opening) {
+  if (bid === 'пас') return `rule:response-pass-${opening}`;
+  if (bid === '1БК') return 'rule:response-1nt';
+  if (bid === '2БК') return 'rule:response-2nt';
+  if (bid === '3БК') return 'rule:response-3nt';
+  if (bid.includes('♥') || bid.includes('♠')) return `rule:response-major-${bid}`;
+  if (bid.includes('♣') || bid.includes('♦')) return `rule:response-minor-${bid}`;
+  return `rule:response-${bid}`;
+}
+
 export default class ResponseTrainer {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -82,12 +92,6 @@ export default class ResponseTrainer {
     this.answered = false;
     this.startTime = Date.now();
 
-    // Random opening if mode is random
-    const openingKey = this.opening.replace('♥', 'H').replace('♠', 'S').replace('♦', 'D').replace('♣', 'C').replace('БК', 'NT');
-    this.deal = dealForResponse(openingKey.replace('1H', '1H').replace('1S', '1S')
-      .replace('1NT', '1NT').replace('1C', '1C').replace('1D', '1D')
-      .replace('2C', '2C').replace('2NT', '2NT'));
-
     // Simple mapping for dealForResponse
     let dealKey = this.opening;
     if (dealKey === '1♥') dealKey = '1H';
@@ -135,6 +139,14 @@ export default class ResponseTrainer {
     });
 
     ProgressTracker.record(MODULE_ID, { correct, time: timeTaken });
+
+    // SM-2 tracking
+    const situationId = bidToRuleId(this.correctBid.bid, this.opening);
+    if (correct) {
+      ProgressTracker.recordSuccess(situationId);
+    } else {
+      ProgressTracker.recordError('response', situationId, this.correctBid.reason);
+    }
 
     const feedback = document.getElementById('feedback-area');
     if (correct) {

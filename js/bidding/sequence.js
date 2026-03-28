@@ -44,16 +44,34 @@ export class BiddingSequence {
 
   findDeclarer() {
     if (!this.lastBid) return null;
-    // Declarer is the first player on the declaring side who bid the trump suit
-    const declaringSide = [];
+
+    // 1. Find final contract (last non-pass, non-double bid)
+    const realBids = this.bids.filter(
+      b => b.bid !== 'пас' && b.bid !== 'контра' && b.bid !== 'реконтра'
+    );
+    if (realBids.length === 0) return null;
+
+    const finalBid = realBids[realBids.length - 1];
+
+    // 2. Extract suit/strain from final contract (e.g. '4♠' → '♠', '3БК' → 'БК')
+    const contractStrain = finalBid.bid.replace(/^[1-7]/, '');
+
+    // 3. Determine winning side (N-S or E-W)
+    const nsSide = ['N', 'S'];
+    const ewSide = ['E', 'W'];
+    const winningSide = nsSide.includes(finalBid.seat) ? nsSide : ewSide;
+
+    // 4. Find FIRST player on winning side who bid this strain
     for (const b of this.bids) {
-      if (b.bid !== 'пас' && b.bid !== 'контра' && b.bid !== 'реконтра') {
-        declaringSide.push(b);
+      if (b.bid === 'пас' || b.bid === 'контра' || b.bid === 'реконтра') continue;
+      const strain = b.bid.replace(/^[1-7]/, '');
+      if (strain === contractStrain && winningSide.includes(b.seat)) {
+        return b.seat;
       }
     }
-    if (declaringSide.length === 0) return null;
-    const lastNonPass = declaringSide[declaringSide.length - 1];
-    return lastNonPass.seat;
+
+    // Fallback
+    return finalBid.seat;
   }
 
   /**

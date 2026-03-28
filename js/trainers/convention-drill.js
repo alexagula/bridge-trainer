@@ -106,6 +106,14 @@ export default class ConventionDrill {
         const correct = btn.dataset.bid === response.bid;
         ProgressTracker.record(MODULE_ID, { correct, time: Date.now() - this.startTime });
 
+        // SM-2 tracking
+        const situationId = 'rule:convention-stayman';
+        if (correct) {
+          ProgressTracker.recordSuccess(situationId);
+        } else {
+          ProgressTracker.recordError('conventions', situationId, response.reason);
+        }
+
         content.querySelectorAll('.bid-btn').forEach(b => {
           if (b.dataset.bid === response.bid) b.classList.add('correct');
           else if (b === btn && !correct) b.classList.add('wrong');
@@ -159,6 +167,14 @@ export default class ConventionDrill {
         const correct = btn.dataset.bid === response.bid;
         ProgressTracker.record(MODULE_ID, { correct, time: Date.now() - this.startTime });
 
+        // SM-2 tracking
+        const situationId = 'rule:convention-blackwood';
+        if (correct) {
+          ProgressTracker.recordSuccess(situationId);
+        } else {
+          ProgressTracker.recordError('conventions', situationId, response.reason);
+        }
+
         content.querySelectorAll('.bid-btn').forEach(b => {
           if (b.dataset.bid === response.bid) b.classList.add('correct');
           else if (b === btn && !correct) b.classList.add('wrong');
@@ -211,6 +227,14 @@ export default class ConventionDrill {
         this.answered = true;
         const correct = btn.dataset.bid === response.bid;
         ProgressTracker.record(MODULE_ID, { correct, time: Date.now() - this.startTime });
+
+        // SM-2 tracking
+        const situationId = 'rule:convention-takeout';
+        if (correct) {
+          ProgressTracker.recordSuccess(situationId);
+        } else {
+          ProgressTracker.recordError('conventions', situationId, response.reason);
+        }
 
         grid.querySelectorAll('.bid-btn').forEach(b => {
           if (b.dataset.bid === response.bid) b.classList.add('correct');

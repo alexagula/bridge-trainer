@@ -1,6 +1,7 @@
 // Bridge Trainer — Overcall Logic (Lesson 1, 3, 4, 7)
 import { SUITS, SUIT_ORDER, MAJOR_SUITS } from '../core/constants.js';
 import { canTakeoutDouble } from './conventions.js';
+import { parseSuitFromBid } from '../utils/bid-utils.js';
 
 /**
  * Determine overcall after opponent's opening
@@ -87,14 +88,5 @@ export function determineOvercall(hand, opponentBid) {
   return { bid: 'пас', reason: 'Нет подходящего входа → пас', lessonRef: 7 };
 }
 
-/**
- * Extract suit from bid string
- */
-function bidToSuit(bid) {
-  if (!bid) return null;
-  if (bid.includes('♠')) return 'SPADES';
-  if (bid.includes('♥')) return 'HEARTS';
-  if (bid.includes('♦')) return 'DIAMONDS';
-  if (bid.includes('♣')) return 'CLUBS';
-  return null;
-}
+// bidToSuit replaced by imported parseSuitFromBid
+const bidToSuit = parseSuitFromBid;

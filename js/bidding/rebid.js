@@ -1,6 +1,7 @@
 // Bridge Trainer — Opener's Rebid Decision Tree
 // Rules from Lessons 9-10, Bridge card (Бридж карта.pdf)
 import { SUITS, SUIT_ORDER, MAJOR_SUITS, MINOR_SUITS } from '../core/constants.js';
+import { parseSuitFromBid, getBidLevel } from '../utils/bid-utils.js';
 
 /**
  * Determine opener's rebid after partner has responded.
@@ -545,24 +546,7 @@ function rebidAfter2NT(hand, response, steps) {
 // Helper functions
 // ============================================================
 
-/**
- * Parse suit ID from bid string like '1♥', '2♠', '3♣', '2♦'
- */
-function parseSuitFromBid(bid) {
-  if (bid.includes('♠')) return 'SPADES';
-  if (bid.includes('♥')) return 'HEARTS';
-  if (bid.includes('♦')) return 'DIAMONDS';
-  if (bid.includes('♣')) return 'CLUBS';
-  return null;
-}
-
-/**
- * Get numeric level from bid string like '1♥' → 1, '2БК' → 2
- */
-function getBidLevel(bid) {
-  const match = bid.match(/^(\d)/);
-  return match ? parseInt(match[1]) : 1;
-}
+// parseSuitFromBid and getBidLevel imported from ../utils/bid-utils.js
 
 /**
  * Get next level number after a given bid
